@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   name: { type: String },
+  typeUrl: {type: String},
   parent: {
     type: mongoose.SchemaTypes.ObjectId, // 关联id
     ref: "Category",

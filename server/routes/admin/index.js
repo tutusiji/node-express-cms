@@ -42,6 +42,8 @@ module.exports = (app) => {
       queryOptions.populate = "parent";
     }
     const model = await req.Model.find().setOptions(queryOptions).limit(10);
+
+    
     // populate 关联取出
     res.send(model);
   });
@@ -102,7 +104,7 @@ module.exports = (app) => {
         id: user._id,
       },
       app.get("secret"),
-      { expiresIn: "1h" } // token 过期时间
+      // { expiresIn: "1h" } // token 过期时间
     );
     res.send({
       token,

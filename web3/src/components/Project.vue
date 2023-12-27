@@ -39,7 +39,7 @@ const pageTotal = ref<Number>(1);
 const fetchData = async () => {
   const res = await blogList({
     parentName: "博客文章",
-    categoryName: "技术",
+    categoryName: "小项目",
     page: pageCurrent.value,
     limit: 10,
   });
@@ -49,7 +49,7 @@ const fetchData = async () => {
 };
 fetchData();
 
-const handleCurrentChange = (val:any) => {
+const handleCurrentChange = (val: any) => {
   console.log(`当前页: ${val}`);
   pageCurrent.value = val;
   fetchData();

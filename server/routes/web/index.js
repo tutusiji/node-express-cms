@@ -5,11 +5,12 @@ module.exports = (app) => {
   const Category = mongoose.model("Category");
   const Article = mongoose.model("Article");
   const Hero = mongoose.model("Hero");
+  const dayjs = require("dayjs");
 
   // 导入新闻数据
   router.get("/news/init", async (req, res) => {
     const parent = await Category.findOne({
-      name: "新闻分类",
+      name: "博客文章",
     });
     const cats = await Category.find()
       .where({
@@ -42,6 +43,7 @@ module.exports = (app) => {
       const randomCats = cats.slice(0).sort((a, b) => Math.random() - 0.5);
       return {
         categories: randomCats.slice(0, 2),
+        date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
         title: title,
       };
     });
@@ -50,10 +52,144 @@ module.exports = (app) => {
     res.send(newsList);
   });
 
+  // router.get("/blog/menu", async (req, res) => {
+  //   const parent = await Category.findOne({
+  //     name: "博客文章",
+  //   });
+  //   // 聚合查询
+  //   const cats = await Category.aggregate([{ $match: { parent: parent._id } }]);
+  //   res.send(cats);
+  // });
+  router.post("/blog/menu", async (req, res) => {
+    try {
+      const { parentName } = req.body;
+      // 从请求中获取分类名称
+
+      // 验证分类名称参数是否存在
+      if (!parentName) {
+        return res
+          .status(400)
+          .send("Missing required query parameter: category");
+      }
+
+      // 查找指定的分类
+      const parentCategory = await Category.findOne({ name: parentName });
+
+      if (!parentCategory) {
+        return res.status(404).send("Category not found");
+      }
+
+      // 查找所有以该分类为父分类的子分类
+      const subCategories = await Category.find({ parent: parentCategory._id });
+
+      // 返回子分类列表
+      res.send(subCategories);
+    } catch (error) {
+      res.status(500).send({ error: error.message });
+    }
+  });
+
+  router.post("/blog/list", async (req, res) => {
+    try {
+      // 从请求中获取分类名称和分页参数
+      // const parentName = req.query.parent;
+      // const categoryName = req.query.category;
+      // const page = parseInt(req.query.page, 10) || 1;
+      // const limit = parseInt(req.query.limit, 10) || 10;
+      // 从请求体中获取分类名称和分页参数
+      const { parentName, categoryName, page, limit } = req.body;
+
+      // 验证分类名称参数是否存在
+      if (!parentName || !categoryName) {
+        return res.status(400).send("Missing required query parameters");
+      }
+
+      // 转换分页参数为整数，并提供默认值
+      const pageNumber = parseInt(page, 10) || 1;
+      const limitNumber = parseInt(limit, 10) || 10;
+
+      // 查找父分类
+      const parent = await Category.findOne({
+        name: parentName,
+      });
+
+      if (!parent) {
+        return res.status(404).send("Parent category not found");
+      }
+
+      // 计算跳过的文档数量
+      const skip = (pageNumber - 1) * limit;
+
+      // 聚合查询指定的子分类并实现分页
+      const result = await Category.aggregate([
+        { $match: { parent: parent._id, name: categoryName } },
+        {
+          $lookup: {
+            from: "articles",
+            localField: "_id",
+            foreignField: "categories",
+            as: "list",
+          },
+        },
+        { $unwind: "$list" },
+        {
+          $sort: { "list.date": -1 }, // 添加排序步骤，按照文章的创建日期降序排列
+        },
+        { $skip: skip },
+        { $limit: limit },
+        {
+          $group: {
+            _id: "$_id",
+            list: { $push: "$list" },
+          },
+        },
+        {
+          $addFields: {
+            list: { $slice: ["$list", limit] },
+          },
+        },
+      ]);
+
+      // 查找子分类
+      const category = await Category.findOne({
+        name: categoryName,
+        parent: parent._id,
+      });
+      if (!category) {
+        return res.status(404).send("Category not found");
+      }
+      const totalCount = await Article.countDocuments({
+        categories: category._id,
+      });
+
+      // 添加序列号
+      if (result.length > 0 && result[0].list) {
+        for (let i = 0; i < result[0].list.length; i++) {
+          result[0].list[i].serialNumber = skip + i + 1;
+        }
+      }
+
+      // 返回查询结果的第一个元素或空对象
+      // currentPage: 当前页码。
+      // limit: 每页的条目数。
+      // totalItems: 总条目数。
+      // totalPages: 总页数。
+      res.send({
+        list: result.length > 0 ? result[0].list : [],
+        currentPage: pageNumber,
+        limit: limitNumber,
+        totalItems: totalCount,
+        totalPages: Math.ceil(totalCount / limitNumber),
+      });
+    } catch (error) {
+      res.status(500).send({ error: error.message });
+    }
+  });
+
   // 新闻列表接口
   router.get("/news/list", async (req, res) => {
     // const parent = await Category.findOne({
-    //   name: '新闻分类'
+    //   name: '博客文章'
     // }).populate({
     //   path: 'children',
     //   populate: {
@@ -61,9 +197,10 @@ module.exports = (app) => {
     //   }
     // }).lean()
     const parent = await Category.findOne({
-      name: "新闻分类",
+      name: "博客文章",
     });
     const cats = await Category.aggregate([
+      // 聚合查询
       { $match: { parent: parent._id } },
       {
         $lookup: {
@@ -75,7 +212,7 @@ module.exports = (app) => {
       },
       {
         $addFields: {
-          newsList: { $slice: ["$newsList", 5] },
+          newsList: { $slice: ["$newsList", 10] },
         },
       },
     ]);

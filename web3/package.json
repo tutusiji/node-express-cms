@@ -9,9 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@highlightjs/vue-plugin": "^2.1.0",
+    "axios": "^1.6.2",
+    "dayjs": "^1.11.10",
     "element-plus": "^2.4.2",
+    "highlight.js": "^11.9.0",
+    "marked": "^11.1.0",
     "sass": "^1.69.5",
     "vue": "^3.3.4",
+    "vue-quill-editor": "^3.0.6",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {

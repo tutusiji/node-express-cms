@@ -8,16 +8,21 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     2: typeof import('./src/components/panel copy 2.vue')['default']
-    copy: typeof import('./src/components/panel4 copy.vue')['default']
+    About: typeof import('./src/components/About.vue')['default']
+    copy: typeof import('./src/components/Project copy.vue')['default']
+    Detail: typeof import('./src/components/Detail.vue')['default']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElPagination: typeof import('element-plus/es')['ElPagination']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
-    Home: typeof import('./src/components/home.vue')['default']
+    Home: typeof import('./src/components/Home.vue')['default']
+    Main: typeof import('./src/components/Main.vue')['default']
     Panel: typeof import('./src/components/panel.vue')['default']
     Panel2: typeof import('./src/components/panel2.vue')['default']
     Panel3: typeof import('./src/components/panel3.vue')['default']
     Panel4: typeof import('./src/components/panel4.vue')['default']
+    Project: typeof import('./src/components/Project.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
