@@ -120,7 +120,7 @@ header {
   background-attachment: scroll;
   position: relative;
   background-size: cover;
-  background-image: url("https://www.tuziki.com/media/images/home-bg.jpg");
+  background-image: url("../assets/bg.jpg");
   background-repeat: no-repeat;
   &::before {
     content: "";
