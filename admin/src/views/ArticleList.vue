@@ -19,7 +19,9 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="block" style="padding: 20px;">
+    <div
+      style="padding: 20px; display: flex;align-items: center; justify-content: center;"
+    >
       <el-pagination
         background
         @size-change="handleSizeChange"
