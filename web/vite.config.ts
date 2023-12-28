@@ -11,7 +11,7 @@ import autoprefixer from "autoprefixer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "./",
+  base: "/",
   define: {
     "process.env": {
       VUE_APP_API_URL: "http://localhost:3000/web/api",
