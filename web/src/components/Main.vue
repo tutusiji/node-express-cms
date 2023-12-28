@@ -23,7 +23,7 @@
     <div class="main">
       <div class="container">
         <div class="p-[10px] text-[14px]" v-if="$route.path === '/'">
-          你好！欢迎来Tuziki！ 00
+          你好！欢迎来Tuziki !
         </div>
         <router-view :key="$route.path"></router-view>
       </div>
