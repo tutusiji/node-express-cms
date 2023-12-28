@@ -107,7 +107,7 @@ module.exports = (app) => {
     upload.single("file"),
     async (req, res) => {
       const file = req.file;
-      file.url = `//tuziki.com/uploads/${file.filename}`;
+      file.url = `http://tuziki.com/uploads/${file.filename}`;
       res.send(file);
     }
   );
