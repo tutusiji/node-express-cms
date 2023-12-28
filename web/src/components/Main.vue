@@ -59,7 +59,6 @@ const fetchMenu = async () => {
     });
     menu.value = res;
     localStorage.menu = JSON.stringify(res)
-    console.log(res);
   } catch (error) {
     console.error(error.message);
   }

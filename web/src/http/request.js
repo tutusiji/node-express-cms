@@ -1,9 +1,10 @@
 
 import axios from "axios";
 
+
 const service = axios.create({
   // baseURL: "http://localhost:3000/web/api",
-  baseURL: process.env.VUE_APP_API_URL || "/web/api",
+  baseURL: import.meta.VUE_APP_BASE_API || "/web/api",
   timeout: 5000,
 });
 
