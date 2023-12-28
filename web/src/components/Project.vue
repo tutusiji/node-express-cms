@@ -36,11 +36,12 @@ const list = ref<ArrListType[]>([]);
 const pageCurrent = ref<Number>(1);
 const pageTotal = ref<Number>(1);
 
+const route = useRoute(); // 用于接收路由参数的
+const menu = JSON.parse(localStorage.menu);
+
 const fetchData = async () => {
-  const menu = JSON.parse(localStorage.menu);
-  const route = useRoute();
   const currentMenu = menu.find(
-    (item: { typeUrl: any }) => item.typeUrl === route.path.replace("/", "")
+    (item: { typeUrl: String }) => `/${item.typeUrl}` === route.path
   );
   const res = await blogList({
     parentName: "博客文章",

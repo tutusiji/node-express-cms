@@ -20,3 +20,6 @@ vue-tsc &&
 4、持久化运行node，用pm2
 
 
+mongodb操作
+导出：mongodump -d 数据库名
+导入： mongorestore

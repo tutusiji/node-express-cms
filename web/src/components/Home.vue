@@ -24,6 +24,7 @@
 <script lang="ts" setup>
 import { blogList } from "../http/api";
 import dayjs from "dayjs";
+import { useRouter, useRoute } from "vue-router";
 
 type ArrListType = {
   _id: String;
@@ -36,11 +37,12 @@ const list = ref<ArrListType[]>([]);
 const pageCurrent = ref<Number>(1);
 const pageTotal = ref<Number>(1);
 
+const route = useRoute(); // 用于接收路由参数的
+const menu = JSON.parse(localStorage.menu);
+
 const fetchData = async () => {
-  const menu = JSON.parse(localStorage.menu);
-  const route = useRoute();
   const currentMenu = menu.find(
-    (item: { typeUrl: any }) => item.typeUrl === route.path.replace("/", "")
+    (item: { typeUrl: String }) => `/${item.typeUrl}` === route.path
   );
   const res = await blogList({
     parentName: "博客文章",
@@ -52,9 +54,8 @@ const fetchData = async () => {
   pageCurrent.value = Number(res.currentPage);
   pageTotal.value = Number(res.totalItems);
 };
-onMounted(() => {
-  fetchData();
-});
+
+fetchData();
 
 const handleCurrentChange = (val: any) => {
   console.log(`当前页: ${val}`);
