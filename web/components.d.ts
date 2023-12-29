@@ -12,7 +12,6 @@ declare module 'vue' {
     ElPagination: typeof import('element-plus/es')['ElPagination']
     Home: typeof import('./src/components/Home.vue')['default']
     Main: typeof import('./src/components/Main.vue')['default']
-    Panel4: typeof import('./src/components/panel4.vue')['default']
     Project: typeof import('./src/components/Project.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
