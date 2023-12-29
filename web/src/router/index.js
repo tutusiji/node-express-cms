@@ -28,11 +28,11 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/p4",
-    name: "panel",
-    component: () => import("../components/panel4.vue"),
-  },
+  // {
+  //   path: "/p4",
+  //   name: "panel",
+  //   component: () => import("../components/panel4.vue"),
+  // },
 ];
 export const router = createRouter({
   history: createWebHashHistory(),
