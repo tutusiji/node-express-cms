@@ -63,9 +63,9 @@ const fetchData = async () => {
   loading.value = false
 };
 
-watch(menu, (newValue, oldValue) => {
-  console.log("watch 已触发", newValue);
-});
+// watch(menu, (newValue, oldValue) => {
+//   console.log("watch 已触发", newValue);
+// });
 
 const timer = setInterval(() => {
   if (localStorage.menu) {
