@@ -1,8 +1,8 @@
 <template>
   <ul class="articleList" v-loading="loading">
-    <li v-for="item of articleList" :key="item._id">
+    <li v-for="item of articleList" :key="item._id" @click="$router.push(`./detail/${item._id}`)">
       <b class="text-[#cdcccc] mr-5">No.{{ item.serialNumber }}</b>
-      <h3 @click="$router.push(`./detail/${item._id}`)">{{ item.title }}</h3>
+      <h3>{{ item.title }}</h3>
       <div class="date">
         <!-- HH:mm:ss -->
         {{ item.date && dayjs(item.date).format("YYYY-MM-DD") }}

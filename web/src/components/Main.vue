@@ -232,6 +232,9 @@ ul.articleList {
     align-items: center;
     padding: 0.9rem 1rem;
     border-bottom: 1px solid #eee;
+    &:active{
+      background-color: #fff;
+    }
     &:nth-last-child(1) {
       border-bottom: none;
     }
