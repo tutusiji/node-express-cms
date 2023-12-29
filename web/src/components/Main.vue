@@ -80,8 +80,8 @@ const switchX = ref<Number>(0);
 const lineWidth = ref<Number>(75);
 
 const getStyle = () => {
-  const parentRect = document.querySelector(".menu").getBoundingClientRect();
-  const itemRect = document.querySelector(".current").getBoundingClientRect();
+  const parentRect = document.querySelector(".menu")?.getBoundingClientRect();
+  const itemRect = document.querySelector(".current")?.getBoundingClientRect();
 
   lineWidth.value = itemRect.width;
   switchX.value = itemRect.left - parentRect.left;
