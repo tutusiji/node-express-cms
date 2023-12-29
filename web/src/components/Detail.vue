@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
 import { articleDetail } from "../http/api";
-import { marked } from "marked";
+// import { marked } from "marked";
 import dayjs from "dayjs";
 
 type data = {

@@ -1,9 +1,9 @@
 <template>
   <div class="articleTitle" v-html="data.title"></div>
   <div class="articleDate pb-4 text-[#999] text-center text-[14px] italic">
-    {{ dayjs(data.date).format("YYYY-MM-DD ") }}
+    {{ data.date && dayjs(data.date).format("YYYY-MM-DD ") }}
   </div>
-  <div class="articleDetails" v-html="data.body"></div>
+  <div class="articleDetails" v-html="data.body" v-loading="loading"></div>
 </template>
 
 <script lang="ts" setup>
@@ -20,14 +20,17 @@ const data = ref<data>({
   title: "",
   date: "",
 });
+const loading = ref<Boolean>(false);
 const fetchData = async () => {
-  const res = await articleDetail('658a87b41a9e685c9acdbff9');
+  loading.value = true
+  const res = await articleDetail("658a87b41a9e685c9acdbff9");
   data.value = res;
+  loading.value = false
 };
 fetchData();
 </script>
 
-<style  lang="scss">
+<style lang="scss">
 .articleTitle {
   padding: 20px 0;
   font-weight: 700;
@@ -46,7 +49,7 @@ fetchData();
     background-color: #f1f1f1;
   }
 }
-pre{
+pre {
   background-color: #000;
   color: #d7d5d5;
   overflow: auto;
