@@ -169,7 +169,7 @@ nav {
 header {
   position: relative;
   margin-bottom: 30px;
-  background: no-repeat center center;
+  background-position:50% 68%;
   background-color: #868e96;
   background-attachment: scroll;
   position: relative;
