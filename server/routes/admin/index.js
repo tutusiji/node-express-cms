@@ -66,6 +66,7 @@ module.exports = (app) => {
       // 查询指定范围的文档并应用其他选项
       const items = await req.Model.find()
         .setOptions(queryOptions)
+        .sort({ date: -1 }) // 按照日期降序排序
         .skip(skip)
         .limit(limitNumber);
 
