@@ -23,3 +23,4 @@ yarn-error.log*
 *.sw*
 
 oss.js
+dump

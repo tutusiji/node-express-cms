@@ -15,6 +15,7 @@
     "element-plus": "^2.4.2",
     "highlight.js": "^11.9.0",
     "marked": "^11.1.0",
+    "pinia": "^2.1.7",
     "sass": "^1.69.5",
     "vue": "^3.3.4",
     "vue-quill-editor": "^3.0.6",

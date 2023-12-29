@@ -15,9 +15,13 @@
       <el-form-item label="名称">
         <el-input v-model="model.name"></el-input>
       </el-form-item>
-      <el-form-item label="单页URL">
-        <el-input v-model="model.typeUrl"></el-input>
+      <el-form-item label="路由Path">
+        <el-input v-model="model.path"></el-input>
       </el-form-item>
+      <el-form-item label="单页Id">
+        <el-input v-model="model.pageId"></el-input>
+      </el-form-item>
+      
       <el-form-item>
         <el-button type="primary" native-type="submit">保存</el-button>
       </el-form-item>

@@ -5,9 +5,9 @@
         <div class="logo" @click="$router.push(`/`)">Tuziki的个人记录</div>
         <ul class="menu">
           <li
-            v-for="item of menu"
+            v-for="item of menuStore.menu"
             :key="item._id"
-            :class="{ current: `/${item.typeUrl}` === $route.path }"
+            :class="{ current: `/${item.path}` === $route.path }"
             @click="switchTabTo(item)"
           >
             {{ item.name }}
@@ -50,49 +50,48 @@
 </template>
 
 <script lang="ts" setup>
-import { blogMenu } from "../http/api";
+import { useMenuStore } from "../store/menuStore";
+const menuStore = useMenuStore();
 
-interface ArrMenuListType {
-  _id: string;
-  name: string;
-  typeUrl: string;
-}
-const menu = ref<ArrMenuListType[]>([]);
-// localStorage.menu = {}
-const fetchMenu = async () => {
-  try {
-    const res = await blogMenu({
-      parentName: "博客文章",
-    });
-    menu.value = res;
-    localStorage.menu = JSON.stringify(res);
+onMounted(() => {
+  menuStore.fetchMenu();
+});
 
-    nextTick(() => {
+watch(
+  () => menuStore.menu,
+  async (newMenu) => {
+    if (newMenu.length > 0) {
+      await nextTick();
       getStyle();
-    });
-  } catch (error) {
-    console.error(error.message);
-  }
-};
-fetchMenu();
+    }
+  },
+  { immediate: true }
+);
 
 const switchX = ref<Number>(0);
 const lineWidth = ref<Number>(75);
 
 const getStyle = () => {
-  const parentRect = document.querySelector(".menu")?.getBoundingClientRect();
-  const itemRect = document.querySelector(".current")?.getBoundingClientRect();
+  const parentRect = document.querySelector(".menu");
+  const itemRect = document.querySelector(".current");
+  if (!itemRect || !parentRect) return;
 
-  lineWidth.value = itemRect.width;
-  switchX.value = itemRect.left - parentRect.left;
+  lineWidth.value = itemRect.getBoundingClientRect().width;
+  switchX.value =
+    itemRect.getBoundingClientRect().left -
+    parentRect.getBoundingClientRect().left;
   // console.log(lineWidth.value, switchX.value);
 };
 
 const router = useRouter();
-const switchTabTo = (item) => {
-  router.push(`/${item.typeUrl}`);
+
+type itemType = {
+  path: String;
+};
+
+const switchTabTo = (item: itemType) => {
+  router.push(`/${item.path}`);
   router.afterEach(() => {
-    // 确保是从特定路由跳转来的
     nextTick(() => {
       getStyle();
       // console.log(1);
@@ -109,8 +108,6 @@ const switchTabTo = (item) => {
   //   console.log(4);
   // });
 };
-
-onMounted(() => {});
 </script>
 
 <style scoped lang="scss">
@@ -227,7 +224,7 @@ footer {
 </style>
 
 <style lang="scss">
-.list {
+ul.articleList {
   background-color: #fafafa;
 
   li {

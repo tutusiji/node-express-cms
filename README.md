@@ -46,9 +46,13 @@ https://www.tuziki.com/
 
 ### mongodb操作
 
-导出：``mongodump -d 数据库名``, windows用户可以使用MongoDB的客户端程序，一键导出即可
+导出：
 
-导入：`` mongorestore``
+Linux上``mongodump -d 数据库名``,这样导出是二进制文件，在导入时需要用 导入：``mongorestore`` 
+
+windows用户可以使用MongoDB的客户端程序，一键导出即可
+
+如果只想要单个集合的数据可以这样：``mongoexport -d=node-vue-moba --collection=articles --out=articles.json``
 
 启动mongodb服务``net start mongodb``
 
@@ -61,6 +65,17 @@ https://www.tuziki.com/
 数据导入/导出工具 mongoimport 以及 mongoexport
 
 诊断工具 mongostat 以及 mongotop
+
+批量插入数据
+```
+mongo
+show dbs
+use 数据库名
+db.articles.updateMany(
+  {},
+  { $set: { dateDisplay: true } }
+);
+```
 
 ### nginx 指令
 测试：`` nginx -t ``

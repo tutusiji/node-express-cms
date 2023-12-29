@@ -1,6 +1,6 @@
 <template>
-  <ul class="list" v-loading="loading">
-    <li v-for="item of list" :key="item._id">
+  <ul class="articleList" v-loading="loading">
+    <li v-for="item of articleList" :key="item._id">
       <b class="text-[#cdcccc] mr-5">No.{{ item.serialNumber }}</b>
       <h3 @click="$router.push(`./detail/${item._id}`)">{{ item.title }}</h3>
       <div class="date">
@@ -9,7 +9,7 @@
       </div>
     </li>
   </ul>
-  <div class="clear-both overflow-hidden py-2">
+  <div class="clear-both overflow-hidden py-2" v-show="articleList.length > 0">
     <el-pagination
       class="float-right"
       background
@@ -24,62 +24,56 @@
 <script lang="ts" setup>
 import { blogList } from "../http/api";
 import dayjs from "dayjs";
+import { useMenuStore } from "../store/menuStore";
+const menuStore = useMenuStore();
 
 type ArrListType = {
-  _id: String;
-  title: String;
-  date: String;
-  serialNumber: Number;
+  _id: string;
+  title: string;
+  date: string;
+  serialNumber: number;
 };
 
-const list = ref<ArrListType[]>([]);
-const pageCurrent = ref<Number>(1);
-const pageTotal = ref<Number>(1);
-interface ArrMenuListType {
-  _id: string;
-  name: string;
-  typeUrl: string;
-}
-const menu = ref<ArrMenuListType[]>([]);
+const articleList = ref<ArrListType[]>([]);
+const pageCurrent = ref<number>(1);
+const pageTotal = ref<number>(1);
 
-const route = useRoute(); // 用于接收路由参数的
+const route = useRoute();
 const loading = ref<Boolean>(false);
 
 const fetchData = async () => {
-  loading.value = true
-  const currentMenu = menu.value.find(
-    (item: { typeUrl: String }) => `/${item.typeUrl}` === route.path
+  loading.value = true;
+  const currentMenu = menuStore.menu.find(
+    (item: { path: string }) => `/${item.path}` === route.path
   );
-  const res = await blogList({
+  if (!currentMenu) return;
+  const res = (await blogList({
     parentName: "博客文章",
     categoryName: currentMenu.name,
     page: pageCurrent.value,
     limit: 10,
-  });
-  list.value = res.list;
-  pageCurrent.value = Number(res.currentPage);
-  pageTotal.value = Number(res.totalItems);
-  loading.value = false
+  })) as unknown as {
+    list: ArrListType[];
+    currentPage: number;
+    totalItems: number;
+  };
+  articleList.value = res.list;
+  pageCurrent.value = res.currentPage;
+  pageTotal.value = res.totalItems;
+  loading.value = false;
 };
 
-// watch(menu, (newValue, oldValue) => {
-//   console.log("watch 已触发", newValue);
-// });
-
-const timer = setInterval(() => {
-  if (localStorage.menu) {
-    menu.value = JSON.parse(localStorage.menu);
-    if (menu.value.length > 0) {
-      fetchData();
-      clearInterval(timer);
+watch(
+  () => menuStore.menu,
+  async (newMenu) => {
+    if (newMenu.length > 0) {
+      await fetchData();
     }
-  }
-}, 200);
-
-onMounted(() => {});
+  },
+  { immediate: true }
+);
 
 const handleCurrentChange = (val: any) => {
-  console.log(`当前页: ${val}`);
   pageCurrent.value = val;
   fetchData();
 };

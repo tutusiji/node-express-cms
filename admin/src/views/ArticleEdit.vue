@@ -22,6 +22,7 @@
           placeholder="选择日期"
         >
         </el-date-picker>
+        <el-switch style="margin-left: 20px;" v-model="model.dateDisplay"> </el-switch> 是否显示时间
       </el-form-item>
       <el-form-item label="详情">
         <vue-editor
@@ -52,6 +53,7 @@ export default {
     return {
       model: {
         date: new Date(),
+        dateDisplay: true,
       },
       categories: [],
     };
