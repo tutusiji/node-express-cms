@@ -3,7 +3,7 @@ https://www.tuziki.com/
 
 ## Web 用户端
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/web1fewq23f43675.png'>
-技术栈：vue3 + typescript + vite + tailwind + sass
+技术栈：vue3 + typescript + vite + pinia + tailwind + sass
 
 主要实现功能：
 >1. web端可配置导航菜单，即博客文章分类
