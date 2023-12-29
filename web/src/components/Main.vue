@@ -8,10 +8,17 @@
             v-for="item of menu"
             :key="item._id"
             :class="{ current: `/${item.typeUrl}` === $route.path }"
-            @click="$router.push(`/${item.typeUrl}`)"
+            @click="switchTabTo(item)"
           >
             {{ item.name }}
           </li>
+          <div
+            class="linebg"
+            :style="{
+              transform: `translateX(${switchX}px)`,
+              width: `${lineWidth}px`,
+            }"
+          ></div>
         </ul>
       </div>
     </nav>
@@ -58,12 +65,52 @@ const fetchMenu = async () => {
       parentName: "博客文章",
     });
     menu.value = res;
-    localStorage.menu = JSON.stringify(res)
+    localStorage.menu = JSON.stringify(res);
+
+    nextTick(() => {
+      getStyle();
+    });
   } catch (error) {
     console.error(error.message);
   }
 };
 fetchMenu();
+
+const switchX = ref<Number>(0);
+const lineWidth = ref<Number>(75);
+
+const getStyle = () => {
+  const parentRect = document.querySelector(".menu").getBoundingClientRect();
+  const itemRect = document.querySelector(".current").getBoundingClientRect();
+
+  lineWidth.value = itemRect.width;
+  switchX.value = itemRect.left - parentRect.left;
+  // console.log(lineWidth.value, switchX.value);
+};
+
+const router = useRouter();
+const switchTabTo = (item) => {
+  router.push(`/${item.typeUrl}`);
+  router.afterEach(() => {
+    // 确保是从特定路由跳转来的
+    nextTick(() => {
+      getStyle();
+      // console.log(1);
+    });
+  });
+
+  // setTimeout(() => {
+  //   console.log(2);
+  // }, 0);
+
+  // nextTick(() => {
+  //   console.log(3);
+  // }).then(() => {
+  //   console.log(4);
+  // });
+};
+
+onMounted(() => {});
 </script>
 
 <style scoped lang="scss">
@@ -92,7 +139,7 @@ nav {
     align-items: center;
   }
   .logo {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 500;
     cursor: pointer;
     // font-family: cursive;
@@ -100,16 +147,26 @@ nav {
   .menu {
     display: flex;
     align-items: center;
-
+    position: relative;
     li {
       cursor: pointer;
       white-space: nowrap;
       padding: 1rem;
       font-size: 0.9rem;
       &.current {
-        border-bottom: 1px solid rgba($color: #000000, $alpha: 0.8);
+        // border-bottom: 1px solid rgba($color: #000000, $alpha: 0.8);
       }
     }
+  }
+  .linebg {
+    position: absolute;
+    left: 0;
+    width: 92px;
+    height: 1px;
+    bottom: 0;
+    background: rgba($color: #000000, $alpha: 0.8);
+    transition: all 200ms ease-in;
+    border-radius: 100%;
   }
 }
 header {
@@ -165,6 +222,54 @@ footer {
   font-weight: 300;
   a {
     font-weight: 300;
+  }
+}
+</style>
+
+<style lang="scss">
+.list {
+  background-color: #fafafa;
+
+  li {
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid #eee;
+    &:nth-last-child(1) {
+      border-bottom: none;
+    }
+    b {
+      font-family: cursive;
+    }
+    h3 {
+      flex: 1;
+      cursor: pointer;
+      line-height: 28px;
+      font-size: 1rem;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .date {
+      margin-left: 0.8rem;
+      font-size: 0.8rem;
+      font-style: italic;
+      color: #868e96;
+      font-family: Lora, "Times New Roman", serif;
+    }
+  }
+}
+.next {
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border: 1px dashed #888787;
+  margin: 30px auto 30px;
+  cursor: pointer;
+  color: #666;
+  &:hover {
+    background-color: #f1f1f1;
   }
 }
 </style>

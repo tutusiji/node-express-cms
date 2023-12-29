@@ -48,6 +48,16 @@
 
 启动mongodb服务``net start mongodb``
 
+可视化工具https://www.mongodb.com/try/download/compass
+
+数据操作工具，导入导出等https://www.mongodb.com/try/download/database-tools
+
+二进制导入/导出工具 mongodump、mongorestore 以及 bsondump
+
+数据导入/导出工具 mongoimport 以及 mongoexport
+
+诊断工具 mongostat 以及 mongotop
+
 ### nginx 指令
 测试：`` nginx -t ``
 
