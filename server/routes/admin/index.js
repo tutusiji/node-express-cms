@@ -99,15 +99,41 @@ module.exports = (app) => {
   );
 
   //   文件上传
+  // const multer = require("multer");
+  // const upload = multer({ dest: path.posix.join(__dirname, "..", "uploads") }); //__dirname 绝对地址
+  // app.post(
+  //   "/admin/api/upload",
+  //   authMiddleware(),
+  //   upload.single("file"),
+  //   async (req, res) => {
+  //     const file = req.file;
+  //     file.url = `http://tuziki.com/uploads/${file.filename}`;
+  //     res.send(file);
+  //   }
+  // );
   const multer = require("multer");
-  const upload = multer({ dest: path.posix.join(__dirname, "..", "uploads") }); //__dirname 绝对地址
+  const MAO = require("multer-aliyun-oss");
+  const { region, accessKeyId, accessKeySecret, bucket } = require("./oss.js");
+  const upload = multer({
+    storage: MAO({
+      config: {
+        region,
+        accessKeyId,
+        accessKeySecret,
+        bucket,
+      },
+      // to set path prefix for files, could be string or function
+      destination: "",
+    }),
+  });
+
   app.post(
     "/admin/api/upload",
     authMiddleware(),
     upload.single("file"),
     async (req, res) => {
       const file = req.file;
-      file.url = `http://tuziki.com/uploads/${file.filename}`;
+      // file.url = `http://tuziki.com/uploads/${file.filename}`;
       res.send(file);
     }
   );
