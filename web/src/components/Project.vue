@@ -65,10 +65,12 @@ watch(menu, (newValue, oldValue) => {
 });
 
 const timer = setInterval(() => {
-  menu.value = JSON.parse(localStorage.menu);
-  if (menu.value.length > 0) {
-    fetchData();
-    clearInterval(timer);
+  if (localStorage.menu) {
+    menu.value = JSON.parse(localStorage.menu);
+    if (menu.value.length > 0) {
+      fetchData();
+      clearInterval(timer);
+    }
   }
 }, 200);
 
@@ -93,7 +95,7 @@ const handleCurrentChange = (val: any) => {
     &:nth-last-child(1) {
       border-bottom: none;
     }
-    b{
+    b {
       font-family: cursive;
     }
     h3 {
