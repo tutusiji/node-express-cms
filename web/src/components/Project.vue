@@ -1,11 +1,11 @@
 <template>
-  <ul class="list">
+  <ul class="list" v-loading="loading">
     <li v-for="item of list" :key="item._id">
       <b class="text-[#cdcccc] mr-5">No.{{ item.serialNumber }}</b>
       <h3 @click="$router.push(`./detail/${item._id}`)">{{ item.title }}</h3>
       <div class="date">
         <!-- HH:mm:ss -->
-        {{ dayjs(item.date).format("YYYY-MM-DD") }}
+        {{ item.date && dayjs(item.date).format("YYYY-MM-DD") }}
       </div>
     </li>
   </ul>
@@ -44,8 +44,10 @@ interface ArrMenuListType {
 const menu = ref<ArrMenuListType[]>([]);
 
 const route = useRoute(); // 用于接收路由参数的
+const loading = ref<Boolean>(false);
 
 const fetchData = async () => {
+  loading.value = true
   const currentMenu = menu.value.find(
     (item: { typeUrl: String }) => `/${item.typeUrl}` === route.path
   );
@@ -58,6 +60,7 @@ const fetchData = async () => {
   list.value = res.list;
   pageCurrent.value = Number(res.currentPage);
   pageTotal.value = Number(res.totalItems);
+  loading.value = false
 };
 
 watch(menu, (newValue, oldValue) => {

@@ -1,9 +1,9 @@
 <template>
   <div class="articleTitle" v-html="data.title"></div>
   <div class="articleDate pb-4 text-[#999] text-center text-[14px] italic">
-    {{ dayjs(data.date).format("YYYY-MM-DD ") }}
+    {{ data.date && dayjs(data.date).format("YYYY-MM-DD ") }}
   </div>
-  <div class="articleDetails" v-html="data.body"></div>
+  <div class="articleDetails" v-html="data.body" v-loading="loading"></div>
   <!-- <highlightjs autodetect :code="articles" /> -->
   <div class="back" @click="$router.go(-1)">返回</div>
 </template>
@@ -23,11 +23,14 @@ const data = ref<data>({
   title: "",
   date: "",
 });
-const articles = ref<String>('');
+const loading = ref<Boolean>(false);
+// const articles = ref<String>('');
 const route = useRoute();
 const fetchData = async () => {
+  loading.value = true
   const res = await articleDetail(route.params.id);
   data.value = res;
+  loading.value = false
   // 调用marked()方法，将markdown转换成html
   // articles.value = marked(res.body);
   console.log(res);
