@@ -49,5 +49,6 @@ fetchData();
 pre{
   background-color: #000;
   color: #d7d5d5;
+  overflow: auto;
 }
 </style>

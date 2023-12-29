@@ -36,11 +36,17 @@ const list = ref<ArrListType[]>([]);
 const pageCurrent = ref<Number>(1);
 const pageTotal = ref<Number>(1);
 
+interface ArrMenuListType {
+  _id: string;
+  name: string;
+  typeUrl: string;
+}
+const menu = ref<ArrMenuListType[]>([]);
+
 const route = useRoute(); // 用于接收路由参数的
-const menu = JSON.parse(localStorage.menu);
 
 const fetchData = async () => {
-  const currentMenu = menu.find(
+  const currentMenu = menu.value.find(
     (item: { typeUrl: String }) => `/${item.typeUrl}` === route.path
   );
   const res = await blogList({
@@ -53,7 +59,20 @@ const fetchData = async () => {
   pageCurrent.value = Number(res.currentPage);
   pageTotal.value = Number(res.totalItems);
 };
-fetchData();
+
+watch(menu, (newValue, oldValue) => {
+  console.log("watch 已触发", newValue);
+});
+
+const timer = setInterval(() => {
+  menu.value = JSON.parse(localStorage.menu);
+  if (menu.value.length > 0) {
+    fetchData();
+    clearInterval(timer);
+  }
+}, 200);
+
+onMounted(() => {});
 
 const handleCurrentChange = (val: any) => {
   console.log(`当前页: ${val}`);
