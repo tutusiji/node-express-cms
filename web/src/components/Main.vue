@@ -174,7 +174,7 @@ header {
   background-attachment: scroll;
   position: relative;
   background-size: cover;
-  background-image: url("../assets/bg.jpg");
+  background-image: url("//hkroom.oss-cn-shenzhen.aliyuncs.com/bg.jpg");
   background-repeat: no-repeat;
   &::before {
     content: "";
