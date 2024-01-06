@@ -75,6 +75,7 @@ db.articles.updateMany(
   {},
   { $set: { dateDisplay: true } }
 );
+exit
 ```
 
 ### nginx 指令

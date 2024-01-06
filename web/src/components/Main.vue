@@ -243,6 +243,7 @@ footer {
 
 <style lang="scss">
 ul.articleList {
+  min-height: 200px;
   background-color: #fafafa;
 
   li {
