@@ -179,7 +179,6 @@ nav {
     height: 1px;
     bottom: 0;
     background: rgba($color: #000000, $alpha: 0.8);
-    box-shadow: 0 0px 1px rgba($color: #000000, $alpha: 0.8);
     transition: all 200ms ease-in;
     // border-radius: 100%;
   }
