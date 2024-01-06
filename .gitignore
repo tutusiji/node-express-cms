@@ -22,7 +22,7 @@ yarn-error.log*
 *.sln
 *.sw*
 
-oss.js
+ossLocal.js
 dump
 /server/routes/admin/oss.js
 

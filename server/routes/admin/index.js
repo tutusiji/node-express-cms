@@ -114,7 +114,12 @@ module.exports = (app) => {
   // );
   const multer = require("multer");
   const MAO = require("multer-aliyun-oss");
-  const { region, accessKeyId, accessKeySecret, bucket } = require("./oss.js");
+  const {
+    region,
+    accessKeyId,
+    accessKeySecret,
+    bucket,
+  } = require("./ossLocal.js");
   const upload = multer({
     storage: MAO({
       config: {
