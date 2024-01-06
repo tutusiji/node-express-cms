@@ -24,3 +24,5 @@ yarn-error.log*
 
 oss.js
 dump
+/server/routes/admin/oss.js
+

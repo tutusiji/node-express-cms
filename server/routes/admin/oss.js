@@ -1,6 +1,6 @@
 module.exports = {
-  region: "oss-**********en",
-  accessKeyId: "LTAI***********7RM",
-  accessKeySecret: "vLr**************diiys",
-  bucket: "h**************m",
+  region: "oss-cn-shenzhen",
+  accessKeyId: "LTAI5tPumzQEbA618dcWV7RM",
+  accessKeySecret: "vLr0xRSFxO4S6DGmZx66eS8Ijdiiys",
+  bucket: "hkroom",
 };
