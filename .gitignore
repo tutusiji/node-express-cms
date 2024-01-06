@@ -22,5 +22,5 @@ yarn-error.log*
 *.sln
 *.sw*
 
-oss.js
+# oss.js
 dump
