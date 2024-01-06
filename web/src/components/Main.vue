@@ -29,7 +29,7 @@
     </header>
     <div class="main">
       <div class="container">
-        <div class="p-[10px] text-[14px]" v-if="$route.path === '/'">
+        <div class="welcome p-[10px] text-[14px]" v-if="$route.path === '/'">
           你好！欢迎来Tuziki !
         </div>
         <router-view :key="$route.path"></router-view>
@@ -111,6 +111,22 @@ const switchTabTo = (item: itemType) => {
 </script>
 
 <style scoped lang="scss">
+@font-face {
+    font-family: "TencentSansW7";
+    src: url("../assets/fonts/TencentSansW7.eot"); /* IE9 */
+    src: url("../assets/fonts/TencentSansW7.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+    
+    url("../assets/fonts/TencentSansW7.woff") format("woff"), /* chrome、firefox */
+    url("../assets/fonts/TencentSansW7.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
+    
+    url("../assets/fonts/TencentSansW7.svg#TencentSansW7") format("svg"); /* iOS 4.1- */
+    font-style: normal;
+    font-weight: normal;
+}
+
+.welcome{
+  font-family: "TencentSansW7";
+}
 .wrap {
   min-height: 100vh;
   flex-direction: column;
@@ -139,7 +155,7 @@ nav {
     font-size: 1.1rem;
     font-weight: 500;
     cursor: pointer;
-    // font-family: cursive;
+    font-family: "TencentSansW7";
   }
   .menu {
     display: flex;
@@ -150,6 +166,7 @@ nav {
       white-space: nowrap;
       padding: 1rem;
       font-size: 0.9rem;
+      font-family: "TencentSansW7";
       &.current {
         // border-bottom: 1px solid rgba($color: #000000, $alpha: 0.8);
       }
@@ -162,8 +179,9 @@ nav {
     height: 1px;
     bottom: 0;
     background: rgba($color: #000000, $alpha: 0.8);
+    box-shadow: 0 0px 1px rgba($color: #000000, $alpha: 0.8);
     transition: all 200ms ease-in;
-    border-radius: 100%;
+    // border-radius: 100%;
   }
 }
 header {
@@ -202,6 +220,7 @@ header {
     font-weight: 300;
     color: #fff;
     text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
+    font-family: "TencentSansW7";
   }
 }
 .container {
