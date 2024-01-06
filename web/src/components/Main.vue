@@ -7,7 +7,7 @@
           <li
             v-for="item of menuStore.menu"
             :key="item._id"
-            :class="{ current: `/${item.path}` === $route.path }"
+            :class="{ current: `${item.path}` === $route.path }"
             @click="switchTabTo(item)"
           >
             {{ item.name }}
@@ -90,7 +90,7 @@ type itemType = {
 };
 
 const switchTabTo = (item: itemType) => {
-  router.push(`/${item.path}`);
+  router.push(`${item.path}`);
   router.afterEach(() => {
     nextTick(() => {
       getStyle();

@@ -42,7 +42,7 @@ let pageId = route.params.id as string;
 const fetchData = async () => {
   loading.value = true;
   // 这里要检查一下是否为单页面，有木有单页pageId
-  const menuObj = menuStore.menu.find((item) => `/${item.path}` === route.path);
+  const menuObj = menuStore.menu.find((item) => `${item.path}` === route.path);
   if (menuObj && menuObj.pageId) {
     pageId = menuObj.pageId;
   }
