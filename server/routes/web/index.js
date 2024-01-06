@@ -132,6 +132,7 @@ module.exports = (app) => {
           },
         },
         { $unwind: "$list" },
+        { $match: { "list.status": { $ne: false } } }, // 过滤掉 status 为 false 的文档
         {
           $sort: { "list.date": -1 }, // 添加排序步骤，按照文章的创建日期降序排列
         },

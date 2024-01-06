@@ -24,6 +24,9 @@
         </el-date-picker>
         <el-switch style="margin-left: 20px;" v-model="model.dateDisplay"> </el-switch> 是否显示时间
       </el-form-item>
+      <el-form-item label="是否发布">
+        <el-switch v-model="model.status"></el-switch>
+      </el-form-item>
       <el-form-item label="详情">
         <vue-editor
           v-model="model.body"

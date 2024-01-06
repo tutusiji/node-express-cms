@@ -5,6 +5,15 @@
       <el-table-column prop="_id" label="ID" width="220"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column prop="date" label="创建时间"></el-table-column>
+      <el-table-column prop="status" label="是否发布">
+        <template slot-scope="scope">
+          <el-switch
+          disabled
+            v-model="scope.row.status"
+            @change="(e) => handleStatus(scope.row._id, e)"
+          ></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" fixed="right">
         <template slot-scope="scope">
           <el-button
@@ -78,6 +87,9 @@ export default {
         });
         this.fetch();
       });
+    },
+    handleStatus(val, e) {
+      console.log(val, e);
     },
 
     handleCurrentChange(val) {
