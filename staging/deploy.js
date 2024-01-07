@@ -10,6 +10,7 @@ const httpsAgent = new https.Agent({
 const serverUrl = "https://www.tuziki.com/deploy"; // 服务器地址和端口
 const projectRoot = path.resolve(__dirname, "../"); // node-express-blog目录
 
+// 在execShellCommand函数中，使用了Node.js的exec函数来执行Shell命令。exec函数在命令完成时调用其回调函数。在这个函数中，通过返回一个Promise并在命令成功执行（或出现错误）时解析（或拒绝）它，我们可以确保命令的顺序性和异步执行的正确性
 function execShellCommand(cmd) {
   return new Promise((resolve, reject) => {
     exec(cmd, { cwd: projectRoot }, (error, stdout, stderr) => {
