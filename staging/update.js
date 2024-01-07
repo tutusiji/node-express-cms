@@ -10,6 +10,7 @@ app.use(koaBody());
 
 // 部署路由
 router.post("/deploy", async (ctx, next) => {
+    console.log(object);
   const { update } = ctx.request.body;
 
   if (update) {
@@ -38,7 +39,7 @@ app.use(router.routes()).use(router.allowedMethods());
 
 const port = 3111; // 可以根据需要更改端口
 app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server listening on port ${port}-kkk`);
 });
 
 function execShellCommand(cmd, cwd) {
