@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const serverUrl = "https://tuziki.com:3109/deploy"; // 服务器地址和端口
+const serverUrl = "https://www.tuziki.com:3109/deploy"; // 服务器地址和端口
 
 axios
   .post(serverUrl, { update: true })

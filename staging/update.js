@@ -1,34 +1,45 @@
-const koa = require("koa");
+const Koa = require("koa");
 const Router = require("koa-router");
 const koaBody = require("koa-body");
-const { exec } = require("child-process");
+const { exec } = require("child_process");
 
-const app = new koa();
+const app = new Koa();
 const router = new Router();
 
 app.use(koaBody());
 
-router.post('/deploy', async (ctx , next)=>{
-    const { update } = ctx.request.body
-    if (update) {
-        try {
-            await execShellCommand("git pull", "/var/www/node-express-blog");
-            await execShellCommand("pm2 restart server/index.js", "/var/www/node-express-blog");
-            ctx.status = 200
-            ctx.body = {
-                message: "Update successful",
-                update,
-            }
-        } catch (error) {
-            ctx.status = 500;
-            ctx.body = { message: "Deployment failed", error: error.message };
-        }
+// 部署路由
+router.post("/deploy", async (ctx, next) => {
+  const { update } = ctx.request.body;
+
+  if (update) {
+    try {
+      // 执行 git pull
+      await execShellCommand("git pull", "/var/www/node-express-blog");
+      // 重新启动PM2进程
+      await execShellCommand(
+        "pm2 restart server/index.js",
+        "/var/www/node-express-blog"
+      );
+
+      ctx.status = 200;
+      ctx.body = { message: "Deployment successful" };
+    } catch (error) {
+      ctx.status = 500;
+      ctx.body = { message: "Deployment failed", error: error.message };
     }
-})
+  } else {
+    ctx.status = 400;
+    ctx.body = { message: "Invalid request" };
+  }
+});
 
 app.use(router.routes()).use(router.allowedMethods());
-const port = 3109
-app.listen(port, () => console.log(`Server started on port${port}`));
+
+const port = 3000; // 可以根据需要更改端口
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
 
 function execShellCommand(cmd, cwd) {
   return new Promise((resolve, reject) => {

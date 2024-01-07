@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "cross-env NODE_ENV=development VUE_APP_ENV=development vue-cli-service serve",
     "build": "cross-env NODE_ENV=production VUE_APP_ENV=production vue-cli-service build",
-    "deploy": "node ../staging/deplay.js",
+    "deploy": "node ../staging/deploy.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
