@@ -1,7 +1,9 @@
+const path = require("path");
 const { exec } = require("child_process");
 const https = require("https");
 const axios = require("axios");
-const path = require("path");
+const chalk = require("chalk");
+const ora = require("ora");
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false, // 忽略SSL证书验证
@@ -37,14 +39,19 @@ async function deploy() {
   try {
     // 检查是否有本地更改
     if (await hasChanges()) {
-      console.log("正在添加文件...");
+      const spinner = ora(chalk.yellow(`正在添加文件...`)); // 菊花loading开始，推送开始
+      spinner.start();
+      //   console.log("正在添加文件...");
       await execShellCommand("git add .");
-      console.log("正在提交更改...");
+      //   console.log("正在提交更改...");
+      console.log(chalk.blue(`正在提交更改`));
       await execShellCommand('git commit -m "文件更新"');
     }
 
     // 执行Git推送
-    console.log("正在推送到远程仓库...");
+    // console.log("正在推送到远程仓库...");
+    console.log(chalk.blue(`正在推送到远程仓库...`));
+
     await execShellCommand("git push");
 
     // 发送更新通知的POST请求
@@ -54,9 +61,13 @@ async function deploy() {
       { update: true },
       { httpsAgent }
     );
-    console.log("部署成功:", response.data);
+    // console.log("部署成功:", response.data);
+    spinner.succeed(
+      chalk.green(`部署成功${response.data}已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹😯`)
+    );
   } catch (error) {
-    console.error("部署失败:", error);
+    // console.error("部署失败:", error);
+    console.log(chalk.red(`部署失败：${error}`));
   }
 }
 
