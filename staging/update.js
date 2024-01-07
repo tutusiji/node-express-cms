@@ -24,10 +24,10 @@ router.post("/deploy", async (ctx, next) => {
       );
 
       ctx.status = 200;
-      ctx.body = { message: "Deployment successful-kkk" };
+      ctx.body = { message: "server successful-kkk" };
     } catch (error) {
       ctx.status = 500;
-      ctx.body = { message: "Deployment failed", error: error.message };
+      ctx.body = { message: "server failed", error: error.message };
     }
   } else {
     ctx.status = 400;
