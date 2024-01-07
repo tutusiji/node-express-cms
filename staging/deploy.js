@@ -63,8 +63,9 @@ async function deploy() {
       { httpsAgent }
     );
     // console.log("部署成功:", response.data);
+    console.log(chalk.green(`部署成功${error}`, response.data));
     spinner.succeed(
-      chalk.green(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`, response.data)
+      chalk.green(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`)
     );
     spinner.stop();
 } catch (error) {
