@@ -62,13 +62,11 @@ async function deploy() {
       { update: true },
       { httpsAgent }
     );
-    // console.log("部署成功:", response.data);
-    console.log(chalk.green(`部署成功`, response.data));
-    spinner.succeed(
-      chalk.green(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`)
-    );
+    // console.log(chalk.green(`部署成功`, response.data));
+    spinner.succeed(chalk.green(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`));
     spinner.stop();
-} catch (error) {
+    console.log("部署成功:", response.data);
+  } catch (error) {
     // console.error("部署失败:", error);
     console.log(chalk.red(`部署失败：${error}`));
   }
