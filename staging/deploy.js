@@ -51,11 +51,12 @@ async function deploy() {
     // 执行Git推送
     // console.log("正在推送到远程仓库...");
     console.log(chalk.blue(`正在推送到远程仓库...`));
-
+    spinner.stop();
     await execShellCommand("git push");
 
     // 发送更新通知的POST请求
-    console.log("正在发送更新通知...");
+    // console.log("正在发送更新通知...");
+    const spinner = ora(chalk.blue(`正在发送更新通知...`));
     const response = await axios.post(
       serverUrl,
       { update: true },
