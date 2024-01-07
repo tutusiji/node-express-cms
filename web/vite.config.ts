@@ -7,12 +7,19 @@ import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
+import { rmSync } from "fs";
 
 // https://vitejs.dev/config/
-export default defineConfig(({command, mode}) => {
+export default defineConfig(({ command, mode }) => {
   const root = process.cwd();
   // const env = loadEnv(mode, root);
-   const env = loadEnv(mode, "./");
+  const env = loadEnv(mode, "./");
+
+  if (command === "build") {
+    // 在构建之前删除 /../server/web 目录
+    const outDir = fileURLToPath(new URL("../server/web", import.meta.url));
+    rmSync(outDir, { recursive: true, force: true });
+  }
 
   console.log(env);
   return {
@@ -38,7 +45,7 @@ export default defineConfig(({command, mode}) => {
       autoprefixer,
     ],
     build: {
-      outDir: __dirname + "/../server/web",
+      outDir: fileURLToPath(new URL("../server/web", import.meta.url)),
     },
     resolve: {
       alias: {
