@@ -10,9 +10,9 @@ app.use(koaBody());
 
 // 部署路由
 router.post("/deploy", async (ctx, next) => {
- 
+  console.log(111);
+  console.log(ctx);
   const { update } = ctx.request.body;
-
   if (update) {
     try {
       // 执行 git pull
@@ -24,7 +24,7 @@ router.post("/deploy", async (ctx, next) => {
       );
 
       ctx.status = 200;
-      ctx.body = { message: "Deployment successful" };
+      ctx.body = { message: "Deployment successful-kkk" };
     } catch (error) {
       ctx.status = 500;
       ctx.body = { message: "Deployment failed", error: error.message };
