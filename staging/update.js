@@ -10,8 +10,6 @@ app.use(koaBody());
 
 // 部署路由
 router.post("/deploy", async (ctx, next) => {
-  console.log(111);
-  console.log(ctx);
   const { update } = ctx.request.body;
   if (update) {
     try {
@@ -24,7 +22,7 @@ router.post("/deploy", async (ctx, next) => {
       );
 
       ctx.status = 200;
-      ctx.body = { message: "server successful-kkk" };
+      ctx.body = { message: "server successful 服务端更新&重启成功！" };
     } catch (error) {
       ctx.status = 500;
       ctx.body = { message: "server failed", error: error.message };
