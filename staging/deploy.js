@@ -55,7 +55,6 @@ async function deploy() {
 
     // 发送更新通知的POST请求
     // console.log("正在发送更新通知...");
-    spinner.stop();
     const spinner = ora(chalk.blue(`正在发送更新通知...`));
     const response = await axios.post(
       serverUrl,
