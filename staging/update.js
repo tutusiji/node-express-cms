@@ -37,7 +37,7 @@ router.post("/deploy", async (ctx, next) => {
 
 app.use(router.routes()).use(router.allowedMethods());
 
-const port = 3111; // 可以根据需要更改端口
+const port = 3567; // 可以根据需要更改端口
 app.listen(port, () => {
   console.log(`Server listening on port ${port}-kkk`);
 });
