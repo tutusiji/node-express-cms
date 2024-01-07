@@ -55,6 +55,7 @@ async function deploy() {
 
     // 发送更新通知的POST请求
     // console.log("正在发送更新通知...");
+    spinner.stop();
     const spinner = ora(chalk.blue(`正在发送更新通知...`));
     const response = await axios.post(
       serverUrl,
@@ -65,7 +66,7 @@ async function deploy() {
     spinner.succeed(
       chalk.green(`部署成功${response.data}已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹😯`)
     );
-    spinner.stop();
+    
 
   } catch (error) {
     // console.error("部署失败:", error);
