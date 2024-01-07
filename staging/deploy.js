@@ -30,7 +30,8 @@ async function hasChanges() {
     const status = await execShellCommand("git status --porcelain");
     return status !== ""; // 如果有更改，返回true
   } catch (error) {
-    console.error("检查更改时出错:", error);
+    // console.error("检查更改时出错:", error);
+    console.log(chalk.red(`检查更改时出错${error}`));
     return false; // 发生错误时，假设没有更改
   }
 }
