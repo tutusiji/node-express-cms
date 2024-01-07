@@ -63,7 +63,9 @@ async function deploy() {
       { httpsAgent }
     );
     console.log(chalk.green(`服务端返回：`, response.data.message));
-    spinner.succeed(chalk.green(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`));
+    spinner.succeed(
+      chalk.greenBright(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`)
+    );
     spinner.stop();
   } catch (error) {
     // console.error("部署失败:", error);
