@@ -1,4 +1,4 @@
-### 个人信息站点CMS开发
+### 个人信息门户CMS开发
 https://www.tuziki.com/
 
 ## Web 用户端

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --mode development",
     "build": "vite build --mode production",
+    "deploy": "node ../staging/deplay.js",
     "preview": "vite preview"
   },
   "dependencies": {
