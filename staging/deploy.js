@@ -51,7 +51,6 @@ async function deploy() {
     // 执行Git推送
     // console.log("正在推送到远程仓库...");
     console.log(chalk.blue(`正在推送到远程仓库...`));
-    spinner.stop();
     await execShellCommand("git push");
 
     // 发送更新通知的POST请求
@@ -66,6 +65,8 @@ async function deploy() {
     spinner.succeed(
       chalk.green(`部署成功${response.data}已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹😯`)
     );
+    spinner.stop();
+
   } catch (error) {
     // console.error("部署失败:", error);
     console.log(chalk.red(`部署失败：${error}`));
