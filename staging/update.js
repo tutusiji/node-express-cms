@@ -22,7 +22,7 @@ router.post("/deploy", async (ctx, next) => {
       );
 
       ctx.status = 200;
-      ctx.body = { message: "server successful 服务端更新&重启成功！" };
+      ctx.body = { message: "Server update and restart successful!" };
     } catch (error) {
       ctx.status = 500;
       ctx.body = { message: "server failed", error: error.message };

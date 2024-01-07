@@ -62,10 +62,9 @@ async function deploy() {
       { update: true },
       { httpsAgent }
     );
-    console.log(chalk.green(`部署成功`, response.data.message));
+    console.log(chalk.green(`服务端返回：`, response.data.message));
     spinner.succeed(chalk.green(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`));
     spinner.stop();
-    // console.log("部署成功:", response.data);
   } catch (error) {
     // console.error("部署失败:", error);
     console.log(chalk.red(`部署失败：${error}`));
