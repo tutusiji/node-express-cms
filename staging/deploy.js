@@ -66,11 +66,11 @@ async function deploy() {
     spinner.succeed(
       chalk.green(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`, response.data)
     );
+    spinner.stop();
   } catch (error) {
     // console.error("部署失败:", error);
     console.log(chalk.red(`部署失败：${error}`));
   }
-  spinner.stop();
 }
 
 deploy();
