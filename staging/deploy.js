@@ -51,7 +51,7 @@ async function deploy() {
 
     // 执行Git推送
     // console.log("正在推送到远程仓库...");
-    console.log(chalk.blue(`正在推送到远程仓库...`));
+    console.log(chalk.blueBright(`正在推送到远程仓库...`));
     await execShellCommand("git push");
 
     // 发送更新通知的POST请求
