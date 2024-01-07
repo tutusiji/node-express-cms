@@ -10,7 +10,7 @@ app.use(koaBody());
 
 // 部署路由
 router.post("/deploy", async (ctx, next) => {
-  console.log(object);
+ 
   const { update } = ctx.request.body;
 
   if (update) {
