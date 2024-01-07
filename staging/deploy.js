@@ -38,9 +38,9 @@ async function hasChanges() {
 async function deploy() {
   try {
     // 检查是否有本地更改
+    const spinner = ora(chalk.yellow(`努力搬运中...`)); // 菊花loading开始，推送开始
+    spinner.start();
     if (await hasChanges()) {
-      const spinner = ora(chalk.yellow(`努力搬运中...`)); // 菊花loading开始，推送开始
-      spinner.start();
       console.log(chalk.magenta(`正在添加文件...`));
       //   console.log("正在添加文件...");
       await execShellCommand("git add .");
@@ -67,7 +67,7 @@ async function deploy() {
       chalk.green(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`, response.data)
     );
     spinner.stop();
-  } catch (error) {
+} catch (error) {
     // console.error("部署失败:", error);
     console.log(chalk.red(`部署失败：${error}`));
   }
