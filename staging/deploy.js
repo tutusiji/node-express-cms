@@ -39,12 +39,13 @@ async function deploy() {
   try {
     // 检查是否有本地更改
     if (await hasChanges()) {
-      const spinner = ora(chalk.yellow(`正在添加文件...`)); // 菊花loading开始，推送开始
+      const spinner = ora(chalk.yellow(`努力搬运中...`)); // 菊花loading开始，推送开始
       spinner.start();
+      console.log(chalk.magenta(`正在添加文件...`));
       //   console.log("正在添加文件...");
       await execShellCommand("git add .");
       //   console.log("正在提交更改...");
-      console.log(chalk.blue(`正在提交更改`));
+      console.log(chalk.cyan(`正在提交更改`));
       await execShellCommand('git commit -m "文件更新"');
     }
 
@@ -55,7 +56,7 @@ async function deploy() {
 
     // 发送更新通知的POST请求
     // console.log("正在发送更新通知...");
-    const spinner = ora(chalk.blue(`正在发送更新通知...`));
+    console.log(chalk.redBright(`正在发送更新通知...`));
     const response = await axios.post(
       serverUrl,
       { update: true },
@@ -63,14 +64,13 @@ async function deploy() {
     );
     // console.log("部署成功:", response.data);
     spinner.succeed(
-      chalk.green(`部署成功${response.data}已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹😯`)
+      chalk.green(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`, response.data)
     );
-    
-
   } catch (error) {
     // console.error("部署失败:", error);
     console.log(chalk.red(`部署失败：${error}`));
   }
+  spinner.stop();
 }
 
 deploy();
