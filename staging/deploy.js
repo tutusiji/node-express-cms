@@ -8,7 +8,7 @@ const httpsAgent = new https.Agent({
 });
 
 const serverUrl = "https://www.tuziki.com/deploy"; // 服务器地址和端口
-const projectRoot = path.resolve(__dirname, "../"); // 设置为node-express-blog目录
+const projectRoot = path.resolve(__dirname, "../"); // node-express-blog目录
 
 function execShellCommand(cmd) {
   return new Promise((resolve, reject) => {
@@ -22,13 +22,27 @@ function execShellCommand(cmd) {
   });
 }
 
+async function hasChanges() {
+  try {
+    const status = await execShellCommand("git status --porcelain");
+    return status !== ""; // 如果有更改，返回true
+  } catch (error) {
+    console.error("检查更改时出错:", error);
+    return false; // 发生错误时，假设没有更改
+  }
+}
+
 async function deploy() {
   try {
-    // 执行Git操作
-    console.log("正在添加文件...");
-    await execShellCommand("git add .");
-    console.log("正在提交更改...");
-    await execShellCommand('git commit -m "文件更新"');
+    // 检查是否有本地更改
+    if (await hasChanges()) {
+      console.log("正在添加文件...");
+      await execShellCommand("git add .");
+      console.log("正在提交更改...");
+      await execShellCommand('git commit -m "文件更新"');
+    }
+
+    // 执行Git推送
     console.log("正在推送到远程仓库...");
     await execShellCommand("git push");
 
