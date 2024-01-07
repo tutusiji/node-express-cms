@@ -45,7 +45,7 @@ https://www.tuziki.com/
 >5. web用户端和admin管理端打包之后的文件会自动到server端里面，当启动server服务时，会由express定义web端和admin端的入口路由
 
 ### 服务端文件更新策略
-服务端安装git来拉取代码，并执行pm2持久化运行，这里可以另外封装了一个nodejs文件上传脚本在服务端运行，与原有的server服务独立开，以便迁移或者完成一些其他操作比如文件备份、log输出等
+服务端安装git来拉取代码，并执行pm2持久化运行。这里另外封装了一个nodejs文件上传脚本在服务端运行，与原有的server服务独立开，以便迁移或者完成一些其他操作比如文件备份、log输出等
 
 服务端：`` staging\update.js ``  // 接收更新指令，拉取git更新文件，重启pm2服务
 本地：  `` staging\deploy.js ``  // 发送更新指令，推送git文件（推送失败记得挂代理^_^）
@@ -59,7 +59,8 @@ git config --global https.proxy "socks://127.0.0.1:10808"
 
 这里，需要注意两点：
 1. 有时会直接在服务端做一些文件的操作，打断点，看日志，导致git提交时会有冲突，可以强行拉取远端文件``git reset --hard origin/master`` 当然解决冲突也是可以的
-2. 运行本地nodejs脚本通过接口发送更新指令到服务端，Node.js在处理HTTPS请求时，会验证SSL证书的有效性。如果证书有问题（如自签名、过期或不被信任的发行机构），Node.js默认会拒绝连接，并显示类似的错误。所以接口会调不通，如果在服务端运行``curl -X POST -H "Content-Type: application/json" -d '{"update": true}' http://localhost:3567/deploy``能够正常返回，而公网接口无法访问则多半是SSL证书校验不通过，这里因为是本地发起，可以绕过校验，也可以将证书文件的cert.pem文件添加到axios的请求httpsAgent中去，两种方式都可以，这里为了简单就先采用绕过的方法.
+2. 运行本地nodejs脚本通过接口发送更新指令到服务端，Node.js在处理HTTPS请求时，会验证SSL证书的有效性。如果证书有问题（如自签名、过期或不被信任的发行机构），Node.js默认会拒绝连接，并显示类似的错误。所以接口会调不通，如果在服务端运行``curl -X POST -H "Content-Type: application/json" -d '{"update": true}' http://localhost:3567/deploy``能够正常返回，而公网接口无法访问则多半是SSL证书校验不通过，或者是端口未开启或者占用。这里因为是本地发起，可以绕过校验，也可以将证书文件的cert.pem文件添加到axios的请求httpsAgent中去，两种方式都可以，这里为了简单就先采用绕过的方法。 
+#### deploy.js :
 ```
 const https = require('https');
 ............
