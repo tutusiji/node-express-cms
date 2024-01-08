@@ -52,6 +52,8 @@ https://www.tuziki.com/
 本地：  `` staging\deploy.js ``  // 发送更新指令，推送git文件（推送失败记得挂代理^_^）
 > 本地的 ``deploy.js`` 可以集成到package.json 中 `` "deploy": "node ../staging/deploy.js" `` 从来可以简化操作，直接运行 ``npm run deploy``
 
+<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20240108181253.png'>
+
 git 代理配置
 ```
 git config --global http.proxy "socks://127.0.0.1:10808"
