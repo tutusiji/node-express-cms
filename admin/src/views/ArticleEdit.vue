@@ -59,6 +59,7 @@ export default {
   data() {
     return {
       model: {
+        status: true,
         date: new Date(),
         dateDisplay: true,
       },
@@ -71,7 +72,7 @@ export default {
   },
   methods: {
     async save() {
-      this.model.body = this.processRichText(this.model.body)
+      this.model.body = this.processRichText(this.model.body);
       let res;
       this.model.date = moment(this.model.date).format("YYYY-MM-DD HH:mm:ss");
       if (this.id) {
@@ -101,18 +102,18 @@ export default {
       Editor.insertEmbed(cursorLocation, "image", res.data.url);
       resetUploader();
     },
-   processRichText(htmlString) {
+    processRichText(htmlString) {
       const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlString, 'text/html');
-      const preTags = doc.querySelectorAll('pre');
+      const doc = parser.parseFromString(htmlString, "text/html");
+      const preTags = doc.querySelectorAll("pre");
 
-      preTags.forEach(pre => {
+      preTags.forEach((pre) => {
         // 检查pre标签下是否已经有code标签
-        if (!pre.querySelector('code')) {
-          const code = document.createElement('code');
-          code.className = 'language-js line-numbers';
+        if (!pre.querySelector("code")) {
+          const code = document.createElement("code");
+          code.className = "language-js line-numbers";
           code.innerHTML = pre.innerHTML;
-          pre.innerHTML = '';
+          pre.innerHTML = "";
           pre.appendChild(code);
         }
       });
@@ -124,7 +125,7 @@ export default {
 </script>
 
 <style>
-pre.ql-syntax code{
+pre.ql-syntax code {
   background-color: transparent !important;
 }
 </style>
