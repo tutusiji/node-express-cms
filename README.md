@@ -48,6 +48,7 @@ https://www.tuziki.com/
 服务端安装git来拉取代码，并执行pm2持久化运行。这里另外封装了一个nodejs文件上传脚本在服务端运行，与原有的server服务独立开，以便迁移或者完成一些其他操作比如文件备份、log输出等
 
 服务端：`` staging\update.js ``  // 接收更新指令，拉取git更新文件，重启pm2服务
+
 本地：  `` staging\deploy.js ``  // 发送更新指令，推送git文件（推送失败记得挂代理^_^）
 > 本地的 ``deploy.js`` 可以集成到package.json 中 `` "deploy": "node ../staging/deploy.js" `` 从来可以简化操作，直接运行 ``npm run deploy``
 
@@ -63,12 +64,12 @@ git config --global https.proxy "socks://127.0.0.1:10808"
 #### deploy.js :
 ```
 const https = require('https');
-............
+......
 
 const httpsAgent = new https.Agent({  
   rejectUnauthorized: false // 忽略SSL证书验证
 });
-............
+......
 
 ```
 >到这里，此项目的编译&部署就只有两个操作了：

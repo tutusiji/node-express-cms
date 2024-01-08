@@ -86,6 +86,8 @@ onMounted(() => {
   }
 }
 pre {
+  margin: 0.4rem 0;
+  padding: 0.8rem;
   background-color: #000;
   color: #d7d5d5;
   overflow: auto;
