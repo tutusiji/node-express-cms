@@ -14,6 +14,7 @@
       class="float-right"
       background
       layout="prev, pager, next"
+      v-model:current-page="pageCurrent"
       @current-change="handleCurrentChange"
       :total="pageTotal"
     >
@@ -37,6 +38,7 @@ type ArrListType = {
 const articleList = ref<ArrListType[]>([]);
 const pageCurrent = ref<number>(1);
 const pageTotal = ref<number>(1);
+pageCurrent.value = Number(sessionStorage.getItem('currentPage')) || 1
 
 const route = useRoute();
 const loading = ref<Boolean>(false);
@@ -73,8 +75,13 @@ watch(
   { immediate: true }
 );
 
+// onMounted(()=>{
+  
+// })
+
 const handleCurrentChange = (val: any) => {
   pageCurrent.value = val;
+  sessionStorage.setItem("currentPage", val);
   fetchData();
 };
 </script>
