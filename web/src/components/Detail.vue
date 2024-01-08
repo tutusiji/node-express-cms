@@ -21,7 +21,7 @@
 import { getArticleDetail } from "../http/api";
 import dayjs from "dayjs";
 import Prism from "prismjs"; //代码高亮插件的core
-// import "prismjs/themes/prism-tomorrow.min.css"; //高亮主题
+import "prismjs/themes/prism-tomorrow.min.css"; //高亮主题
 import { useMenuStore } from "../store/menuStore";
 
 const menuStore = useMenuStore();
