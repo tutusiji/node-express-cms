@@ -90,6 +90,7 @@ type itemType = {
 };
 
 const switchTabTo = (item: itemType) => {
+  sessionStorage.setItem("currentPage", '1');
   router.push(`${item.path}`);
   router.afterEach(() => {
     nextTick(() => {
