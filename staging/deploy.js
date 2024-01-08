@@ -65,7 +65,7 @@ async function deploy() {
     );
     console.log(chalk.green(`服务端返回：`, response.data.message));
     spinner.succeed(
-      chalk.greenBright(`😯部署成功已完成🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`)
+      chalk.greenBright(`😯部署成功 Happy🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`)
     );
     spinner.stop();
   } catch (error) {
