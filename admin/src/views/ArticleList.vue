@@ -8,7 +8,7 @@
       <el-table-column prop="status" label="是否发布">
         <template slot-scope="scope">
           <el-switch
-          disabled
+            disabled
             v-model="scope.row.status"
             @change="(e) => handleStatus(scope.row._id, e)"
           ></el-switch>
@@ -62,6 +62,7 @@ export default {
     // },
   },
   created() {
+    this.currentPage = Number(sessionStorage.getItem('exceptPage'))
     this.fetch();
   },
   methods: {
@@ -95,6 +96,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.currentPage = val;
+      sessionStorage.setItem("exceptPage", this.currentPage);
       this.fetch();
     },
     handleSizeChange(val) {
