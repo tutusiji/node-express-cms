@@ -130,6 +130,21 @@ exit
 
 重启：`` nginx -s reload ``
 
+启用nginx之后https的接口和链接会自动走443端口再转发，也就是说需要用到的端口都要额外的配置转发
+```
+location /deploy {
+    proxy_pass            http://localhost:3567;
+    proxy_set_header Host $host;
+    include               nginxconfig.io/proxy.conf;
+}
+
+location / {
+    proxy_pass            http://127.0.0.1:3000;
+    proxy_set_header Host $host;
+    include               nginxconfig.io/proxy.conf;
+}
+```
+
 ### pm2 指令
 ```
 npm install pm2 -g     # 命令行安装 pm2 
