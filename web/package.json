@@ -17,6 +17,7 @@
     "highlight.js": "^11.9.0",
     "marked": "^11.1.0",
     "pinia": "^2.1.7",
+    "prismjs": "^1.29.0",
     "sass": "^1.69.5",
     "vue": "^3.3.4",
     "vue-quill-editor": "^3.0.6",
@@ -24,9 +25,11 @@
   },
   "devDependencies": {
     "@types/node": "^20.8.10",
+    "@types/prismjs": "^1.26.3",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
     "autoprefixer": "^10.4.16",
+    "babel-plugin-prismjs": "^2.1.0",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.0.2",
@@ -34,6 +37,7 @@
     "unplugin-element-plus": "^0.8.0",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.4.5",
+    "vite-plugin-prismjs": "^0.0.8",
     "vue-tsc": "^1.8.5"
   }
 }

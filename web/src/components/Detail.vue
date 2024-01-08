@@ -20,7 +20,10 @@
 <script lang="ts" setup>
 import { getArticleDetail } from "../http/api";
 import dayjs from "dayjs";
+import Prism from "prismjs"; //代码高亮插件的core
+import "prismjs/themes/prism-tomorrow.min.css"; //高亮主题
 import { useMenuStore } from "../store/menuStore";
+
 const menuStore = useMenuStore();
 
 type DetailType = {
@@ -48,6 +51,13 @@ const fetchData = async () => {
   }
   const res = await getArticleDetail(pageId);
   articleData.value = res as unknown as DetailType;
+  // setTimeout(() => {
+  //   console.log(1);
+    nextTick(() => {
+      Prism.highlightAll();
+    });
+  // }, 1000);
+
   loading.value = false;
 };
 
@@ -63,6 +73,7 @@ watch(
 
 onMounted(() => {
   // fetchData();
+  // Prism.highlightAll();
 });
 </script>
 
@@ -85,11 +96,5 @@ onMounted(() => {
     background-color: #f1f1f1;
   }
 }
-pre {
-  margin: 0.4rem 0;
-  padding: 0.8rem;
-  background-color: #000;
-  color: #d7d5d5;
-  overflow: auto;
-}
+
 </style>

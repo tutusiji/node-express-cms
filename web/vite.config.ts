@@ -8,6 +8,7 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import { rmSync } from "fs";
+import { prismjsPlugin } from "vite-plugin-prismjs";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -31,6 +32,12 @@ export default defineConfig(({ command, mode }) => {
     },
     plugins: [
       vue(),
+      prismjsPlugin({
+        languages: "all",
+        plugins: ["line-numbers", "copy-to-clipboard"], //官网有其他功能,这里开启行数和复制按钮功能
+        theme: "okaidia",
+        css: true,
+      }),
       vueJsx(),
       //自动引入
       AutoImport({
@@ -43,6 +50,7 @@ export default defineConfig(({ command, mode }) => {
       }),
       tailwindcss,
       autoprefixer,
+      
     ],
     build: {
       outDir: fileURLToPath(new URL("../server/web", import.meta.url)),
