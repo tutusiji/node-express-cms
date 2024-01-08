@@ -52,6 +52,7 @@
 <script lang="ts" setup>
 import { useMenuStore } from "../store/menuStore";
 const menuStore = useMenuStore();
+const route = useRoute();
 
 onMounted(() => {
   menuStore.fetchMenu();
@@ -90,9 +91,11 @@ type itemType = {
 };
 
 const switchTabTo = (item: itemType) => {
+  if (item.path !== route.path) {
+    sessionStorage.setItem("currentPage", "1");
+  }
   router.push(`${item.path}`);
   router.afterEach(() => {
-    sessionStorage.setItem("currentPage", '1');
     nextTick(() => {
       getStyle();
       // console.log(1);
@@ -113,19 +116,20 @@ const switchTabTo = (item: itemType) => {
 
 <style scoped lang="scss">
 @font-face {
-    font-family: "TencentSansW7";
-    src: url("../assets/fonts/TencentSansW7.eot"); /* IE9 */
-    src: url("../assets/fonts/TencentSansW7.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
-    
-    url("../assets/fonts/TencentSansW7.woff") format("woff"), /* chrome、firefox */
-    url("../assets/fonts/TencentSansW7.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
-    
-    url("../assets/fonts/TencentSansW7.svg#TencentSansW7") format("svg"); /* iOS 4.1- */
-    font-style: normal;
-    font-weight: normal;
+  font-family: "TencentSansW7";
+  src: url("../assets/fonts/TencentSansW7.eot"); /* IE9 */
+  src: url("../assets/fonts/TencentSansW7.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("../assets/fonts/TencentSansW7.woff") format("woff"),
+    /* chrome、firefox */ url("../assets/fonts/TencentSansW7.ttf")
+      format("truetype"),
+    /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
+      url("../assets/fonts/TencentSansW7.svg#TencentSansW7") format("svg"); /* iOS 4.1- */
+  font-style: normal;
+  font-weight: normal;
 }
 
-.welcome{
+.welcome {
   font-family: "TencentSansW7";
 }
 .wrap {
@@ -187,7 +191,7 @@ nav {
 header {
   position: relative;
   margin-bottom: 30px;
-  background-position:50% 68%;
+  background-position: 50% 68%;
   background-color: #868e96;
   background-attachment: scroll;
   position: relative;
@@ -252,7 +256,7 @@ ul.articleList {
     align-items: center;
     padding: 0.9rem 1rem;
     border-bottom: 1px solid #eee;
-    &:active{
+    &:active {
       background-color: #fff;
     }
     &:nth-last-child(1) {
