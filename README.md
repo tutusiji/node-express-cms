@@ -125,7 +125,7 @@ db.articles.updateMany(
 exit
 ```
 
-### nginx 指令
+### nginx 配置
 测试：`` nginx -t ``
 
 重启：`` nginx -s reload ``
