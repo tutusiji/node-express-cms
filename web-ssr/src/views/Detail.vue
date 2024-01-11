@@ -36,8 +36,6 @@ const route = useRoute();
 let pageId = route.params.id as string;
 
 const fetchData = async () => {
-  loading.value = true;
-
   // 这里要检查一下是否为单页面，有木有单页pageId
   const menuObj = menuStore.menu.find((item) => `${item.path}` === route.path);
   if (menuObj && menuObj.pageId) {
@@ -45,8 +43,6 @@ const fetchData = async () => {
   }
   const res = await getArticleDetail(pageId);
   articleData.value = res as unknown as DetailType;
-
-  loading.value = false;
 };
 
 // SSR 数据预取
@@ -57,9 +53,12 @@ onServerPrefetch(async () => {
 onMounted(async () => {
   // 代码高亮，仅在客户端执行
   nextTick(() => {
+    loading.value = true;
+
     setTimeout(() => {
       Prism.highlightAll();
-    }, 100);
+      loading.value = false;
+    }, 500);
   });
 });
 
