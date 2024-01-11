@@ -119,6 +119,7 @@ module.exports = (app) => {
     accessKeyId,
     accessKeySecret,
     bucket,
+    secure,
   } = require("./ossLocal.js");
   const upload = multer({
     storage: MAO({
@@ -127,6 +128,7 @@ module.exports = (app) => {
         accessKeyId,
         accessKeySecret,
         bucket,
+        secure,
       },
       // to set path prefix for files, could be string or function
       destination: "",
