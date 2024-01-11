@@ -97,7 +97,7 @@ export async function createServer(root = process.cwd(), isProd = isProduction) 
 }
 
 if (!isTest) {
-  const PORT = 6174;
+  const PORT = 3100;
   createServer().then(({ app }) =>
     app.listen(PORT, () => {
       console.log(`http://localhost:${PORT}`);
