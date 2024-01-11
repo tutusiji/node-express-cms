@@ -131,6 +131,8 @@ module.exports = {
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20240108181253.png'>
 
+SSR更新策略：``npm run deploy -- ssr``,会自动提交本地git到服务端，并通知服务端进行备份、打包、重启pm2服务等操作，
+
 git 代理配置
 
 ```

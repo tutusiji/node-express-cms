@@ -10,8 +10,8 @@ app.use(koaBody());
 
 // 部署路由
 router.post("/deploy", async (ctx, next) => {
-  const { update } = ctx.request.body;
-  if (update) {
+  const { updateWeb, updateSSR } = ctx.request.body;
+  if (updateWeb) {
     try {
       // 执行 git pull
       await execShellCommand("git pull", "/var/www/node-express-blog");
@@ -20,6 +20,17 @@ router.post("/deploy", async (ctx, next) => {
         "pm2 restart server/index.js",
         "/var/www/node-express-blog"
       );
+
+      if (updateSSR) {
+        await execShellCommand(
+          "npm run build",
+          "/var/www/node-express-blog/web-ssr"
+        );
+        await execShellCommand(
+          "pm2 restart sys.config.cjs",
+          "/var/www/node-express-blog/web-ssr"
+        );
+      }
 
       ctx.status = 200;
       ctx.body = { message: "Server update and restart successful!" };

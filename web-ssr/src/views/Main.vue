@@ -30,7 +30,7 @@
     <div class="main">
       <div class="container">
         <div v-if="$route.path === '/'" class="welcome p-[10px] text-[14px]">
-          你好！欢迎来Tuziki !
+          你好！欢迎来Tuziki !!
         </div>
         <router-view :key="$route.path" />
       </div>
