@@ -131,7 +131,7 @@ module.exports = {
 
 > 本地的 `deploy.js` 可以集成到 package.json 中 `"deploy": "node ../staging/deploy.js"` 从来可以简化操作，直接运行 `npm run deploy`
 
-<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20240108181253.png'>
+<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/20240112025907.png'>
 
 SSR 更新策略：`npm run deploy -- ssr`,会自动提交本地 git 到服务端，并通知服务端进行备份、打包、重启 pm2 服务等操作.
 
