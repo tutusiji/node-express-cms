@@ -7,7 +7,6 @@
     {{ dayjs(articleData.date).format('YYYY-MM-DD ') }}
   </div>
   <div v-loading="loading" class="articleDetails" v-html="articleData.body"></div>
-  <!-- <highlightjs autodetect :code="articles" /> -->
   <div v-show="articleData.title" class="back" @click="$router.go(-1)">返回</div>
 </template>
 
@@ -37,9 +36,8 @@ const route = useRoute();
 let pageId = route.params.id as string;
 
 const fetchData = async () => {
-  onMounted(() => {
-    loading.value = true;
-  });
+  loading.value = true;
+
   // 这里要检查一下是否为单页面，有木有单页pageId
   const menuObj = menuStore.menu.find((item) => `${item.path}` === route.path);
   if (menuObj && menuObj.pageId) {
@@ -47,32 +45,33 @@ const fetchData = async () => {
   }
   const res = await getArticleDetail(pageId);
   articleData.value = res as unknown as DetailType;
-  onMounted(() => {
-    loading.value = false;
-  });
+
+  loading.value = false;
 };
 
-onMounted(() => {
-  watch(
-    () => menuStore.menu,
-    async (newMenu) => {
-      if (newMenu.length > 0) {
-        await fetchData();
-      }
-    },
-    { immediate: true }
-  );
-  setTimeout(() => {
-    nextTick(() => {
-      Prism.highlightAll();
-    });
-  }, 100);
-  // fetchData();
-});
-
+// SSR 数据预取
 onServerPrefetch(async () => {
   await fetchData();
 });
+
+onMounted(async () => {
+  // 代码高亮，仅在客户端执行
+  nextTick(() => {
+    setTimeout(() => {
+      Prism.highlightAll();
+    }, 100);
+  });
+});
+
+watch(
+  () => menuStore.menu,
+  async (newMenu) => {
+    if (newMenu.length > 0) {
+      await fetchData();
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss">
