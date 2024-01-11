@@ -13,6 +13,13 @@ router.post("/deploy", async (ctx, next) => {
   const { updateWeb, updateSSR } = ctx.request.body;
   if (updateWeb) {
     try {
+      // 创建备份
+      // const timestamp = new Date().toISOString().replace(/[-:.]/g, "");
+      // const backupCmd = `tar -czvf /var/www/backup/node-express-blog-${timestamp}.tar.gz .`;
+      // await execShellCommand(backupCmd, "/var/www/node-express-blog");
+      // console.log("Backup created successfully.");
+
+
       // 执行 git pull
       await execShellCommand("git pull", "/var/www/node-express-blog");
       // 重新启动PM2进程

@@ -27,7 +27,7 @@ https://www.tuziki.com/
  }
 ```
 
-### 服务端渲染SSR
+### 服务端渲染 SSR
 
 spa 方案在 web 目录下，ssr 方案在 web-ssr 目录下。
 
@@ -41,7 +41,7 @@ npm run build  打包生产环境
 npm run serve  运行生产环境
 ```
 
-服务端需要配置 pm2 运行时环境：sys.config.cjs，执行 ``pm2 restart sys.config.cjs``
+服务端需要配置 pm2 运行时环境：sys.config.cjs，执行 `pm2 restart sys.config.cjs`
 
 ```
 module.exports = {
@@ -56,7 +56,9 @@ module.exports = {
   ]
 };
 ```
-因为SSR的文件会替换之前的web spa的目录，这里需要对前后端的路由重新定义：
+
+因为 SSR 的文件会替换之前的 web spa 的目录，这里需要对前后端的路由重新定义：
+
 ```
     # 部署脚本 proxy
 	location /deploy {
@@ -123,7 +125,7 @@ module.exports = {
 
 服务端安装 git 来拉取代码，并执行 pm2 持久化运行。这里另外封装了一个 nodejs 文件上传脚本在服务端运行，与原有的 server 服务独立开，以便迁移或者完成一些其他操作比如文件备份、log 输出等
 
-服务端：`staging\update.js` // 接收更新指令，拉取 git 更新文件，重启 pm2 服务。这里的 update.js 也需要持久化运行`pm2 restart staging\update.js`
+服务端：`staging\update.js` // 接收更新指令，拉取 git 更新文件，进行备份、打包、重启 pm2 服务。这里的 update.js 也需要持久化运行`pm2 restart staging\update.js`
 
 本地： `staging\deploy.js` // 发送更新指令，推送 git 文件（推送失败记得挂代理^\_^）
 
@@ -131,7 +133,7 @@ module.exports = {
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20240108181253.png'>
 
-SSR更新策略：``npm run deploy -- ssr``,会自动提交本地git到服务端，并通知服务端进行备份、打包、重启pm2服务等操作，
+SSR 更新策略：`npm run deploy -- ssr`,会自动提交本地 git 到服务端，并通知服务端进行备份、打包、重启 pm2 服务等操作.
 
 git 代理配置
 
@@ -158,7 +160,7 @@ const httpsAgent = new https.Agent({
 
 ```
 
-> 到这里，此项目的编译&部署就只有两个操作了：
+> 到这里，此项目的编译&部署就只有两个操作了：会自动提交本地 git 到服务端，并通知服务端进行备份、打包、重启 pm2 服务等操作
 
 ```
 npm run build
@@ -235,6 +237,83 @@ location / {
     proxy_set_header Host $host;
     include               nginxconfig.io/proxy.conf;
 }
+```
+
+### 数据备份
+
+#### 方案一：增量备份
+
+只备份自上次备份以来发生变化的文件。这可以通过各种备份工具来实现，如 rsync，它支持增量备份。
+
+`` const backupCmd = `rsync -av --delete /var/www/node-express-blog/ /var/www/backup/node-express-blog/`; ``
+
+这个命令将只同步变化的文件到备份目录，并删除源目录中已删除的文件。
+
+排除大文件或目录,如果知道某些文件或目录（如 node_modules，日志文件等）不需要备份，可以在备份时排除它们。
+
+`` const backupCmd = `tar --exclude='node_modules' --exclude='path/to/large/dir' -czvf /var/www/backup/node-express-blog-${timestamp}.tar.gz .`;
+ ``
+
+#### 方案二：git tag release 版本控制器
+
+使用 Git 标签（tag）来标记发布（release）版本。
+
+1. 确定版本号:
+   确定一个新的版本号。通常遵循 语义化版本控制 规则，格式如 v1.0.0。
+
+2. 创建标签:
+   在 Git 仓库中创建一个新的标签并且将其推送到远程仓库。
+
+3. 关联消息:
+   给标签添加一个描述性的消息，说明这个版本的重要更改或发布说明。
+
+```
+async function createGitTagAndPush() {
+  const version = "v" + new Date().toISOString().split('T')[0]; // 生成版本号，如 v2024-01-12
+  const message = "Release " + version;
+
+  try {
+    // 确保所有更改都已提交
+    await execShellCommand("git add .", "/var/www/node-express-blog");
+    await execShellCommand('git commit -m "Prepare for release"', "/var/www/node-express-blog");
+
+    // 创建标签
+    await execShellCommand(`git tag -a ${version} -m "${message}"`, "/var/www/node-express-blog");
+
+    // 推送标签到远程仓库
+    await execShellCommand(`git push origin ${version}`, "/var/www/node-express-blog");
+
+    console.log(`Tagged release ${version} and pushed to remote repository.`);
+  } catch (error) {
+    console.error(`Failed to create or push git tag: ${error.message}`);
+  }
+}
+
+createGitTagAndPush();
+```
+
+#### 回滚操作：
+
+```
+async function rollbackToTag(tagName) {
+  try {
+    // 检出标签对应的代码
+    await execShellCommand(`git fetch --tags`, "/var/www/node-express-blog");
+    await execShellCommand(`git checkout tags/${tagName}`, "/var/www/node-express-blog");
+
+    await execShellCommand("npm run build", "/var/www/node-express-blog");
+
+    // 重启应用以使更改生效
+    await execShellCommand("pm2 restart all", "/var/www/node-express-blog");
+
+    console.log(`Successfully rolled back to ${tagName}.`);
+  } catch (error) {
+    console.error(`Failed to rollback to ${tagName}: ${error.message}`);
+  }
+}
+
+// 回滚到标签 v2024-01-12
+rollbackToTag('v2024-01-12');
 ```
 
 ### pm2 指令
