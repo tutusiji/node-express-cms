@@ -249,7 +249,7 @@ location / {
 
 这个命令将只同步变化的文件到备份目录，并删除源目录中已删除的文件。
 
-排除大文件或目录,如果知道某些文件或目录（如 node_modules，日志文件等）不需要备份，可以在备份时排除它们。
+排除大文件或目录：如果知道某些文件或目录（如 node_modules，日志文件等）不需要备份，可以在备份时排除它们。
 
 `` const backupCmd = `tar --exclude='node_modules' --exclude='path/to/large/dir' -czvf /var/www/backup/node-express-blog-${timestamp}.tar.gz .`;
  ``
@@ -315,6 +315,8 @@ async function rollbackToTag(tagName) {
 // 回滚到标签 v2024-01-12
 rollbackToTag('v2024-01-12');
 ```
+
+关于备份与回滚的操作，还需要完善接口，将服务端的git信息提取出来返回给到用户端，用户选择回滚到指定的版本，再选择做build操作，还是直接 restart...
 
 ### pm2 指令
 
