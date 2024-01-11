@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "sourceMap": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "jsx": "preserve",
+    "noImplicitReturns": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "types": ["axios", "node", "vite/client"],
+    "typeRoots": ["."],
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}

@@ -16,7 +16,7 @@
             class="linebg"
             :style="{
               transform: `translateX(${switchX}px)`,
-              width: `${lineWidth}px`,
+              width: `${lineWidth}px`
             }"
           ></div>
         </ul>
@@ -29,69 +29,65 @@
     </header>
     <div class="main">
       <div class="container">
-        <div class="welcome p-[10px] text-[14px]" v-if="$route.path === '/'">
+        <div v-if="$route.path === '/'" class="welcome p-[10px] text-[14px]">
           你好！欢迎来Tuziki !
         </div>
-        <router-view :key="$route.path"></router-view>
+        <router-view :key="$route.path" />
       </div>
     </div>
     <footer class="flex p-[20px]">
       <div class="copyright">
         <!-- <p>make by node express mongodb vue3 vite tailwind</p> -->
         <p>make by expressjs</p>
-        <span
-          ><a href="http://beian.miit.gov.cn/" target="_blank"
-            >粤ICP备14062482号</a
-          >
-        </span>
+        <span><a href="http://beian.miit.gov.cn/" target="_blank">粤ICP备14062482号</a> </span>
       </div>
     </footer>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { useMenuStore } from "../store/menuStore";
+import { useMenuStore } from '../store/menuStore';
 const menuStore = useMenuStore();
 const route = useRoute();
 const router = useRouter();
 
-onMounted(() => {
-  menuStore.fetchMenu();
+onMounted(async () => {
+  watch(
+    () => menuStore.menu,
+    async (newMenu) => {
+      if (newMenu.length > 0) {
+        await nextTick();
+        getStyle();
+      }
+    },
+    { immediate: true }
+  );
 });
 
-watch(
-  () => menuStore.menu,
-  async (newMenu) => {
-    if (newMenu.length > 0) {
-      await nextTick();
-      getStyle();
-    }
-  },
-  { immediate: true }
-);
+onServerPrefetch(async () => {
+  await menuStore.fetchMenu();
+});
 
-const switchX = ref<Number>(0);
-const lineWidth = ref<Number>(75);
+const switchX = ref<number>(0);
+const lineWidth = ref<number>(75);
 
 const getStyle = () => {
-  const parentRect = document.querySelector(".menu");
-  const itemRect = document.querySelector(".current");
+  const parentRect = document.querySelector('.menu');
+  const itemRect = document.querySelector('.current');
   if (!itemRect || !parentRect) return;
 
   lineWidth.value = itemRect.getBoundingClientRect().width;
-  switchX.value =
-    itemRect.getBoundingClientRect().left -
-    parentRect.getBoundingClientRect().left;
+  switchX.value = itemRect.getBoundingClientRect().left - parentRect.getBoundingClientRect().left;
   // console.log(lineWidth.value, switchX.value);
 };
 
 type itemType = {
-  path: String;
+  path: string;
 };
 
 const switchTabTo = (item: itemType) => {
   if (item.path !== route.path) {
-    sessionStorage.setItem("currentPage", "1");
+    sessionStorage.setItem('currentPage', '1');
   }
   router.push(`${item.path}`);
   router.afterEach(() => {
@@ -115,21 +111,19 @@ const switchTabTo = (item: itemType) => {
 
 <style scoped lang="scss">
 @font-face {
-  font-family: "TencentSansW7";
-  src: url("../assets/fonts/TencentSansW7.eot"); /* IE9 */
-  src: url("../assets/fonts/TencentSansW7.eot?#iefix")
-      format("embedded-opentype"),
-    /* IE6-IE8 */ url("../assets/fonts/TencentSansW7.woff") format("woff"),
-    /* chrome、firefox */ url("../assets/fonts/TencentSansW7.ttf")
-      format("truetype"),
+  font-family: 'TencentSansW7';
+  src: url('../assets/fonts/TencentSansW7.eot'); /* IE9 */
+  src: url('../assets/fonts/TencentSansW7.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('../assets/fonts/TencentSansW7.woff') format('woff'),
+    /* chrome、firefox */ url('../assets/fonts/TencentSansW7.ttf') format('truetype'),
     /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
-      url("../assets/fonts/TencentSansW7.svg#TencentSansW7") format("svg"); /* iOS 4.1- */
+      url('../assets/fonts/TencentSansW7.svg#TencentSansW7') format('svg'); /* iOS 4.1- */
   font-style: normal;
   font-weight: normal;
 }
 
 .welcome {
-  font-family: "TencentSansW7";
+  font-family: 'TencentSansW7';
 }
 .wrap {
   min-height: 100vh;
@@ -159,7 +153,7 @@ nav {
     font-size: 1.1rem;
     font-weight: 500;
     cursor: pointer;
-    font-family: "TencentSansW7";
+    font-family: 'TencentSansW7';
   }
   .menu {
     display: flex;
@@ -170,7 +164,7 @@ nav {
       white-space: nowrap;
       padding: 1rem;
       font-size: 0.9rem;
-      font-family: "TencentSansW7";
+      font-family: 'TencentSansW7';
       &.current {
         // border-bottom: 1px solid rgba($color: #000000, $alpha: 0.8);
       }
@@ -195,10 +189,10 @@ header {
   background-attachment: scroll;
   position: relative;
   background-size: cover;
-  background-image: url("//hkroom.oss-cn-shenzhen.aliyuncs.com/bg.jpg");
+  background-image: url('//hkroom.oss-cn-shenzhen.aliyuncs.com/bg.jpg');
   background-repeat: no-repeat;
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     top: 0;
@@ -223,7 +217,7 @@ header {
     font-weight: 300;
     color: #fff;
     text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
-    font-family: "TencentSansW7";
+    font-family: 'TencentSansW7';
   }
 }
 .container {
@@ -278,7 +272,7 @@ ul.articleList {
       font-size: 0.8rem;
       font-style: italic;
       color: #868e96;
-      font-family: Lora, "Times New Roman", serif;
+      font-family: Lora, 'Times New Roman', serif;
     }
   }
 }

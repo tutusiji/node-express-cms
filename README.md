@@ -47,7 +47,7 @@ https://www.tuziki.com/
 ### 服务端文件更新策略
 服务端安装git来拉取代码，并执行pm2持久化运行。这里另外封装了一个nodejs文件上传脚本在服务端运行，与原有的server服务独立开，以便迁移或者完成一些其他操作比如文件备份、log输出等
 
-服务端：`` staging\update.js ``  // 接收更新指令，拉取git更新文件，重启pm2服务
+服务端：`` staging\update.js ``  // 接收更新指令，拉取git更新文件，重启pm2服务。这里的update.js 也需要持久化运行`` pm2 staging\update.js ``
 
 本地：  `` staging\deploy.js ``  // 发送更新指令，推送git文件（推送失败记得挂代理^_^）
 > 本地的 ``deploy.js`` 可以集成到package.json 中 `` "deploy": "node ../staging/deploy.js" `` 从来可以简化操作，直接运行 ``npm run deploy``
@@ -168,7 +168,23 @@ pm2 web                # 运行健壮的 computer API endpoint (http://localhost
 pm2 delete 0           # 杀死指定的进程
 pm2 delete all         # 杀死全部进程
 ```
+### PS
+去除运行时错误
+Unix (Linux, macOS, Git bash等)
 
+export NODE_OPTIONS=--openssl-legacy-provider
+Windows
 
+set NODE_OPTIONS=--openssl-legacy-provider
+PowerShell
+
+$env:NODE_OPTIONS = "--openssl-legacy-provider"
+ 
+另外一个方法是在项目的package.json文件里将
+
+"start": "react-scripts start"
+　　替换成：
+
+"start": "react-scripts --openssl-legacy-provider start"
 
 
