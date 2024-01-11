@@ -6,7 +6,7 @@ app.set("secret", "43dsabreqzggrehj3fds");
 
 app.use(require("cors")());
 app.use(express.json());
-app.use("/", express.static(__dirname + "/web"));
+// app.use("/", express.static(__dirname + "/web"));
 app.use("/admin", express.static(__dirname + "/admin"));
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
