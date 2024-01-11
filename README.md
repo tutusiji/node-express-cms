@@ -1,109 +1,194 @@
-### 信息门户CMS开发
+### 信息门户 CMS 开发
+
 https://www.tuziki.com/
 
 ## Web 用户端
+
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/web1fewq23f43675.png'>
-技术栈：vue3 + typescript + vite + pinia + tailwind + sass
+技术栈：vue3 + typescript + vite + pinia + tailwind + sass + SSR
 
 主要实现功能：
->1. web端可配置导航菜单，即博客文章分类
->2. 文章写入，关联博客文章分类，查询列表即博客文章列表
->3. 文章列表分页查询
->4. 广告banner、其它数据接口，可自定义
->5. 简单的响应式适配
 
- 因为web打包之后的目录在web根目录之外（会移动到server中），这里的vite配置在build时的outDir没法清空之前已经移动过去的文件，需要单独做处理
- 引入``import { rmSync } from "fs" `` 用node的rmSync文件操作来删除之前构建的文件
- ```
-  if (command === "build") {
-    // 在构建之前删除 /../server/web 目录
-    const outDir = fileURLToPath(new URL("../server/web", import.meta.url));
-    rmSync(outDir, { recursive: true, force: true });
-  }
- ```
+> 1.  web 端可配置导航菜单，即博客文章分类
+> 2.  文章写入，关联博客文章分类，查询列表即博客文章列表
+> 3.  文章列表分页查询
+> 4.  广告 banner、其它数据接口，可自定义
+> 5.  简单的响应式适配
+> 6.  采用服务端渲染 SSR，有利于 SEO 优化
+
+因为 web 打包之后的目录在 web 根目录之外（会移动到 server 中），这里的 vite 配置在 build 时的 outDir 没法清空之前已经移动过去的文件，需要单独做处理
+引入`import { rmSync } from "fs" ` 用 node 的 rmSync 文件操作来删除之前构建的文件
+
+```
+ if (command === "build") {
+   // 在构建之前删除 /../server/web 目录
+   const outDir = fileURLToPath(new URL("../server/web", import.meta.url));
+   rmSync(outDir, { recursive: true, force: true });
+ }
+```
+
+### 服务端渲染SSR
+
+spa 方案在 web 目录下，ssr 方案在 web-ssr 目录下。
+
+ssr 相关操作：
+
+```
+在web-ssr目录下，执行：
+npm install
+npm run dev    本地环境开发
+npm run build  打包生产环境
+npm run serve  运行生产环境
+```
+
+服务端需要配置 pm2 运行时环境：sys.config.cjs，执行 ``pm2 restart sys.config.cjs``
+
+```
+module.exports = {
+  apps: [
+    {
+      name: 'ssr-app',
+      script: 'server-ssr.js',
+      env: {
+        NODE_ENV: 'production'
+      }
+    }
+  ]
+};
+```
+因为SSR的文件会替换之前的web spa的目录，这里需要对前后端的路由重新定义：
+```
+    # 部署脚本 proxy
+	location /deploy {
+        proxy_pass            http://localhost:3567;
+        proxy_set_header Host $host;
+        include               nginxconfig.io/proxy.conf;
+    }
+
+    # API 路由
+	location ~ ^/(web|admin)/api {
+	    proxy_pass http://127.0.0.1:3000;
+	    proxy_set_header Host $host;
+	    include nginxconfig.io/proxy.conf;
+	}
+	# 静态文件服务 - 管理端
+	location /admin {
+	    proxy_pass http://127.0.0.1:3000/admin;
+	    proxy_set_header Host $host;
+	    include nginxconfig.io/proxy.conf;
+	}
+
+	# 静态文件服务 - 上传文件
+	location /uploads {
+	    proxy_pass http://127.0.0.1:3000/uploads;
+	    proxy_set_header Host $host;
+	    include nginxconfig.io/proxy.conf;
+	}
+
+     # 主页面SSR服务 - server-ssr.js
+	location / {
+	    proxy_pass http://localhost:3100;
+	    proxy_set_header Host $host;
+	    include nginxconfig.io/proxy.conf;
+	}
+```
 
 ## Admin 管理端
+
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/admin1fwqfewqf.png'>
 
 技术栈：vue2 + elementui + webpack + sass
 
 主要实现功能：
->1. 创建、查询、修改、删除分类以及关联子分类
->2. 文章、banner、其它数据增删改查
->3. 图片上传下载
->4. 管理员登录，管理
->5. 登录jwt鉴权，路由限制
+
+> 1.  创建、查询、修改、删除分类以及关联子分类
+> 2.  文章、banner、其它数据增删改查
+> 3.  图片上传下载
+> 4.  管理员登录，管理
+> 5.  登录 jwt 鉴权，路由限制
 
 ## Server 服务端
+
 技术栈：nodejs + expressjs + MongoDB
 
 主要实现功能：
->1. 创建、查询、修改、删除分类、关联子分类、文章、其它数据、列表分页查询
->2. 通用CRUD接口封装
->3. 中间件封装，登录鉴权
->4. 图片数据的OSS存储
->5. web用户端和admin管理端打包之后的文件会自动到server端里面，当启动server服务时，会由express定义web端和admin端的入口路由
+
+> 1.  创建、查询、修改、删除分类、关联子分类、文章、其它数据、列表分页查询
+> 2.  通用 CRUD 接口封装
+> 3.  中间件封装，登录鉴权
+> 4.  图片数据的 OSS 存储
+> 5.  web 用户端和 admin 管理端打包之后的文件会自动到 server 端里面，当启动 server 服务时，会由 express 定义 web 端和 admin 端的入口路由
 
 ### 服务端文件更新策略
-服务端安装git来拉取代码，并执行pm2持久化运行。这里另外封装了一个nodejs文件上传脚本在服务端运行，与原有的server服务独立开，以便迁移或者完成一些其他操作比如文件备份、log输出等
 
-服务端：`` staging\update.js ``  // 接收更新指令，拉取git更新文件，重启pm2服务。这里的update.js 也需要持久化运行`` pm2 staging\update.js ``
+服务端安装 git 来拉取代码，并执行 pm2 持久化运行。这里另外封装了一个 nodejs 文件上传脚本在服务端运行，与原有的 server 服务独立开，以便迁移或者完成一些其他操作比如文件备份、log 输出等
 
-本地：  `` staging\deploy.js ``  // 发送更新指令，推送git文件（推送失败记得挂代理^_^）
-> 本地的 ``deploy.js`` 可以集成到package.json 中 `` "deploy": "node ../staging/deploy.js" `` 从来可以简化操作，直接运行 ``npm run deploy``
+服务端：`staging\update.js` // 接收更新指令，拉取 git 更新文件，重启 pm2 服务。这里的 update.js 也需要持久化运行`pm2 staging\update.js`
+
+本地： `staging\deploy.js` // 发送更新指令，推送 git 文件（推送失败记得挂代理^\_^）
+
+> 本地的 `deploy.js` 可以集成到 package.json 中 `"deploy": "node ../staging/deploy.js"` 从来可以简化操作，直接运行 `npm run deploy`
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20240108181253.png'>
 
 git 代理配置
+
 ```
 git config --global http.proxy "socks://127.0.0.1:10808"
 git config --global https.proxy "socks://127.0.0.1:10808"
 ```
 
 这里，需要注意两点：
-1. 有时会直接在服务端做一些文件的操作，打断点，看日志，导致git提交时会有冲突，可以强行拉取远端文件``git reset --hard origin/master`` 当然解决冲突也是可以的
-2. 运行本地nodejs脚本通过接口发送更新指令到服务端，Node.js在处理HTTPS请求时，会验证SSL证书的有效性。如果证书有问题（如自签名、过期或不被信任的发行机构），Node.js默认会拒绝连接，并显示类似的错误。所以接口会调不通，如果在服务端运行``curl -X POST -H "Content-Type: application/json" -d '{"update": true}' http://localhost:3567/deploy``能够正常返回，而公网接口无法访问则多半是SSL证书校验不通过，或者是端口未开启或者占用。这里因为是本地发起，可以绕过校验，也可以将证书文件的cert.pem文件添加到axios的请求httpsAgent中去，两种方式都可以，这里为了简单就先采用绕过的方法。 
+
+1. 有时会直接在服务端做一些文件的操作，打断点，看日志，导致 git 提交时会有冲突，可以强行拉取远端文件`git reset --hard origin/master` 当然解决冲突也是可以的
+2. 运行本地 nodejs 脚本通过接口发送更新指令到服务端，Node.js 在处理 HTTPS 请求时，会验证 SSL 证书的有效性。如果证书有问题（如自签名、过期或不被信任的发行机构），Node.js 默认会拒绝连接，并显示类似的错误。所以接口会调不通，如果在服务端运行`curl -X POST -H "Content-Type: application/json" -d '{"update": true}' http://localhost:3567/deploy`能够正常返回，而公网接口无法访问则多半是 SSL 证书校验不通过，或者是端口未开启或者占用。这里因为是本地发起，可以绕过校验，也可以将证书文件的 cert.pem 文件添加到 axios 的请求 httpsAgent 中去，两种方式都可以，这里为了简单就先采用绕过的方法。
+
 #### deploy.js :
+
 ```
 const https = require('https');
 ......
 
-const httpsAgent = new https.Agent({  
+const httpsAgent = new https.Agent({
   rejectUnauthorized: false // 忽略SSL证书验证
 });
 ......
 
 ```
->到这里，此项目的编译&部署就只有两个操作了：
+
+> 到这里，此项目的编译&部署就只有两个操作了：
+
 ```
 npm run build
 npm run deploy
 ```
 
-#### 浏览器与Node.js的差异
-浏览器通常包含一个预置的、可信任的证书颁发机构列表，并且可能对一些常见问题（如某些类型的证书链问题）更为宽容。而Node.js在处理HTTPS请求时，默认会执行更严格的证书验证。这就是为什么在浏览器中可以正常访问某些HTTPS网站，而在Node.js中却可能会遇到证书验证错误。
+#### 浏览器与 Node.js 的差异
+
+浏览器通常包含一个预置的、可信任的证书颁发机构列表，并且可能对一些常见问题（如某些类型的证书链问题）更为宽容。而 Node.js 在处理 HTTPS 请求时，默认会执行更严格的证书验证。这就是为什么在浏览器中可以正常访问某些 HTTPS 网站，而在 Node.js 中却可能会遇到证书验证错误。
 
 ### 服务端操作:
+
 ```
 1、建议用ubantu 20+,node版本保持较新
 2、nginx反向代理，做服务端本地的路由映射，也可以做文件夹路径的映射
 3、git，在linux服务器中更新代码
-4、持久化运行node，用pm2 
+4、持久化运行node，用pm2
 5、服务端安装mongodb-server
 6、开发时需要注意文件上传模块的路径问题，windows与Linux不同，文件及图片可以配置OSS管理资源
 ```
 
-### mongodb操作
+### mongodb 操作
 
 导出：
 
-Linux上``mongodump -d 数据库名``,这样导出是二进制文件，在导入时需要用 导入：``mongorestore`` 
+Linux 上`mongodump -d 数据库名`,这样导出是二进制文件，在导入时需要用 导入：`mongorestore`
 
-windows用户可以使用MongoDB的客户端程序，一键导出即可
+windows 用户可以使用 MongoDB 的客户端程序，一键导出即可
 
-如果只想要单个集合的数据可以这样：``mongoexport -d=node-vue-moba --collection=articles --out=articles.json``
+如果只想要单个集合的数据可以这样：`mongoexport -d=node-vue-moba --collection=articles --out=articles.json`
 
-启动mongodb服务``net start mongodb``
+启动 mongodb 服务`net start mongodb`
 
 可视化工具https://www.mongodb.com/try/download/compass
 
@@ -116,6 +201,7 @@ windows用户可以使用MongoDB的客户端程序，一键导出即可
 诊断工具 mongostat 以及 mongotop
 
 批量插入数据
+
 ```
 mongo
 show dbs
@@ -128,11 +214,13 @@ exit
 ```
 
 ### nginx 配置
-测试：`` nginx -t ``
 
-重启：`` nginx -s reload ``
+测试：`nginx -t`
 
-启用nginx之后https的接口和链接会自动走443端口再转发，也就是说需要用到的端口都要额外的配置转发
+重启：`nginx -s reload`
+
+启用 nginx 之后 https 的接口和链接会自动走 443 端口再转发，也就是说需要用到的端口都要额外的配置转发
+
 ```
 location /deploy {
     proxy_pass            http://localhost:3567;
@@ -148,8 +236,9 @@ location / {
 ```
 
 ### pm2 指令
+
 ```
-npm install pm2 -g     # 命令行安装 pm2 
+npm install pm2 -g     # 命令行安装 pm2
 pm2 start app.js -i 4  # 后台运行pm2，启动4个实例。可以把 'max' 参数传递给 start，实际进程数目依赖于cpu的核心数目
 pm2 start app.js --name my-api # 命名进程
 pm2 start app.js --name my-api --watch # 添加进程监视，在文件改变的时候会重新启动程序
@@ -168,9 +257,11 @@ pm2 web                # 运行健壮的 computer API endpoint (http://localhost
 pm2 delete 0           # 杀死指定的进程
 pm2 delete all         # 杀死全部进程
 ```
+
 ### PS
+
 去除运行时错误
-Unix (Linux, macOS, Git bash等)
+Unix (Linux, macOS, Git bash 等)
 
 export NODE_OPTIONS=--openssl-legacy-provider
 Windows
@@ -179,12 +270,10 @@ set NODE_OPTIONS=--openssl-legacy-provider
 PowerShell
 
 $env:NODE_OPTIONS = "--openssl-legacy-provider"
- 
-另外一个方法是在项目的package.json文件里将
+
+另外一个方法是在项目的 package.json 文件里将
 
 "start": "react-scripts start"
 　　替换成：
 
 "start": "react-scripts --openssl-legacy-provider start"
-
-
