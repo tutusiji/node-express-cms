@@ -58,7 +58,7 @@ onMounted(async () => {
     setTimeout(() => {
       Prism.highlightAll();
       loading.value = false;
-    }, 800);
+    }, 600);
   });
 });
 
@@ -106,4 +106,7 @@ function goBackOrHome() {
     background-color: #f1f1f1;
   }
 }
+// pre,code{
+//   color: #333;
+// }
 </style>
