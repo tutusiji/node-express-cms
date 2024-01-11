@@ -11,7 +11,8 @@
     "build:server": "vite build --ssr src/entry-server.js --outDir dist/server",
     "serve": "cross-env NODE_ENV=production node server-ssr",
     "generate": "vite build --ssrManifest ssr-manifest.json --outDir dist/static && npm run build:server && node prerender",
-    "preview": "npm run build && npm run serve"
+    "preview": "npm run build && npm run serve",
+    "deploy": "node ../staging/deploy.js"
   },
   "dependencies": {
     "axios": "^0.21.4",

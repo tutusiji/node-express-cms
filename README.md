@@ -123,7 +123,7 @@ module.exports = {
 
 服务端安装 git 来拉取代码，并执行 pm2 持久化运行。这里另外封装了一个 nodejs 文件上传脚本在服务端运行，与原有的 server 服务独立开，以便迁移或者完成一些其他操作比如文件备份、log 输出等
 
-服务端：`staging\update.js` // 接收更新指令，拉取 git 更新文件，重启 pm2 服务。这里的 update.js 也需要持久化运行`pm2 staging\update.js`
+服务端：`staging\update.js` // 接收更新指令，拉取 git 更新文件，重启 pm2 服务。这里的 update.js 也需要持久化运行`pm2 restart staging\update.js`
 
 本地： `staging\deploy.js` // 发送更新指令，推送 git 文件（推送失败记得挂代理^\_^）
 
