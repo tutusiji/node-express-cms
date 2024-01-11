@@ -7,7 +7,7 @@
     {{ dayjs(articleData.date).format('YYYY-MM-DD ') }}
   </div>
   <div v-loading="loading" class="articleDetails" v-html="articleData.body"></div>
-  <div v-show="articleData.title" class="back" @click="$router.go(-1)">返回</div>
+  <div v-show="articleData.title" class="back" @click="goBackOrHome">返回</div>
 </template>
 
 <script lang="ts" setup>
@@ -58,7 +58,7 @@ onMounted(async () => {
     setTimeout(() => {
       Prism.highlightAll();
       loading.value = false;
-    }, 1000);
+    }, 800);
   });
 });
 
@@ -71,6 +71,15 @@ watch(
   },
   { immediate: true }
 );
+
+const router = useRouter();
+function goBackOrHome() {
+  if (window.history.length > 1) {
+    router.go(-1);
+  } else {
+    router.push('/');
+  }
+}
 </script>
 
 <style lang="scss">

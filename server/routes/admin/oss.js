@@ -3,4 +3,5 @@ module.exports = {
   accessKeyId: "LTAI***********7RM",
   accessKeySecret: "vLr**************diiys",
   bucket: "h**************m",
+  secure: true
 };
