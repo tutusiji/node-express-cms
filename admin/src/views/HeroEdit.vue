@@ -1,6 +1,6 @@
 <template>
   <div class="categoiesEdit">
-    <h1 class="mainTitle">{{ id ? "编辑" : "新建" }}英雄</h1>
+    <h1 class="mainTitle">{{ id ? "编辑" : "新建" }}专题</h1>
     <el-form
       style="margin-top: 30px;"
       label-width="120px"

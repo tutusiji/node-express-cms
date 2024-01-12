@@ -97,7 +97,7 @@ module.exports = {
 
 ## Admin 管理端
 
-<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/admin1fwqfewqf.png'>
+<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/Snipaste_2024-01-12_13-08-06.png'>
 
 技术栈：vue2 + elementui + webpack + sass
 
