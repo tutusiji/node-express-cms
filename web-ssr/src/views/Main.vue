@@ -249,7 +249,7 @@ ul.articleList {
     align-items: center;
     padding: 0.9rem 1rem;
     border-bottom: 1px solid #eee;
-    &:hover{
+    &:hover {
       background-color: #fff;
     }
     &:active {
