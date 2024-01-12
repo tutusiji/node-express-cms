@@ -5,7 +5,7 @@ const axios = require("axios");
 const chalk = require("chalk");
 const ora = require("ora");
 const args = process.argv.slice(2); // 获取所有命令行参数，忽略前两个参数(node 和 script 路径)
-const isSSR = args.includes("ssr"); // 检查是否传递了 -ssr 参数
+const isSSR = args.includes("ssr"); // 检查是否传递了 ssr 参数
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false, // 忽略SSL证书验证
