@@ -58,7 +58,7 @@ onMounted(async () => {
     setTimeout(() => {
       Prism.highlightAll();
       loading.value = false;
-    }, 500);
+    }, 100);
   });
 
   watch(
