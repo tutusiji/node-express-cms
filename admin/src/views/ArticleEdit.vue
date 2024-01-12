@@ -26,7 +26,7 @@
         </el-switch>
         是否显示时间
       </el-form-item>
-      <el-form-item label="是否发布">
+      <el-form-item label="立即发布">
         <el-switch v-model="model.status"></el-switch>
       </el-form-item>
       <el-form-item label="详情">
