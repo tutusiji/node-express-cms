@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { getArticleDetail } from '../http/api';
 import dayjs from 'dayjs';
-// import Prism from 'prismjs'; // 代码高亮插件的core
+import Prism from 'prismjs'; // 代码高亮插件的core
 import 'prismjs/themes/prism-tomorrow.min.css'; // 高亮主题
 import { useMenuStore } from '../store/menuStore';
 
@@ -51,7 +51,7 @@ onServerPrefetch(async () => {
 });
 
 onMounted(async () => {
-  const Prism = (await import('prismjs')).default;
+  // const Prism = (await import('prismjs')).default;
   // 代码高亮，仅在客户端执行
   loading.value = true;
   // nextTick(() => {
