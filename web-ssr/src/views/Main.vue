@@ -249,6 +249,9 @@ ul.articleList {
     align-items: center;
     padding: 0.9rem 1rem;
     border-bottom: 1px solid #eee;
+    &:hover{
+      background-color: #fff;
+    }
     &:active {
       background-color: #fff;
     }
@@ -268,9 +271,6 @@ ul.articleList {
       cursor: pointer;
       line-height: 28px;
       font-size: 1rem;
-      &:hover {
-        text-decoration: underline;
-      }
     }
     .date {
       margin-left: 0.8rem;
