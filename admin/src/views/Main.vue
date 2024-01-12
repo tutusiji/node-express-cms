@@ -12,14 +12,14 @@
             ><i class="el-icon-message"></i>内容管理</template
           >
           <el-menu-item-group>
-            <template slot="title"><h3 class="subtitle">物品</h3></template>
-            <el-menu-item index="/items/create">新建物品</el-menu-item>
-            <el-menu-item index="/items/list">物品列表</el-menu-item>
+            <template slot="title"><h3 class="subtitle">人物</h3></template>
+            <el-menu-item index="/items/create">新建人物</el-menu-item>
+            <el-menu-item index="/items/list">人物列表</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group>
-            <template slot="title"><h3 class="subtitle">英雄</h3></template>
-            <el-menu-item index="/heroes/create">新建英雄</el-menu-item>
-            <el-menu-item index="/heroes/list">英雄列表</el-menu-item>
+            <template slot="title"><h3 class="subtitle">专题</h3></template>
+            <el-menu-item index="/heroes/create">新建专题</el-menu-item>
+            <el-menu-item index="/heroes/list">专题列表</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group>
             <template slot="title"><h3 class="subtitle">文章</h3></template>

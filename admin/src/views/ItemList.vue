@@ -1,9 +1,9 @@
 <template>
   <div>
-    <H1 class="mainTitle">物品列表</H1>
+    <H1 class="mainTitle">人物列表</H1>
     <el-table :data="items">
       <el-table-column prop="_id" label="ID" width="220"></el-table-column>
-      <el-table-column prop="name" label="物品名称"></el-table-column>
+      <el-table-column prop="name" label="人物名称"></el-table-column>
       <el-table-column prop="icon" label="图标">
          <template slot-scope="scope">
             <img :src="scope.row.icon" style="height: 3em;" alt="">
