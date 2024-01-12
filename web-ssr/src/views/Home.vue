@@ -1,7 +1,7 @@
 <template>
   <ul v-loading="loading" class="articleList">
     <li v-for="item of articleList" :key="item._id" @click="$router.push(`./detail/${item._id}`)">
-      <b class="text-[#cdcccc] mr-5">No.{{ item.serialNumber }}</b>
+      <span class="num text-[#cdcccc] mr-5">No.{{ item.serialNumber }}</span>
       <div class="info">
         <h3>{{ item.title }}</h3>
         <div class="date">

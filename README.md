@@ -362,3 +362,9 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 　　替换成：
 
 "start": "react-scripts --openssl-legacy-provider start"
+
+### 字体图标
+使用百度Fontmin-v0.2.0 对特殊文本字符进行字体包的提取。
+
+PS: 
+Tuziki的个人记录泛技术小项目关于乘风破浪激流勇进你好！欢迎来Tuziki !No.1234567890-

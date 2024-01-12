@@ -255,8 +255,8 @@ ul.articleList {
     &:nth-last-child(1) {
       border-bottom: none;
     }
-    b {
-      font-family: cursive;
+    .num {
+      font-family: 'TencentSansW7';
     }
     .info {
       flex: 1;
@@ -276,8 +276,8 @@ ul.articleList {
       margin-left: 0.8rem;
       font-size: 0.8rem;
       font-style: italic;
-      color: #868e96;
-      font-family: Lora, 'Times New Roman', serif;
+      color: #c5c5c5;
+      font-family: 'TencentSansW7';
     }
   }
 }
