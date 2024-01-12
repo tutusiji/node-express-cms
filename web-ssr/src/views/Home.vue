@@ -42,6 +42,7 @@ const route = useRoute();
 const loading = ref<boolean>(false);
 
 const fetchData = async () => {
+  loading.value = true;
   const currentMenu = menuStore.menu.find(
     (item: { path: string }) => `${item.path}` === route.path
   );
@@ -59,6 +60,7 @@ const fetchData = async () => {
   articleList.value = res.list;
   pageCurrent.value = res.currentPage;
   pageTotal.value = res.totalItems;
+  loading.value = false;
 };
 
 onServerPrefetch(async () => {
