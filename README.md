@@ -89,7 +89,7 @@ module.exports = {
 
      # 主页面SSR服务 - server-ssr.js
 	location / {
-	    proxy_pass http://localhost:3100;
+	    proxy_pass http://localhost:3111;
 	    proxy_set_header Host $host;
 	    include nginxconfig.io/proxy.conf;
 	}
