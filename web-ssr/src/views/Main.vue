@@ -258,6 +258,11 @@ ul.articleList {
     b {
       font-family: cursive;
     }
+    .info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
     h3 {
       flex: 1;
       cursor: pointer;
@@ -273,6 +278,22 @@ ul.articleList {
       font-style: italic;
       color: #868e96;
       font-family: Lora, 'Times New Roman', serif;
+    }
+  }
+}
+@media screen and (max-width: 600px) {
+  // body {
+  //     background-color: lightblue;
+  // }
+  ul.articleList {
+    li {
+      align-items: baseline;
+      .info {
+        display: block;
+      }
+      .date {
+        margin-left: 0;
+      }
     }
   }
 }
