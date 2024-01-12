@@ -13,7 +13,7 @@
 }
  
 /* CSS Document */
-body { font:14px/2 "微软雅黑",Arial,Tahoma, Helvetica,\5b8b\4f53, sans-serif; }
+body { font:16px/2 "微软雅黑",Arial,Tahoma, Helvetica,\5b8b\4f53, sans-serif; }
 html,body,div,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,object,code,em,span,var,legend,button,input,textarea,th,td,a,img,header,footer,nav,aside,audio,datalist,section { margin:0;padding:0;border:0;outline:0; }/*清除内外边距*/
 h1,h2,h3,h4,h5,h6 { font-weight:normal;font-size:100%; }/*设置默认字体*/
 :focus { outline:0; }

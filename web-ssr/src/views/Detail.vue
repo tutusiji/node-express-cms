@@ -108,7 +108,7 @@ function goBackOrHome() {
     background-color: #f1f1f1;
   }
 }
-// pre,code{
-//   color: #333;
-// }
+pre,code{
+  font-size: 14px;
+}
 </style>
