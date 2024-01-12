@@ -4,7 +4,7 @@ https://www.tuziki.com/
 
 ## Web 用户端
 
-<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/Snipaste_2024-01-12_15-23-08.png'>
+<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/Snipaste_2024-01-12_15-23-08-11.png'>
 技术栈：vue3 + typescript + vite + pinia + tailwind + sass + SSR
 
 主要实现功能：
