@@ -55,22 +55,22 @@ onMounted(async () => {
   // 代码高亮，仅在客户端执行
   loading.value = true;
   nextTick(() => {
-    // setTimeout(() => {
-    Prism.highlightAll();
-    loading.value = false;
-    // }, 500);
+    setTimeout(() => {
+      Prism.highlightAll();
+      loading.value = false;
+    }, 500);
   });
-});
 
-watch(
-  () => menuStore.menu,
-  async (newMenu) => {
-    if (newMenu.length > 0) {
-      // await fetchData();
-    }
-  },
-  { immediate: true }
-);
+  watch(
+    () => menuStore.menu,
+    async (newMenu) => {
+      if (newMenu.length > 0) {
+        await fetchData();
+      }
+    },
+    { immediate: true }
+  );
+});
 
 const router = useRouter();
 function goBackOrHome() {
