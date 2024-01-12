@@ -19,15 +19,10 @@ router.post("/deploy", async (ctx, next) => {
       // await execShellCommand(backupCmd, "/var/www/node-express-blog");
       // console.log("Backup created successfully.");
 
-
       // 执行 git pull
       await execShellCommand("git pull", "/var/www/node-express-blog");
-      // 重新启动PM2进程
-      await execShellCommand(
-        "pm2 restart server/index.js",
-        "/var/www/node-express-blog"
-      );
 
+      // 判断是否为ssr的操作
       if (updateSSR) {
         await execShellCommand(
           "npm run build",
@@ -36,6 +31,12 @@ router.post("/deploy", async (ctx, next) => {
         await execShellCommand(
           "pm2 restart sys.config.cjs",
           "/var/www/node-express-blog/web-ssr"
+        );
+      }else{
+        // 重新启动服务端的PM2进程
+        await execShellCommand(
+          "pm2 restart server/index.js",
+          "/var/www/node-express-blog"
         );
       }
 

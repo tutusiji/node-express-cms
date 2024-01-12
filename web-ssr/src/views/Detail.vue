@@ -54,18 +54,19 @@ onMounted(async () => {
   const Prism = (await import('prismjs')).default;
   // 代码高亮，仅在客户端执行
   loading.value = true;
-  nextTick(() => {
-    setTimeout(() => {
-      Prism.highlightAll();
-      loading.value = false;
-    }, 800);
-  });
+  // nextTick(() => {
+  //   setTimeout(() => {
+
+  //   }, 800);
+  // });
 
   watch(
     () => menuStore.menu,
     async (newMenu) => {
       if (newMenu.length > 0) {
         await fetchData();
+        Prism.highlightAll();
+        loading.value = false;
       }
     },
     { immediate: true }
