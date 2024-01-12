@@ -37,17 +37,11 @@ type ArrListType = {
 const articleList = ref<ArrListType[]>([]);
 const pageCurrent = ref<number>(1);
 const pageTotal = ref<number>(1);
-onMounted(() => {
-  pageCurrent.value = Number(sessionStorage.getItem('currentPage')) || 1;
-});
 
 const route = useRoute();
 const loading = ref<boolean>(false);
 
 const fetchData = async () => {
-  onMounted(() => {
-    loading.value = true;
-  });
   const currentMenu = menuStore.menu.find(
     (item: { path: string }) => `${item.path}` === route.path
   );
@@ -65,25 +59,25 @@ const fetchData = async () => {
   articleList.value = res.list;
   pageCurrent.value = res.currentPage;
   pageTotal.value = res.totalItems;
-  onMounted(() => {
-    loading.value = false;
-  });
 };
 
+onServerPrefetch(async () => {
+  await fetchData();
+});
+
 onMounted(() => {
+  loading.value = true;
+  pageCurrent.value = Number(sessionStorage.getItem('currentPage')) || 1;
   watch(
     () => menuStore.menu,
     async (newMenu) => {
       if (newMenu.length > 0) {
         await fetchData();
+        loading.value = false;
       }
     },
     { immediate: true }
   );
-});
-
-onServerPrefetch(async () => {
-  await fetchData();
 });
 
 const handleCurrentChange = (val: any) => {
