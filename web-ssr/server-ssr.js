@@ -4,7 +4,17 @@ import path from 'node:path';
 import express from 'express';
 import axios from 'axios';
 import { fileURLToPath } from 'node:url';
+// import { JSDOM } from 'jsdom';
 import adapter from 'axios/lib/adapters/http.js';
+
+// 创建 jsdom 实例
+// const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
+//   url: 'http://localhost' // 模拟的初始 URL
+// });
+// // 将 window 和 document 对象模拟为全局变量
+// global.window = dom.window;
+// global.document = dom.window.document;
+// global.navigator = dom.window.navigator;
 
 axios.defaults.adapter = adapter;
 const isTest = process.env.NODE_ENV === 'test' || !!process.env.VITE_TEST_BUILD;
@@ -13,7 +23,9 @@ export async function createServer(root = process.cwd(), isProd = isProduction) 
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const resolve = (p) => path.resolve(__dirname, p);
   const indexProd = isProd ? fs.readFileSync(resolve('dist/client/index.html'), 'utf-8') : '';
-  const manifest = isProd ? JSON.parse(fs.readFileSync(resolve('dist/client/ssr-manifest.json'), 'utf-8')) : {};
+  const manifest = isProd
+    ? JSON.parse(fs.readFileSync(resolve('dist/client/ssr-manifest.json'), 'utf-8'))
+    : {};
   // @ts-ignore
 
   const app = express();
@@ -46,7 +58,18 @@ export async function createServer(root = process.cwd(), isProd = isProduction) 
   }
 
   app.use('/justTest/getFruitList', async (req, res) => {
-    const names = ['Orange', 'Apricot', 'Apple', 'Plum', 'Pear', 'Pome', 'Banana', 'Cherry', 'Grapes', 'Peach'];
+    const names = [
+      'Orange',
+      'Apricot',
+      'Apple',
+      'Plum',
+      'Pear',
+      'Pome',
+      'Banana',
+      'Cherry',
+      'Grapes',
+      'Peach'
+    ];
     const list = names.map((name, id) => {
       return {
         id: ++id,
@@ -97,7 +120,7 @@ export async function createServer(root = process.cwd(), isProd = isProduction) 
 }
 
 if (!isTest) {
-  const PORT = 3100;
+  const PORT = 3111;
   createServer().then(({ app }) =>
     app.listen(PORT, () => {
       console.log(`http://localhost:${PORT}`);
