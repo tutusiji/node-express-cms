@@ -55,8 +55,10 @@ onMounted(async () => {
   // 代码高亮，仅在客户端执行
   nextTick(() => {
     loading.value = true;
-    Prism.highlightAll();
-    loading.value = false;
+    setTimeout(() => {
+      Prism.highlightAll();
+      loading.value = false;
+    }, 0);
   });
 });
 
