@@ -53,8 +53,8 @@ onServerPrefetch(async () => {
 onMounted(async () => {
   const Prism = (await import('prismjs')).default;
   // 代码高亮，仅在客户端执行
+  loading.value = true;
   nextTick(() => {
-    loading.value = true;
     setTimeout(() => {
       Prism.highlightAll();
       loading.value = false;
