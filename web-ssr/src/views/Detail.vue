@@ -1,5 +1,5 @@
 <template>
-  <div class="articleTitle" v-html="articleData.title"></div>
+  <h3 class="articleTitle" v-html="articleData.title"></h3>
   <div
     v-if="articleData.title && articleData.dateDisplay"
     class="articleDate pb-4 text-[#999] text-center text-[14px] italic"
@@ -86,6 +86,7 @@ function goBackOrHome() {
 <style lang="scss">
 .articleTitle {
   padding: 20px 0;
+  font-size: 1.5rem;
   font-weight: 700;
   text-align: center;
 }
