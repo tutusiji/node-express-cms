@@ -109,6 +109,6 @@ function goBackOrHome() {
   }
 }
 pre,code{
-  font-size: 14px;
+  font-size: 14px !important;
 }
 </style>
