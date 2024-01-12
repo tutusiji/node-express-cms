@@ -368,5 +368,7 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 
 后期，这里可以集成Fontmin插件到server端，当用户创建/修改导航菜单并保存的时候，在保存完数据之后调用这个提取专用字体包的工具流程，再将提取完成的字体包文件上传至OSS端，页面组件中总是调用OSS资源即可。
 
+<img src="https://hkroom.oss-cn-shenzhen.aliyuncs.com/_20240113053919.png">
+
 PS: 
 Tuziki的个人记录泛技术小项目关于乘风破浪激流勇进你好！欢迎来Tuziki !No.1234567890-
