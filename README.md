@@ -121,7 +121,7 @@ module.exports = {
 > 4.  图片数据的 OSS 存储
 > 5.  web 用户端和 admin 管理端打包之后的文件会自动到 server 端里面，当启动 server 服务时，会由 express 定义 web 端和 admin 端的入口路由
 
-### 服务端文件更新策略
+### 脚手架工具——服务端更新策略
 
 服务端安装 git 来拉取代码，并执行 pm2 持久化运行。这里另外封装了一个 nodejs 文件上传脚本在服务端运行，与原有的 server 服务独立开，以便迁移或者完成一些其他操作比如文件备份、log 输出等
 
@@ -165,78 +165,7 @@ const httpsAgent = new https.Agent({
 ```
 npm run build
 npm run deploy
-```
-
-#### 浏览器与 Node.js 的差异
-
-浏览器通常包含一个预置的、可信任的证书颁发机构列表，并且可能对一些常见问题（如某些类型的证书链问题）更为宽容。而 Node.js 在处理 HTTPS 请求时，默认会执行更严格的证书验证。这就是为什么在浏览器中可以正常访问某些 HTTPS 网站，而在 Node.js 中却可能会遇到证书验证错误。
-
-### 服务端操作:
-
-```
-1、建议用ubantu 20+,node版本保持较新
-2、nginx反向代理，做服务端本地的路由映射，也可以做文件夹路径的映射
-3、git，在linux服务器中更新代码
-4、持久化运行node，用pm2
-5、服务端安装mongodb-server
-6、开发时需要注意文件上传模块的路径问题，windows与Linux不同，文件及图片可以配置OSS管理资源
-```
-
-### mongodb 操作
-
-导出：
-
-Linux 上`mongodump -d 数据库名`,这样导出是二进制文件，在导入时需要用 导入：`mongorestore`
-
-windows 用户可以使用 MongoDB 的客户端程序，一键导出即可
-
-如果只想要单个集合的数据可以这样：`mongoexport -d=node-vue-moba --collection=articles --out=articles.json`
-
-启动 mongodb 服务`net start mongodb`
-
-可视化工具https://www.mongodb.com/try/download/compass
-
-数据操作工具，导入导出等https://www.mongodb.com/try/download/database-tools
-
-二进制导入/导出工具 mongodump、mongorestore 以及 bsondump
-
-数据导入/导出工具 mongoimport 以及 mongoexport
-
-诊断工具 mongostat 以及 mongotop
-
-批量插入数据
-
-```
-mongo
-show dbs
-use 数据库名
-db.articles.updateMany(
-  {},
-  { $set: { dateDisplay: true } }
-);
-exit
-```
-
-### nginx 配置
-
-测试：`nginx -t`
-
-重启：`nginx -s reload`
-
-启用 nginx 之后 https 的接口和链接会自动走 443 端口再转发，也就是说需要用到的端口都要额外的配置转发
-
-```
-location /deploy {
-    proxy_pass            http://localhost:3567;
-    proxy_set_header Host $host;
-    include               nginxconfig.io/proxy.conf;
-}
-
-location / {
-    proxy_pass            http://127.0.0.1:3000;
-    proxy_set_header Host $host;
-    include               nginxconfig.io/proxy.conf;
-}
+npm run deploy -- ssr  // 发布SSR的文件
 ```
 
 ### 数据备份
@@ -317,6 +246,79 @@ rollbackToTag('v2024-01-12');
 ```
 
 关于备份与回滚的操作，还需要完善接口，将服务端的git信息提取出来返回给到用户端，用户选择回滚到指定的版本，再选择做build操作，还是直接 restart...
+
+#### 浏览器与 Node.js 的差异
+
+浏览器通常包含一个预置的、可信任的证书颁发机构列表，并且可能对一些常见问题（如某些类型的证书链问题）更为宽容。而 Node.js 在处理 HTTPS 请求时，默认会执行更严格的证书验证。这就是为什么在浏览器中可以正常访问某些 HTTPS 网站，而在 Node.js 中却可能会遇到证书验证错误。
+
+### 服务端操作:
+
+```
+1、建议用ubantu 20+,node版本保持较新
+2、nginx反向代理，做服务端本地的路由映射，也可以做文件夹路径的映射
+3、git，在linux服务器中更新代码
+4、持久化运行node，用pm2
+5、服务端安装mongodb-server
+6、开发时需要注意文件上传模块的路径问题，windows与Linux不同，文件及图片可以配置OSS管理资源
+```
+
+### mongodb 操作
+
+导出：
+
+Linux 上`mongodump -d 数据库名`,这样导出是二进制文件，在导入时需要用 导入：`mongorestore`
+
+windows 用户可以使用 MongoDB 的客户端程序，一键导出即可
+
+如果只想要单个集合的数据可以这样：`mongoexport -d=node-vue-moba --collection=articles --out=articles.json`
+
+启动 mongodb 服务`net start mongodb`
+
+可视化工具https://www.mongodb.com/try/download/compass
+
+数据操作工具，导入导出等https://www.mongodb.com/try/download/database-tools
+
+二进制导入/导出工具 mongodump、mongorestore 以及 bsondump
+
+数据导入/导出工具 mongoimport 以及 mongoexport
+
+诊断工具 mongostat 以及 mongotop
+
+批量插入数据
+
+```
+mongo
+show dbs
+use 数据库名
+db.articles.updateMany(
+  {},
+  { $set: { dateDisplay: true } }
+);
+exit
+```
+
+### nginx 配置
+这里是之前的web spa页面配置，如果使用ssr方案就需要修改为上面那段。
+
+测试：`nginx -t`
+
+重启：`nginx -s reload`
+
+启用 nginx 之后 https 的接口和链接会自动走 443 端口再转发，也就是说需要用到的端口都要额外的配置转发
+
+```
+location /deploy {
+    proxy_pass            http://localhost:3567;
+    proxy_set_header Host $host;
+    include               nginxconfig.io/proxy.conf;
+}
+
+location / {
+    proxy_pass            http://127.0.0.1:3000;
+    proxy_set_header Host $host;
+    include               nginxconfig.io/proxy.conf;
+}
+```
 
 ### pm2 指令
 
