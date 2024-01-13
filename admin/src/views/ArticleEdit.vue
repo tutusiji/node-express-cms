@@ -165,8 +165,8 @@ export default {
       // const summaryText = this.model.body.replace(/<[^>]*>/g, "");
       const summaryText = this.convertRichTextToPlainText(this.model.body);
       const res = await this.$http.post(`rest/articles/${this.id}/summary`, {
-        prompt: `${this.model.prompt}${this.model.words}——`,
-        summaryText,
+        prompt: `${this.model.prompt}${this.model.words} : `,
+        summaryText:`${this.model.title}——${summaryText}`,
       });
       this.model.summary = JSON.parse(res.data).result;
       this.gptStatus = false;
