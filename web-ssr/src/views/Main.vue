@@ -29,9 +29,7 @@
     </header>
     <div class="main">
       <div class="container">
-        <div v-if="$route.path === '/'" class="welcome p-[10px] text-[14px]">
-          你好！欢迎来Tuziki !
-        </div>
+        <div v-if="$route.path === '/'" class="welcome">你好！欢迎来Tuziki !</div>
         <router-view :key="$route.path" />
       </div>
     </div>
@@ -124,6 +122,7 @@ const switchTabTo = (item: itemType) => {
 
 .welcome {
   font-family: 'TencentSansW7';
+  padding: 10px;
 }
 .wrap {
   min-height: 100vh;
@@ -247,7 +246,7 @@ ul.articleList {
   li {
     display: flex;
     align-items: baseline;
-    padding: 0.9rem 1rem;
+    padding: 1.1rem 1rem;
     border-bottom: 1px solid #eee;
     &:hover {
       background-color: #fafafa;
@@ -260,6 +259,7 @@ ul.articleList {
     }
     .num {
       font-family: 'TencentSansW7';
+      margin-right: 1.3rem;
     }
     .info {
       flex: 1;
@@ -310,28 +310,34 @@ ul.articleList {
   }
 }
 @media screen and (max-width: 600px) {
-  // body {
-  //     background-color: lightblue;
-  // }
-  ul.articleList {
-    li {
-      align-items: baseline;
-      .info {
-        display: block;
-        .date {
-          width: auto;
-          margin-left: 0;
-          b {
-            display: inline;
-            float: left;
-            text-indent: 0;
-            margin-right: 10px;
-            font-size: 0.9rem;
-          }
-          em {
-            display: inline;
-            color: #c5c5c5;
-            font-size: 0.9rem;
+  .wrap {
+    .welcome {
+      padding: 10px 0;
+    }
+    ul.articleList {
+      li {
+        padding: 10px 0;
+        align-items: baseline;
+        .num {
+          margin-right: 0.8rem;
+        }
+        .info {
+          display: block;
+          .date {
+            width: auto;
+            margin-left: 0;
+            b {
+              display: inline;
+              float: left;
+              text-indent: 0;
+              margin-right: 10px;
+              font-size: 0.9rem;
+            }
+            em {
+              display: inline;
+              color: #c5c5c5;
+              font-size: 0.9rem;
+            }
           }
         }
       }
