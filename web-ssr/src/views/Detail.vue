@@ -89,8 +89,10 @@ function goBackOrHome() {
   font-size: 1.5rem;
   font-weight: 700;
   text-align: center;
+  word-break: break-all;
 }
 .articleDetails {
+  word-break: break-all;
   img {
     max-width: 100%;
   }

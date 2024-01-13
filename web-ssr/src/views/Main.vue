@@ -251,9 +251,6 @@ ul.articleList {
     border-bottom: 1px solid #eee;
     &:hover {
       background-color: #fafafa;
-      h3 {
-        text-decoration: underline;
-      }
     }
     &:active {
       background-color: #fafafa;
@@ -277,16 +274,19 @@ ul.articleList {
           line-height: 28px;
           font-size: 1rem;
           font-weight: bold;
+          word-break: break-all;
           // font-family: 'TencentSansW7';
         }
         .summary {
           font-size: 0.9rem;
           color: #797777;
+          word-break: break-all;
         }
         .desc {
           color: #333;
           // text-decoration: underline;
           font-family: 'TencentSansW7';
+          white-space: nowrap;
         }
       }
       .date {
