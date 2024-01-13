@@ -242,7 +242,7 @@ footer {
 <style lang="scss">
 ul.articleList {
   min-height: 200px;
-  background-color: #fafafa;
+  // background-color: #fafafa;
 
   li {
     display: flex;
@@ -250,13 +250,13 @@ ul.articleList {
     padding: 0.9rem 1rem;
     border-bottom: 1px solid #eee;
     &:hover {
-      background-color: #fff;
+      background-color: #fafafa;
       h3 {
         text-decoration: underline;
       }
     }
     &:active {
-      background-color: #fff;
+      background-color: #fafafa;
     }
     &:nth-last-child(1) {
       border-bottom: none;
