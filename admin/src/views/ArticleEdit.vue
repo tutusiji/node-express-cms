@@ -42,6 +42,9 @@
         </el-input>
         <el-button @click="getGPT" :loading="gptStatus" type="primary" plain>ChatGPT</el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" native-type="submit">保存文章</el-button>
+      </el-form-item>
       <el-form-item label="文章">
         <vue-editor
           v-model="model.body"
@@ -50,7 +53,7 @@
         ></vue-editor>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" native-type="submit">保存</el-button>
+        <el-button type="primary" native-type="submit">保存文章</el-button>
       </el-form-item>
     </el-form>
   </div>
