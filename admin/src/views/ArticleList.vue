@@ -2,6 +2,7 @@
   <div>
     <H1 class="mainTitle">文章列表</H1>
     <el-table :data="items">
+      <el-table-column type="index" label="序号" width="50"> </el-table-column>
       <el-table-column prop="_id" label="ID" width="220"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
       <el-table-column prop="date" label="创建时间"></el-table-column>
@@ -62,7 +63,7 @@ export default {
     // },
   },
   created() {
-    this.currentPage = Number(sessionStorage.getItem('exceptPage'))
+    this.currentPage = Number(sessionStorage.getItem("exceptPage"));
     this.fetch();
   },
   methods: {
