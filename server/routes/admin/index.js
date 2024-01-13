@@ -156,7 +156,7 @@ module.exports = (app) => {
           messages: [
             {
               role: "user",
-              content: `将以下内容精简成小于200字的文本——${articleContent}`,
+              content: `将以下内容精简成小于300字的文本——${articleContent}`,
             },
           ],
           disable_search: false,
