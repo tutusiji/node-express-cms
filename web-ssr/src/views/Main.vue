@@ -279,8 +279,13 @@ ul.articleList {
           font-weight: bold;
         }
         .summary {
-          font-style: italic;
           font-size: 0.9rem;
+          color: #797777;
+        }
+        .desc {
+          color: #333;
+          // text-decoration: underline;
+          font-family: 'TencentSansW7';
         }
       }
       .date {
