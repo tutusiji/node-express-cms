@@ -40,7 +40,7 @@
           v-model="model.summary"
         >
         </el-input>
-        <el-button @click="getGPT">ChatGPT</el-button>
+        <el-button @click="getGPT" :loading="gptStatus" type="primary" plain>ChatGPT</el-button>
       </el-form-item>
       <el-form-item label="文章">
         <vue-editor
@@ -78,6 +78,7 @@ export default {
         summary: "",
       },
       categories: [],
+      gptStatus:false
     };
   },
   created() {
@@ -125,6 +126,7 @@ export default {
       return tempDiv.textContent || tempDiv.innerText || "";
     },
     async getGPT() {
+      this.gptStatus = true
       // const summaryText = this.model.body.replace(/<[^>]*>/g, "");
       const summaryText = this.convertRichTextToPlainText(this.model.body);
       console.log(summaryText);
@@ -132,6 +134,7 @@ export default {
         summaryText,
       });
       this.model.summary = JSON.parse(res.data).result;
+      this.gptStatus = false
     },
     processRichText(htmlString) {
       const parser = new DOMParser();
