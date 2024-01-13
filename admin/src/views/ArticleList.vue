@@ -6,7 +6,7 @@
       <el-table-column type="index" label="序号" width="50"> </el-table-column>
       <el-table-column prop="_id" label="ID" width="220"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
-      <el-table-column prop="parentName" label="上级分类"></el-table-column>
+      <el-table-column prop="parentName" label="所属分类"></el-table-column>
       <el-table-column prop="date" label="创建时间"></el-table-column>
       <el-table-column prop="status" label="是否发布">
         <template slot-scope="scope">
