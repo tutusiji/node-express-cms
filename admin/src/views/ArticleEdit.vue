@@ -100,7 +100,7 @@ export default {
         date: new Date(),
         dateDisplay: true,
         summary: "",
-        words: 300,
+        words: 400,
         prompt: "将以下内容精简成文本，字数不超过",
       },
       categories: [],
