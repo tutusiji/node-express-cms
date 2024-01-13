@@ -144,7 +144,7 @@ module.exports = (app) => {
     try {
       const articleContent = req.body.summaryText;
       const prompt = req.body.prompt;
-      console.log("articleContent===", req.body);
+      // console.log("articleContent===", req.body);
       var options = {
         method: "POST",
         url:
