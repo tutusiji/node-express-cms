@@ -5,6 +5,7 @@ const schema = new mongoose.Schema(
     title: { type: String },
     date: { type: String },
     summary: { type: String },
+    prompt: { type: String },
     words: { type: Number },
     status: { type: Boolean },
     dateDisplay: { type: Boolean },

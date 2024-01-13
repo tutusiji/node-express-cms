@@ -40,14 +40,26 @@
           v-model="model.summary"
         >
         </el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-input
+          type="textarea"
+          style="width: 40%; margin-right: 20px;"
+          :rows="2"
+          placeholder="提示语"
+          v-model="model.prompt"
+        >
+        </el-input>
         字数：
-         <el-input
+        <el-input
           type="text"
           style="width: 68px; margin-right: 20px;"
           v-model="model.words"
         >
         </el-input>
-        <el-button @click="getGPT" :loading="gptStatus" type="primary" plain>ChatGPT</el-button>
+        <el-button @click="getGPT" :loading="gptStatus" type="primary" plain
+          >ChatGPT</el-button
+        >
       </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存文章</el-button>
@@ -86,16 +98,26 @@ export default {
         date: new Date(),
         dateDisplay: true,
         summary: "",
-        words:300
+        words: 300,
+        prompt: "将以下内容精简成文本，字数不超过",
       },
       categories: [],
-      gptStatus:false
+      gptStatus: false,
     };
   },
   created() {
     this.fetchCategories();
     this.id && this.fetch();
   },
+  // watch: {
+  //   model: {
+  //     handler(newValue, oldValue) {
+  //       console.log(newValue.words, oldValue.words);
+  //       this.model.prompt = `将以下内容精简成小于${newValue.words}字的文本——`;
+  //     },
+  //     deep: true,
+  //   },
+  // },
   methods: {
     async save() {
       this.model.body = this.processRichText(this.model.body);
@@ -137,15 +159,16 @@ export default {
       return tempDiv.textContent || tempDiv.innerText || "";
     },
     async getGPT() {
-      this.gptStatus = true
+      this.gptStatus = true;
       // const summaryText = this.model.body.replace(/<[^>]*>/g, "");
       const summaryText = this.convertRichTextToPlainText(this.model.body);
       console.log(summaryText);
       const res = await this.$http.post(`rest/articles/${this.id}/summary`, {
+        prompt: `${this.model.prompt}${this.model.words}——`,
         summaryText,
       });
       this.model.summary = JSON.parse(res.data).result;
-      this.gptStatus = false
+      this.gptStatus = false;
     },
     processRichText(htmlString) {
       const parser = new DOMParser();
