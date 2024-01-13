@@ -6,6 +6,7 @@
       <el-table-column type="index" label="序号" width="50"> </el-table-column>
       <el-table-column prop="_id" label="ID" width="220"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
+      <el-table-column prop="parentName" label="上级分类"></el-table-column>
       <el-table-column prop="date" label="创建时间"></el-table-column>
       <el-table-column prop="status" label="是否发布">
         <template slot-scope="scope">
@@ -53,6 +54,7 @@ export default {
   data() {
     return {
       items: [],
+      categoriesList: [],
       total: 1,
       currentPage: 1,
       limitPage: 10,
@@ -65,15 +67,28 @@ export default {
   },
   created() {
     this.currentPage = Number(sessionStorage.getItem("exceptPage"));
-    this.fetch();
+    this.fetchCategories();
+    
   },
   methods: {
+    async fetchCategories() {
+      const res = await this.$http.get("rest/categories");
+      this.categoriesList = res.data;
+      this.fetch();
+    },
     async fetch() {
       const res = await this.$http.post("rest/articles/list", {
         page: this.currentPage,
         limit: this.limitPage,
       });
       this.items = res.data.list;
+      this.items.map((item) => {
+        const aaa = item.categories.map((cate) => {
+          const thisCate = this.categoriesList.find((i) => i._id === cate);
+          return (thisCate && thisCate.name) || "";
+        });
+        item.parentName = aaa.join();
+      });
       this.total = res.data.totalItems;
     },
 
