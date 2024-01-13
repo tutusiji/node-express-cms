@@ -35,7 +35,7 @@
           style="width: 40%; margin-right: 20px;"
           :rows="6"
           placeholder="请输入内容"
-          maxlength="200"
+          maxlength="300"
           show-word-limit
           v-model="model.summary"
         >
