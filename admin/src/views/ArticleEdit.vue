@@ -35,9 +35,16 @@
           style="width: 40%; margin-right: 20px;"
           :rows="6"
           placeholder="请输入内容"
-          maxlength="300"
+          :maxlength="model.words"
           show-word-limit
           v-model="model.summary"
+        >
+        </el-input>
+        字数：
+         <el-input
+          type="text"
+          style="width: 68px; margin-right: 20px;"
+          v-model="model.words"
         >
         </el-input>
         <el-button @click="getGPT" :loading="gptStatus" type="primary" plain>ChatGPT</el-button>
@@ -79,6 +86,7 @@ export default {
         date: new Date(),
         dateDisplay: true,
         summary: "",
+        words:300
       },
       categories: [],
       gptStatus:false

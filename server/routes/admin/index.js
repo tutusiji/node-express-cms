@@ -143,6 +143,7 @@ module.exports = (app) => {
   router.post("/:id/summary", async (req, res) => {
     try {
       const articleContent = req.body.summaryText;
+      const words = req.body.words;
       console.log("articleContent===", req.body);
       var options = {
         method: "POST",
@@ -156,7 +157,7 @@ module.exports = (app) => {
           messages: [
             {
               role: "user",
-              content: `将以下内容精简成小于300字的文本——${articleContent}`,
+              content: `将以下内容精简成小于${words}字的文本——${articleContent}`,
             },
           ],
           disable_search: false,
