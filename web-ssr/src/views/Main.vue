@@ -291,11 +291,13 @@ ul.articleList {
         font-family: 'TencentSansW7';
         b {
           display: block;
-          text-indent: 8px;
+          text-align: right;
         }
         em {
+          display: block;
           color: #666;
           font-size: 0.9rem;
+          text-align: right;
         }
       }
     }
@@ -321,6 +323,7 @@ ul.articleList {
             font-size: 0.9rem;
           }
           em {
+            display: inline;
             color: #c5c5c5;
             font-size: 0.9rem;
           }
