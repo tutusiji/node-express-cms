@@ -29,7 +29,20 @@
       <el-form-item label="立即发布">
         <el-switch v-model="model.status"></el-switch>
       </el-form-item>
-      <el-form-item label="详情">
+      <el-form-item label="摘要">
+        <el-input
+          type="textarea"
+          style="width: 40%; margin-right: 20px;"
+          :rows="6"
+          placeholder="请输入内容"
+          maxlength="200"
+          show-word-limit
+          v-model="model.summary"
+        >
+        </el-input>
+        <el-button @click="getGPT">ChatGPT</el-button>
+      </el-form-item>
+      <el-form-item label="文章">
         <vue-editor
           v-model="model.body"
           useCustomImageHandler
@@ -62,6 +75,7 @@ export default {
         status: true,
         date: new Date(),
         dateDisplay: true,
+        summary: "",
       },
       categories: [],
     };
@@ -101,6 +115,23 @@ export default {
       const res = await this.$http.post("upload", formData);
       Editor.insertEmbed(cursorLocation, "image", res.data.url);
       resetUploader();
+    },
+    convertRichTextToPlainText(html) {
+      // 创建一个新的 div 元素，用于临时存储富文本内容
+      var tempDiv = document.createElement("div");
+      // 设置富文本内容
+      tempDiv.innerHTML = html;
+      // 获取并返回纯文本内容
+      return tempDiv.textContent || tempDiv.innerText || "";
+    },
+    async getGPT() {
+      // const summaryText = this.model.body.replace(/<[^>]*>/g, "");
+      const summaryText = this.convertRichTextToPlainText(this.model.body);
+      console.log(summaryText);
+      const res = await this.$http.post(`rest/articles/${this.id}/summary`, {
+        summaryText,
+      });
+      this.model.summary = JSON.parse(res.data).result;
     },
     processRichText(htmlString) {
       const parser = new DOMParser();

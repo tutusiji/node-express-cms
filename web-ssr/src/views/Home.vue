@@ -1,12 +1,20 @@
 <template>
   <ul v-loading="loading" class="articleList">
-    <li v-for="item of articleList" :key="item._id" @click="$router.push(`./detail/${item._id}`)">
-      <span class="num text-[#cdcccc] mr-5">No.{{ item.serialNumber }}</span>
+    <li v-for="item of articleList" :key="item._id">
+      <!-- @click="$router.push(`./detail/${item._id}`)" -->
+      <span class="num text-[#c5c5c5] mr-5">No.{{ item.serialNumber }}</span>
       <div class="info">
-        <h3>{{ item.title }}</h3>
+        <div class="content">
+          <div><a class="title" :href="`./detail/${item._id}`">{{ item.title }}</a></div>
+          <div v-show="item.summary" class="summary">
+            {{ item.summary }}
+          </div>
+          <!-- <a class="desc" :href="`./detail/${item._id}`">Tu</a> -->
+        </div>
         <div class="date">
           <!-- HH:mm:ss -->
-          {{ item.date && dayjs(item.date).format('YYYY-MM-DD') }}
+          <em>{{ item.date && dayjs(item.date).format('MM-DD') }}</em>
+          <b>{{ item.date && dayjs(item.date).format('YYYY') }}</b>
         </div>
       </div>
     </li>
@@ -33,6 +41,7 @@ type ArrListType = {
   _id: string;
   title: string;
   date: string;
+  summary: string;
   serialNumber: number;
 };
 
@@ -75,9 +84,13 @@ onMounted(() => {
   watch(
     () => menuStore.menu,
     async (newMenu) => {
+      console.log('newMenu', newMenu);
       if (newMenu.length > 0) {
-        await fetchData();
-        loading.value = false;
+        if (articleList.value.length > 0) {
+          loading.value = false;
+        } else {
+          await fetchData();
+        }
       }
     },
     { immediate: true }

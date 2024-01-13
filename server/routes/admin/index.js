@@ -2,6 +2,8 @@ module.exports = (app) => {
   const express = require("express");
   const jwt = require("jsonwebtoken");
   const assert = require("http-assert");
+  const request = require("request");
+  // const OpenAI = require("openai");
   const AdminUser = require("../../models/AdminUser");
 
   const path = require("path");
@@ -90,6 +92,87 @@ module.exports = (app) => {
   router.get("/:id", async (req, res) => {
     const model = await req.Model.findById(req.params.id);
     res.send(model);
+  });
+
+  // 文章摘要生成
+  // 配置 OpenAI
+  // const { OPENAI_API_KEY } = require("./openaiKeyLocal.js");
+  // const openai = new OpenAI({
+  //   apiKey: OPENAI_API_KEY, // This is the default and can be omitted
+  // });
+  // router.post("/:id/summary", async (req, res) => {
+  //   try {
+  //     const articleContent = req.params.summaryText;
+
+  //     const gptResponse = await openai.chat.completions.create({
+  //       model: "text-davinci-003", // 或者选择适合您需求的模型
+  //       prompt: `Summarize the following article: ${articleContent}`,
+  //       max_tokens: 200, // 设置生成摘要的最大长度
+  //     });
+
+  //     const summary = gptResponse.data.choices[0].text.trim();
+
+  //     res.json({ summary });
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).send("Error generating article summary");
+  //   }
+  // });
+
+  // baidu ai
+  const { AK, SK } = require("./openaiKeyLocal.js");
+  function getAccessToken() {
+    let options = {
+      method: "POST",
+      url:
+        "https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=" +
+        AK +
+        "&client_secret=" +
+        SK,
+    };
+    return new Promise((resolve, reject) => {
+      request(options, (error, response) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(JSON.parse(response.body).access_token);
+        }
+      });
+    });
+  }
+  router.post("/:id/summary", async (req, res) => {
+    try {
+      const articleContent = req.body.summaryText;
+      console.log("articleContent===", req.body);
+      var options = {
+        method: "POST",
+        url:
+          "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token=" +
+          (await getAccessToken()),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: [
+            {
+              role: "user",
+              content: `将以下内容精简成小于200字的文本——${articleContent}`,
+            },
+          ],
+          disable_search: false,
+          enable_citation: false,
+        }),
+      };
+
+      request(options, function (error, response) {
+        if (error) throw new Error(error);
+        console.log("=======", response.body);
+        res.json(response.body);
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error generating article summary");
+    }
   });
 
   app.use(

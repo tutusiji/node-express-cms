@@ -23,6 +23,7 @@ yarn-error.log*
 *.sw*
 
 ossLocal.js
+openaiKeyLocal.js
 dump
 /server/routes/admin/oss.js
 

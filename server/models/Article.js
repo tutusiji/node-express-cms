@@ -4,6 +4,7 @@ const schema = new mongoose.Schema(
   {
     title: { type: String },
     date: { type: String },
+    summary: { type: String },
     status: { type: Boolean },
     dateDisplay: { type: Boolean },
     categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],

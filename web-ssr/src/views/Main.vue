@@ -246,11 +246,14 @@ ul.articleList {
 
   li {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     padding: 0.9rem 1rem;
     border-bottom: 1px solid #eee;
     &:hover {
       background-color: #fff;
+      h3 {
+        text-decoration: underline;
+      }
     }
     &:active {
       background-color: #fff;
@@ -265,19 +268,36 @@ ul.articleList {
       flex: 1;
       display: flex;
       align-items: center;
-    }
-    h3 {
-      flex: 1;
-      cursor: pointer;
-      line-height: 28px;
-      font-size: 1rem;
-    }
-    .date {
-      margin-left: 0.8rem;
-      font-size: 0.8rem;
-      font-style: italic;
-      color: #c5c5c5;
-      font-family: 'TencentSansW7';
+      .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        .title {
+          cursor: pointer;
+          line-height: 28px;
+          font-size: 1rem;
+          font-weight: bold;
+        }
+        .summary {
+          font-style: italic;
+          font-size: 0.9rem;
+        }
+      }
+      .date {
+        width: 3rem;
+        margin-left: 2rem;
+        font-size: 0.8rem;
+        color: #c5c5c5;
+        font-family: 'TencentSansW7';
+        b {
+          display: block;
+          text-indent: 8px;
+        }
+        em {
+          color: #666;
+          font-size: 0.9rem;
+        }
+      }
     }
   }
 }
@@ -290,9 +310,21 @@ ul.articleList {
       align-items: baseline;
       .info {
         display: block;
-      }
-      .date {
-        margin-left: 0;
+        .date {
+          width: auto;
+          margin-left: 0;
+          b {
+            display: inline;
+            float: left;
+            text-indent: 0;
+            margin-right: 10px;
+            font-size: 0.9rem;
+          }
+          em {
+            color: #c5c5c5;
+            font-size: 0.9rem;
+          }
+        }
       }
     }
   }
