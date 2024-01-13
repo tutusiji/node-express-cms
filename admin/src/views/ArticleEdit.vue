@@ -60,7 +60,9 @@
         <el-button @click="getGPT" :loading="gptStatus" type="primary" plain
           >ChatGPT</el-button
         >
+        <div style="color: #999;">标准提示语——将以下内容精简成文本，字数不超过</div>
       </el-form-item>
+      
       <el-form-item>
         <el-button type="primary" native-type="submit">保存文章</el-button>
       </el-form-item>
