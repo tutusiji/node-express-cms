@@ -271,7 +271,7 @@ ul.articleList {
         .title {
           cursor: pointer;
           line-height: 28px;
-          font-size: 1.1rem;
+          font-size: 1.2rem;
           font-weight: bold;
           word-break: break-all;
           color: #34538b;
