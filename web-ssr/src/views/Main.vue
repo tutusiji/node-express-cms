@@ -272,7 +272,7 @@ ul.articleList {
         .title {
           cursor: pointer;
           line-height: 28px;
-          font-size: 1rem;
+          font-size: 1.1rem;
           font-weight: bold;
           word-break: break-all;
           // font-family: 'TencentSansW7';

@@ -96,6 +96,9 @@ function goBackOrHome() {
   img {
     max-width: 100%;
   }
+  h3,h4,h2,h1,h5,h6{
+    font-weight: bold;
+  }
 }
 .back {
   width: 100px;
