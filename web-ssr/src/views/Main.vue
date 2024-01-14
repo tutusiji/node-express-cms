@@ -275,7 +275,8 @@ ul.articleList {
           font-weight: bold;
           word-break: break-all;
           color: #34538b;
-          font-family: 'TencentSansW7';
+          font-family: TencentSansW7,-apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei,
+    Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
         }
         .summary {
           font-size: 0.9rem;
