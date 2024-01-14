@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="date">
-          <!-- HH:mm:ss -->
+          <!-- YYYY-MM-DD HH:mm:ss -->
           <em>{{ item.date && dayjs(item.date).format('MM-DD') }}</em>
           <b>{{ item.date && dayjs(item.date).format('YYYY') }}</b>
           <!-- <div class="auther">Tutu</div> -->
@@ -19,7 +19,7 @@
       </div>
     </li>
   </ul>
-  <div v-show="articleList.length > 0" class="clear-both overflow-hidden py-2">
+  <div v-show="articleList.length > 0" class="clear-both overflow-hidden py-10">
     <el-pagination
       v-model:current-page="pageCurrent"
       class="float-right"
