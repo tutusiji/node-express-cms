@@ -281,6 +281,7 @@ ul.articleList {
           font-size: 0.9rem;
           color: #797777;
           word-break: break-all;
+          padding-top: 6px;
         }
         .desc {
           color: #333;
