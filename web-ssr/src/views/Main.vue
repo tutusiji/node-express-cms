@@ -119,6 +119,17 @@ const switchTabTo = (item: itemType) => {
   font-style: normal;
   font-weight: normal;
 }
+@font-face {
+  font-family: 'TencentEngStr';
+  src: url('../assets/fonts/TencentEngStr.eot'); /* IE9 */
+  src: url('../assets/fonts/TencentEngStr.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('../assets/fonts/TencentEngStr.woff') format('woff'),
+    /* chrome、firefox */ url('../assets/fonts/TencentEngStr.ttf') format('truetype'),
+    /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
+      url('../assets/fonts/TencentEngStr.svg#TencentEngStr') format('svg'); /* iOS 4.1- */
+  font-style: normal;
+  font-weight: normal;
+}
 
 .welcome {
   font-family: 'TencentSansW7';
@@ -275,8 +286,8 @@ ul.articleList {
           font-weight: bold;
           word-break: break-all;
           color: #34538b;
-          font-family: TencentSansW7,-apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei,
-    Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
+          font-family: TencentEngStr, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC,
+            Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
         }
         .summary {
           font-size: 0.9rem;
@@ -317,7 +328,7 @@ ul.articleList {
     .container {
       padding: 0 10px;
     }
-    header .content{
+    header .content {
       padding: 72px 10px;
     }
     header {
@@ -326,7 +337,7 @@ ul.articleList {
     .welcome {
       padding: 10px 0;
     }
-    nav .menu li{
+    nav .menu li {
       padding: 0.7rem;
     }
     ul.articleList {
