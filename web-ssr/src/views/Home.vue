@@ -84,7 +84,7 @@ onMounted(() => {
   watch(
     () => menuStore.menu,
     async (newMenu) => {
-      console.log('newMenu', newMenu);
+      // console.log('newMenu', newMenu);
       if (newMenu.length > 0) {
         if (articleList.value.length > 0) {
           loading.value = false;
