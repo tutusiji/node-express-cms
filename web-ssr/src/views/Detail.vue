@@ -93,6 +93,7 @@ function goBackOrHome() {
 }
 .articleDetails {
   word-break: break-all;
+  line-height: 1.8;
   img {
     max-width: 100%;
   }

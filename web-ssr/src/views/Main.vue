@@ -29,7 +29,7 @@
     </header>
     <div class="main">
       <div class="container">
-        <div v-if="$route.path === '/'" class="welcome">你好！欢迎来Tuziki !</div>
+        <div v-if="$route.path === '/'" class="welcome">你好！欢迎来看Tuziki !</div>
         <router-view :key="$route.path" />
       </div>
     </div>
@@ -279,12 +279,12 @@ ul.articleList {
         }
         .summary {
           font-size: 0.9rem;
-          color: #797777;
           word-break: break-all;
           padding-top: 6px;
         }
         .desc {
-          color: #333;
+          color: #81ccf1;
+          color: #5bbded;
           // text-decoration: underline;
           font-family: 'TencentSansW7';
           white-space: nowrap;
