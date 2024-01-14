@@ -275,7 +275,7 @@ ul.articleList {
           font-weight: bold;
           word-break: break-all;
           color: #34538b;
-          // font-family: 'TencentSansW7';
+          font-family: 'TencentSansW7';
         }
         .summary {
           font-size: 0.9rem;
