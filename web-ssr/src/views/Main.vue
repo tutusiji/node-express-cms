@@ -204,7 +204,6 @@ header {
   .content {
     margin: 0 auto;
     max-width: 1064px;
-    padding: 0 20px;
     padding: 100px 0;
   }
   .solgen {
@@ -275,6 +274,7 @@ ul.articleList {
           font-size: 1.1rem;
           font-weight: bold;
           word-break: break-all;
+          color: #34538b;
           // font-family: 'TencentSansW7';
         }
         .summary {
@@ -312,8 +312,21 @@ ul.articleList {
 }
 @media screen and (max-width: 600px) {
   .wrap {
+    nav .content,
+    .container {
+      padding: 0 10px;
+    }
+    header .content{
+      padding: 60px 10px;
+    }
+    header {
+      margin-bottom: 10px;
+    }
     .welcome {
       padding: 10px 0;
+    }
+    nav .menu li{
+      padding: 0.7rem;
     }
     ul.articleList {
       li {
@@ -326,6 +339,7 @@ ul.articleList {
           display: block;
           .date {
             width: auto;
+            margin-top: 8px;
             margin-left: 0;
             b {
               display: inline;

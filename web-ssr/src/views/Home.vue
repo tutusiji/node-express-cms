@@ -14,6 +14,7 @@
           <!-- HH:mm:ss -->
           <em>{{ item.date && dayjs(item.date).format('MM-DD') }}</em>
           <b>{{ item.date && dayjs(item.date).format('YYYY') }}</b>
+          <!-- <div class="auther">Tutu</div> -->
         </div>
       </div>
     </li>
