@@ -317,7 +317,7 @@ ul.articleList {
       padding: 0 10px;
     }
     header .content{
-      padding: 68px 10px;
+      padding: 61.8px 10px;
     }
     header {
       margin-bottom: 10px;
