@@ -109,7 +109,7 @@ function goBackOrHome() {
   ol,
   ul li,
   ol li {
-    list-style: none;
+    list-style: auto;
   }
 }
 .back {
