@@ -244,7 +244,7 @@ module.exports = (app) => {
   );
   // console.log(localTTFPath);
   // console.log(destPath);
-  console.log(process.env.NODE_ENV);
+  // console.log(process.env.NODE_ENV);
   router.post("/webFonts", async (req, res) => {
     const words = req.body.words;
     // console.log(words);
@@ -285,7 +285,10 @@ module.exports = (app) => {
               .status(500)
               .send({ message: "Error in server operations", error });
           }
+        }else{
+          res.send({ message: "Fonts processed." });
         }
+
 
         // console.log(files[0]);
         // => { contents: <Buffer 00 01 00 ...> }

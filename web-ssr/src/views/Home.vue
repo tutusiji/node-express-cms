@@ -7,7 +7,7 @@
         <div class="content">
           <div><a class="title" :href="`./detail/${item._id}`">{{ item.title }}</a></div>
           <div v-show="item.summary" class="summary">
-            {{ item.summary }}<a class="desc" :href="`./detail/${item._id}`">... 阅读全文 >></a>
+            {{ item.summary }}<a class="desc" :href="`./detail/${item._id}`">... 阅读全文 〉</a>
           </div>
         </div>
         <div class="date">

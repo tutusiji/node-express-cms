@@ -25,13 +25,21 @@
           :rows="10"
           placeholder="请输入所需要提取的文字"
           style="width: 60%;"
-          show-word
           v-model="words"
         >
         </el-input>
         <div style="color: #999;">
           全站提取目前只提取导航菜单、文章标题、logo文字、slogan、welcome
         </div>
+      </el-form-item>
+      <el-form-item label="补充文字">
+        <el-input
+          :rows="10"
+          placeholder="请输入所需要提取的文字"
+          style="width: 60%;"
+          v-model="addwords"
+        >
+        </el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getWords" :loading="fontStatus" plain
@@ -46,8 +54,6 @@
 </template>
 
 <script>
-import moment from "moment";
-
 export default {
   data() {
     return {
@@ -55,6 +61,7 @@ export default {
       fontStatus: false,
       fileList: [],
       current: 1,
+      addwords: "0123456789.阅读全文 〈〉><《》",
     };
   },
   created() {},
@@ -64,7 +71,7 @@ export default {
       let res;
       res = await this.$http.get(`rest/sites/webInfo`); // 站点信息
       const { slogan, title, welcome } = res.data;
-      this.words = slogan + title + welcome + "0123456789";
+      this.words = slogan + title + welcome + this.addwords;
       res = await this.$http.get("rest/categories");
       const cates = res.data.map((item) => item.name).join("");
       this.words += cates;
