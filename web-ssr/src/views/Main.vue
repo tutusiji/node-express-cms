@@ -2,7 +2,7 @@
   <section class="wrap flex">
     <nav>
       <div class="content">
-        <div class="logo" @click="$router.push(`/`)">{{ siteStore.info.title }}</div>
+        <a class="logo" href="https://www.tuziki.com">{{ siteStore.info.title }}</a>
         <ul class="menu">
           <li
             v-for="item of menuStore.menu"
@@ -142,8 +142,7 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
-  color: #fff;
-  text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
+
   .content {
     margin: 0 auto;
     max-width: 1064px;
@@ -155,6 +154,8 @@ nav {
   }
   .logo {
     font-size: 1.1rem;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
     font-weight: 500;
     cursor: pointer;
     font-family: 'CustomFonts';
@@ -169,6 +170,8 @@ nav {
       padding: 1rem;
       font-size: 0.9rem;
       font-family: 'CustomFonts';
+      color: #fff;
+      text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
       &.current {
         // border-bottom: 1px solid rgba($color: #000000, $alpha: 0.8);
       }
