@@ -256,7 +256,7 @@ module.exports = (app) => {
         .use(
           Fontmin.glyph({
             text: words,
-            hinting: false, // keep ttf hint info (fpgm, prep, cvt). default = true
+            hinting: true, // keep ttf hint info (fpgm, prep, cvt). default = true
           })
         );
       fontmin.run(async function (err, files) {
