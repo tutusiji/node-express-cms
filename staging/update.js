@@ -35,8 +35,8 @@ router.post("/deploy", async (ctx, next) => {
       }else{
         // 重新启动服务端的PM2进程
         await execShellCommand(
-          "cross-env NODE_ENV=production pm2 restart server/index.js",
-          "/var/www/node-express-blog"
+          "pm2 restart sys.config.cjs",
+          "/var/www/node-express-blog/server"
         );
       }
 
