@@ -61,7 +61,7 @@ export default {
       fontStatus: false,
       fileList: [],
       current: 1,
-      addwords: "0123456789.阅读全文 〈〉><《》",
+      addwords: "0123456789.阅读全文 〈〉><《》Nno",
     };
   },
   created() {},
