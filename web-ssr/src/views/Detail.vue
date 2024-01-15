@@ -101,6 +101,7 @@ function goBackOrHome() {
   }
 }
 .otherArticle{
+  margin-top: 40px;
   p{
     margin-bottom: 20px;
   }
