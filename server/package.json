@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "nodemon index.js",
+    "serve": "cross-env NODE_ENV=production nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "node ../staging/deploy.js"
   },
@@ -27,5 +27,8 @@
     "openai": "^4.24.7",
     "request": "^2.88.2",
     "require-all": "^3.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

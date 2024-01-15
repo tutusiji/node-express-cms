@@ -4,6 +4,7 @@ module.exports = (app) => {
   const assert = require("http-assert");
   const request = require("request");
   const multer = require("multer");
+  const { exec } = require("child_process");
   // const OpenAI = require("openai");
   const AdminUser = require("../../models/AdminUser");
 
@@ -212,6 +213,19 @@ module.exports = (app) => {
     }
   });
 
+  function execShellCommand(cmd, workingDirectory) {
+    return new Promise((resolve, reject) => {
+      exec(cmd, { cwd: workingDirectory }, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`执行的错误: ${error}`);
+          reject(error);
+          return;
+        }
+        resolve(stdout ? stdout : stderr);
+      });
+    });
+  }
+
   // 字体包 生成
   // import Fontmin from "fontmin";
   const Fontmin = require("fontmin");
@@ -230,6 +244,7 @@ module.exports = (app) => {
   );
   // console.log(localTTFPath);
   // console.log(destPath);
+  console.log(process.env.NODE_ENV);
   router.post("/webFonts", async (req, res) => {
     const words = req.body.words;
     // console.log(words);
@@ -244,17 +259,37 @@ module.exports = (app) => {
             hinting: false, // keep ttf hint info (fpgm, prep, cvt). default = true
           })
         );
-      fontmin.run(function (err, files) {
+      fontmin.run(async function (err, files) {
         if (err) {
           console.error(err);
           return res
             .status(500)
             .send({ message: "Error 字体包生成", error: err });
         }
+        if (process.env.NODE_ENV === "production") {
+          try {
+            // 执行 SSR 编译
+            await execShellCommand(
+              "npm run build",
+              "/var/www/node-express-blog/web-ssr"
+            );
+            // 重启 PM2 服务
+            await execShellCommand(
+              "pm2 restart sys.config.cjs",
+              "/var/www/node-express-blog/web-ssr"
+            );
+
+            res.send({ message: "Fonts processed and server restarted." });
+          } catch (error) {
+            res
+              .status(500)
+              .send({ message: "Error in server operations", error });
+          }
+        }
 
         // console.log(files[0]);
         // => { contents: <Buffer 00 01 00 ...> }
-        res.send({ message: "fonts ok" });
+        res.send({ message: "fonts ok and ssr rebuild" });
       });
     } catch (error) {
       // 错误处理
