@@ -97,8 +97,19 @@ function goBackOrHome() {
   img {
     max-width: 100%;
   }
-  h3,h4,h2,h1,h5,h6{
+  h3,
+  h4,
+  h2,
+  h1,
+  h5,
+  h6 {
     font-weight: bold;
+  }
+  ul,
+  ol,
+  ul li,
+  ol li {
+    list-style: none;
   }
 }
 .back {
@@ -114,7 +125,8 @@ function goBackOrHome() {
     background-color: #f1f1f1;
   }
 }
-pre,code{
+pre,
+code {
   font-size: 14px !important;
 }
 </style>
