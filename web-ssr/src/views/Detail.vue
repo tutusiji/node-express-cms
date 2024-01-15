@@ -64,7 +64,7 @@ onMounted(async () => {
     () => menuStore.menu,
     async (newMenu) => {
       if (newMenu.length > 0) {
-        await fetchData();
+        // await fetchData();
         Prism.highlightAll();
         loading.value = false;
       }

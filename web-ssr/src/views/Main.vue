@@ -37,8 +37,7 @@
       <div class="copyright">
         <!-- <p>make by node express mongodb vue3 vite tailwind</p> -->
         <p>{{ siteStore.info.coryright }}</p>
-        <span
-          ><a href="http://beian.miit.gov.cn/" target="_blank">{{ siteStore.info.beian }}</a>
+        <span><a href="http://beian.miit.gov.cn/" target="_blank">{{ siteStore.info.beian }}</a>
         </span>
       </div>
     </footer>
