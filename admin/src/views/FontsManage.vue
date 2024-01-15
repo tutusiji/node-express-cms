@@ -15,7 +15,7 @@
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           <div class="el-upload__tip" slot="tip">
-            只能上传.ttf格式字体包,且只能传一个字体包
+            只能上传.ttf格式字体包,且只能传一个字体包,默认是<a href="https://hkroom.oss-cn-shenzhen.aliyuncs.com/TencentSansW7.ttf">腾讯体</a>
           </div>
         </el-upload>
       </el-form-item>
