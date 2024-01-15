@@ -64,7 +64,7 @@ export default {
       let res;
       res = await this.$http.get(`rest/sites/webInfo`); // 站点信息
       const { slogan, title, welcome } = res.data;
-      this.words = slogan + title + welcome + "";
+      this.words = slogan + title + welcome + "0123456789";
       res = await this.$http.get("rest/categories");
       const cates = res.data.map((item) => item.name).join("");
       this.words += cates;
