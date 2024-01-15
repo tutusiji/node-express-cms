@@ -121,7 +121,8 @@ module.exports = {
 > 2.  通用 CRUD 接口封装
 > 3.  中间件封装，登录鉴权
 > 4.  图片数据的 OSS 存储
-> 5.  web 用户端和 admin 管理端打包之后的文件会自动到 server 端里面，当启动 server 服务时，会由 express 定义 web 端和 admin 端的入口路由
+> 5.  站点配置信息管理、根据内容文本按需动态打包出个性化精简字体包
+> 6.  web 用户端和 admin 管理端打包之后的文件会自动到 server 端里面，当启动 server 服务时，会由 express 定义 web 端和 admin 端的入口路由，SSR用户端的页面由SSR的server管理
 
 ### 脚手架工具——服务端更新策略
 
