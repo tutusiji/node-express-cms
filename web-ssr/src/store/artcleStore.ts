@@ -50,10 +50,10 @@ export const useArticleStore = defineStore('articler', {
         this.list = res.list;
         this.currentPage = res.currentPage;
         this.totalItems = res.totalItems;
-        this.loading = false;
       } catch (error) {
         console.error((error as Error).message);
       } finally {
+        this.loading = false;
       }
     }
   }

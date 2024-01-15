@@ -862,15 +862,50 @@ module.exports = (app) => {
     res.send(cats);
   });
 
-  // 文章详情
+  // 文章详情，包括相同分类的前后文章
+  // 文章详情，包括相同分类的前后文章
   router.get("/articles/:id", async (req, res) => {
-    const data = await Article.findById(req.params.id).lean();
-    data.related = await Article.find()
-      .where({
-        categories: { $in: data.categories },
+    try {
+      const currentArticle = await Article.findById(req.params.id).lean();
+
+      if (!currentArticle) {
+        return res.status(404).send("文章未找到");
+      }
+
+      // 获取当前文章所属分类
+      const categoryId = currentArticle.categories[0];
+
+      // 查找前一篇文章：发布时间早于当前文章的最新一篇
+      const nextArticle = await Article.findOne({
+        categories: categoryId,
+        date: { $lt: currentArticle.date },
+        status: true,
       })
-      .limit(2);
-    res.send(data);
+        .sort({ date: -1 }) // 按时间倒序
+        .select("_id title")
+        .lean();
+
+      // 查找后一篇文章：发布时间晚于当前文章的最早一篇
+      const prevArticle = await Article.findOne({
+        categories: categoryId,
+        date: { $gt: currentArticle.date },
+        status: true,
+      })
+        .sort({ date: 1 }) // 按时间顺序
+        .select("_id title")
+        .lean();
+
+      // 构建响应数据
+      const response = {
+        ...currentArticle,
+        prevArticle: prevArticle || null,
+        nextArticle: nextArticle || null,
+      };
+
+      res.send(response);
+    } catch (error) {
+      res.status(500).send({ message: "Error 没有查询到相关id", error });
+    }
   });
 
   router.get("/heroes/:id", async (req, res) => {

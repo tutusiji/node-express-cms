@@ -1,78 +1,63 @@
 <template>
-  <h3 class="articleTitle" v-html="articleData.title"></h3>
+  <h3 class="articleTitle" v-html="articleDetailStore.detail.title"></h3>
   <div
-    v-if="articleData.title && articleData.dateDisplay"
+    v-if="articleDetailStore.detail.dateDisplay"
     class="articleDate pb-4 text-[#999] text-center text-[14px] italic"
   >
-    {{ dayjs(articleData.date).format('YYYY-MM-DD ') }}
+    {{ dayjs(articleDetailStore.detail.date).format('YYYY-MM-DD ') }}
   </div>
-  <div v-loading="loading" class="articleDetails" v-html="articleData.body"></div>
-  <div v-show="articleData.title" class="back" @click="goBackOrHome">返回</div>
+  <div
+    v-loading="articleDetailStore.loading"
+    class="articleDetails"
+    v-html="articleDetailStore.detail.body"
+  ></div>
+  <div class="otherArticle">
+    <p v-if="articleDetailStore.detail.prevArticle">
+      上一篇：
+      <a :href="`./${articleDetailStore.detail.prevArticle._id}`">
+        {{ articleDetailStore.detail.prevArticle.title }}
+      </a>
+    </p>
+    <p v-if="articleDetailStore.detail.nextArticle">
+      下一篇：
+      <a :href="`./${articleDetailStore.detail.nextArticle._id}`">
+        {{ articleDetailStore.detail.nextArticle.title }}
+      </a>
+    </p>
+  </div>
+  <div v-show="articleDetailStore.detail.title" class="back" @click="goBackOrHome">返回</div>
 </template>
 
 <script lang="ts" setup>
-import { getArticleDetail } from '../http/api';
 import dayjs from 'dayjs';
 import Prism from 'prismjs'; // 代码高亮插件的core
 import 'prismjs/themes/prism-tomorrow.min.css'; // 高亮主题
-import { useMenuStore } from '../store/menuStore';
+import { useArticleDetailStore } from '../store/articleDetailStore';
 
-const menuStore = useMenuStore();
-
-type DetailType = {
-  body: string;
-  title: string;
-  date: string;
-  dateDisplay: boolean;
-};
-const articleData = ref<DetailType>({
-  body: '',
-  title: '',
-  date: '',
-  dateDisplay: true
-});
-const loading = ref<boolean>(false);
 const route = useRoute();
-let pageId = route.params.id as string;
-
-const fetchData = async () => {
-  // 这里要检查一下是否为单页面，有木有单页pageId
-  const menuObj = menuStore.menu.find((item) => `${item.path}` === route.path);
-  if (menuObj && menuObj.pageId) {
-    pageId = menuObj.pageId;
-  }
-  const res = await getArticleDetail(pageId);
-  articleData.value = res as unknown as DetailType;
-};
+const articleDetailStore = useArticleDetailStore();
 
 // SSR 数据预取
 onServerPrefetch(async () => {
-  await fetchData();
+  await articleDetailStore.fetchArticleDetail(route.params.id as string);
 });
 
 onMounted(async () => {
-  // const Prism = (await import('prismjs')).default;
-  // 代码高亮，仅在客户端执行
-  loading.value = true;
-  // nextTick(() => {
-  //   setTimeout(() => {
-
-  //   }, 800);
-  // });
-
-  watch(
-    () => menuStore.menu,
-    async (newMenu) => {
-      if (newMenu.length > 0) {
-        // await fetchData();
-        setTimeout(() => {
-          Prism.highlightAll();
-        });
-        loading.value = false;
-      }
-    },
-    { immediate: true }
-  );
+  if (articleDetailStore.detail && articleDetailStore.detail.title) {
+    Prism.highlightAll();
+  } else {
+    console.log('SSR 没有数据');
+    await articleDetailStore.fetchArticleDetail(route.params.id as string);
+  }
+  // watch(
+  //   () => articleDetailStore.detail,
+  //   async () => {
+  //     if (articleDetailStore.detail.title) {
+  //       setTimeout(() => {});
+  //     }
+  //   },
+  //   { immediate: true }
+  // );
 });
 
 const router = useRouter();
@@ -85,7 +70,7 @@ function goBackOrHome() {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .articleTitle {
   padding: 20px 0;
   font-size: 1.3rem;
@@ -111,7 +96,13 @@ function goBackOrHome() {
   ol,
   ul li,
   ol li {
-    list-style: auto;
+    padding-left: 17px;
+    list-style: decimal;
+  }
+}
+.otherArticle{
+  p{
+    margin-bottom: 20px;
   }
 }
 .back {
