@@ -159,6 +159,7 @@ nav {
     font-weight: 500;
     cursor: pointer;
     font-family: 'CustomFonts';
+    text-decoration: none;
   }
   .menu {
     display: flex;
