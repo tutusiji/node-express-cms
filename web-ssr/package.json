@@ -9,7 +9,7 @@
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build --ssrManifest --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.js --outDir dist/server",
-    "serve": "cross-env NODE_ENV=production node server-ssr",
+    "serve": "cross-env NODE_ENV=production nodemon server-ssr",
     "generate": "vite build --ssrManifest ssr-manifest.json --outDir dist/static && npm run build:server && node prerender",
     "preview": "npm run build && npm run serve",
     "deploy": "node ../staging/deploy.js"
@@ -19,6 +19,7 @@
     "dayjs": "^1.11.10",
     "element-plus": "^2.3.4",
     "jsdom": "^23.2.0",
+    "nodemon": "^3.0.2",
     "pinia": "2.0.22",
     "prismjs": "^1.29.0",
     "vue": "^3.2.47",

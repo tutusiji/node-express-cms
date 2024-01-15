@@ -65,7 +65,9 @@ onMounted(async () => {
     async (newMenu) => {
       if (newMenu.length > 0) {
         // await fetchData();
-        Prism.highlightAll();
+        setTimeout(() => {
+          Prism.highlightAll();
+        });
         loading.value = false;
       }
     },

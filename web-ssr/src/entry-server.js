@@ -45,11 +45,14 @@ export async function render(url, manifest) {
     await router.push(url);
     await router.isReady();
     const ctx = {};
-    const html = await renderToString(app, ctx);
+    const appHtml = await renderToString(app, ctx);
+    // console.log('ctx==========', app);
+    // 从组件上下文获取 articleList 的状态
     const preloadLinks = renderPreloadLinks(ctx.modules, manifest);
     const teleports = renderTeleports(ctx.teleports);
     const state = JSON.stringify(store.state.value);
-    return [html, state, preloadLinks, teleports];
+
+    return [appHtml, state, preloadLinks, teleports];
   } catch (error) {
     console.log(error);
   }
