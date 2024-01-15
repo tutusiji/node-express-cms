@@ -70,7 +70,7 @@ function goBackOrHome() {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .articleTitle {
   padding: 20px 0;
   font-size: 1.3rem;
