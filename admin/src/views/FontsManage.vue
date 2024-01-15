@@ -45,7 +45,7 @@
         <el-button type="primary" @click="getWords" :loading="fontStatus" plain
           >全站文本提取</el-button
         >
-        <el-button type="primary" @click="createFonts" :loading="fontStatus"
+        <el-button type="primary" @click="createFonts" :loading="tranStatus"
           >生成并部署字体包</el-button
         >
       </el-form-item>
@@ -59,6 +59,7 @@ export default {
     return {
       words: "",
       fontStatus: false,
+      tranStatus: false,
       fileList: [],
       current: 1,
       addwords: "0123456789.阅读全文 〈〉><《》Nno",
@@ -86,11 +87,11 @@ export default {
       console.log(res);
     },
     async createFonts() {
-      this.fontStatus = true;
+      this.tranStatus = true;
       const res = await this.$http.post("rest/sites/webFonts", {
         words: this.words,
       });
-      this.fontStatus = false;
+      this.tranStatus = false;
     },
     async fetchArticle(page = 1) {
       const res = await this.$http.post("rest/articles/list", {
