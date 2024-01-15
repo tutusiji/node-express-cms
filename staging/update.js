@@ -35,7 +35,7 @@ router.post("/deploy", async (ctx, next) => {
       }else{
         // 重新启动服务端的PM2进程
         await execShellCommand(
-          "NODE_ENV=production pm2 start server/index.js",
+          "NODE_ENV=production pm2 restart server/index.js",
           "/var/www/node-express-blog"
         );
       }
