@@ -45,7 +45,7 @@
         <el-button type="primary" @click="getWords" :loading="fontStatus" plain
           >全站文本提取</el-button
         >
-        <el-button type="primary" @click="createFonts"
+        <el-button type="primary" @click="createFonts" :loading="fontStatus"
           >生成并部署字体包</el-button
         >
       </el-form-item>
@@ -86,9 +86,11 @@ export default {
       console.log(res);
     },
     async createFonts() {
+      this.fontStatus = true;
       const res = await this.$http.post("rest/sites/webFonts", {
         words: this.words,
       });
+      this.fontStatus = false;
     },
     async fetchArticle(page = 1) {
       const res = await this.$http.post("rest/articles/list", {
