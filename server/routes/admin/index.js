@@ -3,6 +3,7 @@ module.exports = (app) => {
   const jwt = require("jsonwebtoken");
   const assert = require("http-assert");
   const request = require("request");
+  const multer = require("multer");
   // const OpenAI = require("openai");
   const AdminUser = require("../../models/AdminUser");
 
@@ -18,6 +19,7 @@ module.exports = (app) => {
 
   // 创建分类
   router.post("/", async (req, res) => {
+    console.log(req.body);
     const model = await req.Model.create(req.body);
     res.send(model);
   });
@@ -45,6 +47,40 @@ module.exports = (app) => {
     }
     const items = await req.Model.find().setOptions(queryOptions).limit(100);
     res.send(items);
+  });
+
+  // 站点信息 创建或更新
+  router.post("/webInfo", async (req, res) => {
+    try {
+      // 尝试找到现有的站点信息，如果不存在则创建一个新的
+      const siteInfo = await req.Model.findOneAndUpdate({}, req.body, {
+        upsert: true, //在没有找到匹配的记录时会创建一个新记录
+        new: true, //并且返回更新后的对象
+      });
+      res.send(siteInfo);
+    } catch (error) {
+      // 错误处理
+      res
+        .status(500)
+        .send({ message: "Error updating site information", error });
+    }
+  });
+
+  // 获取站点信息的接口
+  router.get("/webInfo", async (req, res) => {
+    try {
+      const siteInfo = await req.Model.findOne({});
+      if (!siteInfo) {
+        // 如果没有找到站点信息，返回404错误
+        return res.status(404).send({ message: "没有找到站点信息." });
+      }
+      res.send(siteInfo);
+    } catch (error) {
+      // 错误处理
+      res
+        .status(500)
+        .send({ message: "Error retrieving site information", error });
+    }
   });
 
   // 带分页的文章 articles 列表
@@ -176,6 +212,56 @@ module.exports = (app) => {
     }
   });
 
+  // 字体包 生成
+  // import Fontmin from "fontmin";
+  const Fontmin = require("fontmin");
+  const localTTFPath = path.join(
+    __dirname,
+    "..",
+    "..",
+    "uploads/CustomFonts.ttf"
+  );
+  const destPath = path.join(
+    __dirname,
+    "..",
+    "..",
+    "..",
+    "web-ssr/src/assets/fonts"
+  );
+  // console.log(localTTFPath);
+  // console.log(destPath);
+  router.post("/webFonts", async (req, res) => {
+    const words = req.body.words;
+    // console.log(words);
+    try {
+      const fontmin = new Fontmin()
+        .src(localTTFPath)
+        .dest(destPath)
+        // .use(Fontmin.ttf2svg()) // 转换为 WOFF 格式
+        .use(
+          Fontmin.glyph({
+            text: words,
+            hinting: false, // keep ttf hint info (fpgm, prep, cvt). default = true
+          })
+        );
+      fontmin.run(function (err, files) {
+        if (err) {
+          console.error(err);
+          return res
+            .status(500)
+            .send({ message: "Error 字体包生成", error: err });
+        }
+
+        // console.log(files[0]);
+        // => { contents: <Buffer 00 01 00 ...> }
+        res.send({ message: "fonts ok" });
+      });
+    } catch (error) {
+      // 错误处理
+      res.status(500).send({ message: "Error 字体包生成", error });
+    }
+  });
+
   app.use(
     "/admin/api/rest/:resource",
     authMiddleware(),
@@ -196,7 +282,39 @@ module.exports = (app) => {
   //     res.send(file);
   //   }
   // );
-  const multer = require("multer");
+
+  //  字体包文件上传
+  //__dirname 绝对地址
+
+  // 设置 Multer 存储引擎
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      // 设置文件存储位置
+      cb(null, path.posix.join(__dirname, "..", "uploads"));
+    },
+    filename: function (req, file, cb) {
+      // 保持原始文件名
+      // cb(null, file.originalname);
+      cb(null, "CustomFonts.ttf");
+    },
+  });
+  const uploadFonts = multer({ storage: storage }).single("file");
+
+  app.post(
+    "/admin/api/uploadFonts",
+    authMiddleware(),
+    uploadFonts,
+    async (req, res) => {
+      const file = req.file;
+      // console.log("__dirname=====", __dirname);
+      // 更新文件 URL
+      file.url = `${req.protocol}://${req.get("host")}/uploads/${
+        file.originalname
+      }`;
+      res.send(file);
+    }
+  );
+
   const MAO = require("multer-aliyun-oss");
   const {
     region,

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-console.log(import.meta.env);
+// console.log(import.meta.env);
 const service = axios.create({
   // baseURL: 'http://localhost:3000/web/api',
   baseURL: import.meta.env.VITE_BASE_URL,

@@ -2,7 +2,7 @@
   <section class="wrap flex">
     <nav>
       <div class="content">
-        <div class="logo" @click="$router.push(`/`)">Tuziki的个人记录</div>
+        <div class="logo" @click="$router.push(`/`)">{{ siteStore.info.title }}</div>
         <ul class="menu">
           <li
             v-for="item of menuStore.menu"
@@ -22,22 +22,24 @@
         </ul>
       </div>
     </nav>
-    <header class="header">
+    <header class="header" :style="`background-image:url(${siteStore.info.banner});`">
       <div class="content">
-        <div class="solgen">乘风破浪 激流勇进</div>
+        <div class="slogan">{{ siteStore.info.slogan }}</div>
       </div>
     </header>
     <div class="main">
       <div class="container">
-        <div v-if="$route.path === '/'" class="welcome">你好！欢迎来看Tuziki !</div>
+        <div v-if="$route.path === '/'" class="welcome">{{ siteStore.info.welcome }}</div>
         <router-view :key="$route.path" />
       </div>
     </div>
     <footer class="flex p-[20px]">
       <div class="copyright">
         <!-- <p>make by node express mongodb vue3 vite tailwind</p> -->
-        <p>make by expressjs</p>
-        <span><a href="http://beian.miit.gov.cn/" target="_blank">粤ICP备14062482号</a> </span>
+        <p>{{ siteStore.info.coryright }}</p>
+        <span
+          ><a href="http://beian.miit.gov.cn/" target="_blank">{{ siteStore.info.beian }}</a>
+        </span>
       </div>
     </footer>
   </section>
@@ -45,7 +47,9 @@
 
 <script lang="ts" setup>
 import { useMenuStore } from '../store/menuStore';
+import { useSiteStore } from '../store/siteStore';
 const menuStore = useMenuStore();
+const siteStore = useSiteStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -60,9 +64,15 @@ onMounted(async () => {
     },
     { immediate: true }
   );
+  const faviconLink = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
+
+  if (faviconLink && siteStore.info.icon) {
+    faviconLink.href = siteStore.info.icon;
+  }
 });
 
 onServerPrefetch(async () => {
+  await siteStore.fetchSiteInfo();
   await menuStore.fetchMenu();
 });
 
@@ -109,30 +119,14 @@ const switchTabTo = (item: itemType) => {
 
 <style scoped lang="scss">
 @font-face {
-  font-family: 'TencentSansW7';
-  src: url('../assets/fonts/TencentSansW7.eot'); /* IE9 */
-  src: url('../assets/fonts/TencentSansW7.eot?#iefix') format('embedded-opentype'),
-    /* IE6-IE8 */ url('../assets/fonts/TencentSansW7.woff') format('woff'),
-    /* chrome、firefox */ url('../assets/fonts/TencentSansW7.ttf') format('truetype'),
-    /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
-      url('../assets/fonts/TencentSansW7.svg#TencentSansW7') format('svg'); /* iOS 4.1- */
-  font-style: normal;
-  font-weight: normal;
-}
-@font-face {
-  font-family: 'TencentEngStr';
-  src: url('../assets/fonts/TencentEngStr.eot'); /* IE9 */
-  src: url('../assets/fonts/TencentEngStr.eot?#iefix') format('embedded-opentype'),
-    /* IE6-IE8 */ url('../assets/fonts/TencentEngStr.woff') format('woff'),
-    /* chrome、firefox */ url('../assets/fonts/TencentEngStr.ttf') format('truetype'),
-    /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
-      url('../assets/fonts/TencentEngStr.svg#TencentEngStr') format('svg'); /* iOS 4.1- */
+  font-family: 'CustomFonts';
+  src: url('../assets/fonts/CustomFonts.ttf') format('truetype');
   font-style: normal;
   font-weight: normal;
 }
 
 .welcome {
-  font-family: 'TencentSansW7';
+  font-family: 'CustomFonts';
   padding: 10px;
 }
 .wrap {
@@ -163,7 +157,7 @@ nav {
     font-size: 1.1rem;
     font-weight: 500;
     cursor: pointer;
-    font-family: 'TencentSansW7';
+    font-family: 'CustomFonts';
   }
   .menu {
     display: flex;
@@ -174,7 +168,7 @@ nav {
       white-space: nowrap;
       padding: 1rem;
       font-size: 0.9rem;
-      font-family: 'TencentSansW7';
+      font-family: 'CustomFonts';
       &.current {
         // border-bottom: 1px solid rgba($color: #000000, $alpha: 0.8);
       }
@@ -199,7 +193,7 @@ header {
   background-attachment: scroll;
   position: relative;
   background-size: cover;
-  background-image: url('//hkroom.oss-cn-shenzhen.aliyuncs.com/bg.jpg');
+  // background-image: url('//hkroom.oss-cn-shenzhen.aliyuncs.com/bg.jpg');
   background-repeat: no-repeat;
   &::before {
     content: '';
@@ -217,7 +211,7 @@ header {
     max-width: 1064px;
     padding: 100px 0;
   }
-  .solgen {
+  .slogan {
     position: relative;
     display: flex;
     align-items: center;
@@ -226,7 +220,7 @@ header {
     font-weight: 300;
     color: #fff;
     text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
-    font-family: 'TencentSansW7';
+    font-family: 'CustomFonts';
   }
 }
 .container {
@@ -268,7 +262,7 @@ ul.articleList {
       border-bottom: none;
     }
     .num {
-      font-family: 'TencentSansW7';
+      font-family: 'CustomFonts';
       margin-right: 1.3rem;
     }
     .info {
@@ -285,9 +279,8 @@ ul.articleList {
           font-size: 1.2rem;
           font-weight: bold;
           word-break: break-all;
-          color: #34538b;
-          font-family: TencentEngStr, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC,
-            Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
+          color: #0d6fa1; // 34538b
+          font-family: 'CustomFonts';
         }
         .summary {
           font-size: 0.9rem;
@@ -298,7 +291,7 @@ ul.articleList {
           color: #81ccf1;
           color: #5bbded;
           // text-decoration: underline;
-          font-family: 'TencentSansW7';
+          font-family: 'CustomFonts';
           white-space: nowrap;
         }
       }
@@ -307,7 +300,7 @@ ul.articleList {
         margin-left: 2rem;
         font-size: 0.8rem;
         color: #c5c5c5;
-        font-family: 'TencentSansW7';
+        font-family: 'CustomFonts';
         b {
           display: block;
           text-align: right;

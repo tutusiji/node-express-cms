@@ -14,6 +14,8 @@ import AdsEdit from "../views/AdsEdit.vue";
 import AdsList from "../views/AdsList.vue";
 import AdminUserEdit from "../views/AdminUserEdit.vue";
 import AdminUserList from "../views/AdminUserList.vue";
+import FontsManage from "../views/FontsManage.vue";
+import SiteManage from "../views/SiteManage.vue";
 
 Vue.use(VueRouter);
 
@@ -82,6 +84,14 @@ const routes = [
       {
         path: "/articles/list",
         component: ArticleList,
+      },
+      {
+        path: "/fontsManage",
+        component: FontsManage,
+      },
+      {
+        path: "/siteManage",
+        component: SiteManage,
       },
       {
         path: "/ads/create",

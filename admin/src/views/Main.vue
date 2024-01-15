@@ -1,9 +1,9 @@
 <template>
   <el-container style="border: 1px solid #eee;height: 100vh">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+      <!-- :default-openeds="['1']" -->
       <el-menu
         router
-        :default-openeds="['1']"
         unique-opened
         :default-active="$route.path"
       >
@@ -37,7 +37,7 @@
         </el-submenu>
         <el-submenu index="3">
           <template slot="title"
-            ><i class="el-icon-setting"></i>系统设置</template
+          ><i class="el-icon-setting"></i>系统设置</template
           >
           <el-menu-item-group>
             <template slot="title"><h3 class="subtitle">分类</h3></template>
@@ -48,6 +48,8 @@
             <template slot="title"><h3 class="subtitle">管理员</h3></template>
             <el-menu-item index="/admin_users/create">新建管理员</el-menu-item>
             <el-menu-item index="/admin_users/list">管理员列表</el-menu-item>
+            <el-menu-item index="/fontsManage">字体管理</el-menu-item>
+            <el-menu-item index="/siteManage">站点管理</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>

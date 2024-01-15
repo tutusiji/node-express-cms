@@ -374,3 +374,6 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 
 @lastest: 
 Tuziki的个人记录泛技术小项目关于乘风破浪激流勇进你好！欢迎来看Tuziki !No.1234567890-阅读全文 >>》？?&%#@~*()+,，。._——qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM
+
+英文及字符：
+！!-<>》？?&%#@~*()+,，。.=_——`·1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM{}【】[]<>/|\$^、〉〈"'“”；:

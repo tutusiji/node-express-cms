@@ -16,12 +16,21 @@ export async function blogList(data: BlogListParams) {
     data
   });
 }
+
 // 获取用户信息
 export function blogMenu(data: BlogListParams) {
   return request({
     url: '/blog/menu',
     method: 'post',
     data
+  });
+}
+
+// 获取用户信息
+export function siteInfo() {
+  return request({
+    url: '/site/webInfo',
+    method: 'get'
   });
 }
 

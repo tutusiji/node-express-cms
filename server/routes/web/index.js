@@ -4,6 +4,7 @@ module.exports = (app) => {
   // const Article = require('../../models/Article')
   const Category = mongoose.model("Category");
   const Article = mongoose.model("Article");
+  const Site = mongoose.model("Site");
   const Hero = mongoose.model("Hero");
   const dayjs = require("dayjs");
 
@@ -184,6 +185,23 @@ module.exports = (app) => {
       });
     } catch (error) {
       res.status(500).send({ error: error.message });
+    }
+  });
+
+  // 获取站点信息的接口
+  router.get("/site/webInfo", async (req, res) => {
+    try {
+      const siteInfo = await Site.findOne({});
+      if (!siteInfo) {
+        // 如果没有找到站点信息，返回404错误
+        return res.status(404).send({ message: "没有找到站点信息." });
+      }
+      res.send(siteInfo);
+    } catch (error) {
+      // 错误处理
+      res
+        .status(500)
+        .send({ message: "Error retrieving site information", error });
     }
   });
 
