@@ -279,7 +279,7 @@ module.exports = (app) => {
               "/var/www/node-express-blog/web-ssr"
             );
 
-            res.send({ message: "Fonts processed and server restarted." });
+            res.send({ message: "Fonts processed and ssr server restarted." });
           } catch (error) {
             res
               .status(500)
@@ -289,7 +289,6 @@ module.exports = (app) => {
 
         // console.log(files[0]);
         // => { contents: <Buffer 00 01 00 ...> }
-        res.send({ message: "fonts ok and ssr rebuild" });
       });
     } catch (error) {
       // 错误处理
