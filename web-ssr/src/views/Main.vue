@@ -49,10 +49,10 @@
 <script lang="ts" setup>
 import { useMenuStore } from '../store/menuStore';
 import { useSiteStore } from '../store/siteStore';
-import { useArticleStore } from '../store/artcleStore';
+// import { useArticleStore } from '../store/artcleStore';
 // import { useArticleDetailStore } from '../store/articleDetailStore';
 // const articleDetailStore = useArticleDetailStore();
-const articleStore = useArticleStore();
+// const articleStore = useArticleStore();
 const menuStore = useMenuStore();
 const siteStore = useSiteStore();
 const route = useRoute();
@@ -107,11 +107,6 @@ const switchTabTo = async (item: itemType) => {
   router.afterEach(() => {
     nextTick(() => {
       getStyle();
-      // 检查是否为单页面
-      const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
-      if (currentMenu && !currentMenu.pageId) {
-        articleStore.fetchArticles(currentMenu.name, articleStore.currentPage, 10);
-      }
       // console.log(1);
     });
   });

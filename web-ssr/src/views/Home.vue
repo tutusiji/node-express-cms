@@ -50,10 +50,19 @@ onServerPrefetch(async () => {
   }
 });
 
+// 改变路由清空数据
+const router = useRouter();
+router.beforeEach(() => {
+  articleStore.list = [];
+  articleStore.currentPage = 1;
+  articleStore.totalItems = 0;
+});
+
 onMounted(() => {
   const currentPage = Number(sessionStorage.getItem('currentPage')) || 1;
   // 如果没有服务器端数据，则正常获取数据
   if (!articleStore.list.length) {
+    console.log('article list 没有数据');
     const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
     if (currentMenu) {
       articleStore.fetchArticles(currentMenu.name, currentPage, 10);

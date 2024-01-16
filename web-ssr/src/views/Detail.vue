@@ -11,7 +11,7 @@
     class="articleDetails"
     v-html="articleDetailStore.detail.body"
   ></div>
-  <div class="otherArticle">
+  <div v-if="articleDetailStore.detail && articleDetailStore.detail.title" class="otherArticle">
     <p v-if="articleDetailStore.detail.prevArticle">
       上一篇：
       <a :href="`./${articleDetailStore.detail.prevArticle._id}`">
@@ -47,6 +47,7 @@ onServerPrefetch(async () => {
   await articleDetailStore.fetchArticleDetail(pageId);
 });
 
+// 改变路由清空数据
 const router = useRouter();
 router.beforeEach(() => {
   articleDetailStore.detail = {
