@@ -49,14 +49,13 @@ onServerPrefetch(async () => {
     await articleStore.fetchArticles(currentMenu.name, articleStore.currentPage, 10);
   }
 });
-
 // 改变路由清空数据
-const router = useRouter();
-router.afterEach(() => {
-  articleStore.list = [];
-  articleStore.currentPage = 1;
-  articleStore.totalItems = 0;
-});
+// const router = useRouter();
+// router.beforeEach(() => {
+//   articleStore.list = [];
+//   articleStore.currentPage = 1;
+//   articleStore.totalItems = 0;
+// });
 
 onMounted(() => {
   const currentPage = Number(sessionStorage.getItem('currentPage')) || 1;

@@ -110,11 +110,9 @@ const switchTabTo = async (item: itemType) => {
     });
   });
   router.beforeEach(() => {
-    nextTick(() => {
-      articleStore.list = [];
-      articleStore.currentPage = 1;
-      articleStore.totalItems = 0;
-    });
+    articleStore.list = [];
+    articleStore.currentPage = 1;
+    articleStore.totalItems = 0;
     articleDetailStore.detail = {
       body: '',
       title: '',
