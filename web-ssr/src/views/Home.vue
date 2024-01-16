@@ -52,7 +52,7 @@ onServerPrefetch(async () => {
 
 // 改变路由清空数据
 const router = useRouter();
-router.beforeEach(() => {
+router.afterEach(() => {
   articleStore.list = [];
   articleStore.currentPage = 1;
   articleStore.totalItems = 0;
