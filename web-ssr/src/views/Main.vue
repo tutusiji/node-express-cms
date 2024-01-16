@@ -50,6 +50,8 @@
 import { useMenuStore } from '../store/menuStore';
 import { useSiteStore } from '../store/siteStore';
 import { useArticleStore } from '../store/artcleStore';
+// import { useArticleDetailStore } from '../store/articleDetailStore';
+// const articleDetailStore = useArticleDetailStore();
 const articleStore = useArticleStore();
 const menuStore = useMenuStore();
 const siteStore = useSiteStore();

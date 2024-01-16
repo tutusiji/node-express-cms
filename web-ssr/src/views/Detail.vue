@@ -42,17 +42,27 @@ const menuStore = useMenuStore();
 onServerPrefetch(async () => {
   // 检查是否为单页面 获取id
   const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
-  let pageId;
-  if (currentMenu && currentMenu.pageId) {
-    pageId = currentMenu.pageId;
-  }
-  pageId = route.params.id as string;
+  const pageId =
+    currentMenu && currentMenu.pageId ? currentMenu.pageId : (route.params.id as string);
   await articleDetailStore.fetchArticleDetail(pageId);
+});
+
+const router = useRouter();
+router.beforeEach(() => {
+  articleDetailStore.detail = {
+    body: '',
+    title: '',
+    date: '',
+    dateDisplay: false,
+    prevArticle: { _id: '', title: '' },
+    nextArticle: { _id: '', title: '' }
+  };
 });
 
 onMounted(async () => {
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
-    // Prism.highlightAll();
+    Prism.highlightAll();
+    console.log('SSR 有数据 Detail');
   } else {
     console.log('SSR 没有数据 Detail');
     // 检查是否为单页面 获取id
@@ -73,7 +83,6 @@ onMounted(async () => {
   // );
 });
 
-const router = useRouter();
 function goBackOrHome() {
   if (window.history.length > 1) {
     router.go(-1);
