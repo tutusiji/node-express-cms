@@ -176,13 +176,16 @@ module.exports = (app) => {
       // limit: 每页的条目数。
       // totalItems: 总条目数。
       // totalPages: 总页数。
-      res.send({
+      const response = {
         list: result.length > 0 ? result[0].list : [],
         currentPage: pageNumber,
         limit: limitNumber,
         totalItems: totalCount,
+        category: categoryName,
         totalPages: Math.ceil(totalCount / limitNumber),
-      });
+      };
+      // console.log("response======)", response);
+      res.send(response);
     } catch (error) {
       res.status(500).send({ error: error.message });
     }

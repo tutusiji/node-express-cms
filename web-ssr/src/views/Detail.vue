@@ -33,21 +33,34 @@ import dayjs from 'dayjs';
 import Prism from 'prismjs'; // 代码高亮插件的core
 import 'prismjs/themes/prism-tomorrow.min.css'; // 高亮主题
 import { useArticleDetailStore } from '../store/articleDetailStore';
-
+import { useMenuStore } from '../store/menuStore';
 const route = useRoute();
 const articleDetailStore = useArticleDetailStore();
+const menuStore = useMenuStore();
 
 // SSR 数据预取
 onServerPrefetch(async () => {
-  await articleDetailStore.fetchArticleDetail(route.params.id as string);
+  // 检查是否为单页面 获取id
+  const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+  let pageId;
+  if (currentMenu && currentMenu.pageId) {
+    pageId = currentMenu.pageId;
+  }
+  pageId = route.params.id as string;
+  await articleDetailStore.fetchArticleDetail(pageId);
 });
 
 onMounted(async () => {
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
-    Prism.highlightAll();
+    // Prism.highlightAll();
   } else {
-    console.log('SSR 没有数据');
-    await articleDetailStore.fetchArticleDetail(route.params.id as string);
+    console.log('SSR 没有数据 Detail');
+    // 检查是否为单页面 获取id
+    const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+    const pageId =
+      currentMenu && currentMenu.pageId ? currentMenu.pageId : (route.params.id as string);
+    await articleDetailStore.fetchArticleDetail(pageId);
+    Prism.highlightAll();
   }
   // watch(
   //   () => articleDetailStore.detail,
@@ -100,9 +113,9 @@ function goBackOrHome() {
     list-style: decimal;
   }
 }
-.otherArticle{
+.otherArticle {
   margin-top: 40px;
-  p{
+  p {
     margin-bottom: 20px;
   }
 }

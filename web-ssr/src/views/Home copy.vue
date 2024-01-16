@@ -89,21 +89,21 @@ onMounted(() => {
     // 如果没有服务器端数据，则正常获取数据
     fetchData();
   }
-  // loading.value = true;
-  // watch(
-  //   () => menuStore.menu,
-  //   async (newMenu) => {
-  //     // console.log('newMenu', newMenu);
-  //     if (newMenu.length > 0) {
-  //       if (articleList.value.length > 0) {
-  //         // loading.value = false;
-  //       } else {
-  //         // await fetchData();
-  //       }
-  //     }
-  //   },
-  //   { immediate: true }
-  // );
+  loading.value = true;
+  watch(
+    () => menuStore.menu,
+    async (newMenu) => {
+      // console.log('newMenu', newMenu);
+      if (newMenu.length > 0) {
+        if (articleList.value.length > 0) {
+          loading.value = false;
+        } else {
+          await fetchData();
+        }
+      }
+    },
+    { immediate: true }
+  );
 });
 
 const handleCurrentChange = (val: any) => {

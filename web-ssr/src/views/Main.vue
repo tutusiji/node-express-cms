@@ -29,7 +29,8 @@
     </header>
     <div class="main">
       <div class="container">
-        <div v-if="$route.path === '/'" class="welcome">{{ siteStore.info.welcome }}</div>
+        <!-- v-if="$route.path === '/'" -->
+        <div class="welcome">{{ siteStore.info.welcome }}</div>
         <router-view :key="$route.path" />
       </div>
     </div>
@@ -37,7 +38,8 @@
       <div class="copyright">
         <!-- <p>make by node express mongodb vue3 vite tailwind</p> -->
         <p>{{ siteStore.info.coryright }}</p>
-        <span><a href="http://beian.miit.gov.cn/" target="_blank">{{ siteStore.info.beian }}</a>
+        <span
+          ><a href="http://beian.miit.gov.cn/" target="_blank">{{ siteStore.info.beian }}</a>
         </span>
       </div>
     </footer>
@@ -47,6 +49,8 @@
 <script lang="ts" setup>
 import { useMenuStore } from '../store/menuStore';
 import { useSiteStore } from '../store/siteStore';
+import { useArticleStore } from '../store/artcleStore';
+const articleStore = useArticleStore();
 const menuStore = useMenuStore();
 const siteStore = useSiteStore();
 const route = useRoute();
@@ -92,14 +96,20 @@ type itemType = {
   path: string;
 };
 
-const switchTabTo = (item: itemType) => {
+const switchTabTo = async (item: itemType) => {
   if (item.path !== route.path) {
     sessionStorage.setItem('currentPage', '1');
   }
   router.push(`${item.path}`);
+
   router.afterEach(() => {
     nextTick(() => {
       getStyle();
+      // 检查是否为单页面
+      const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+      if (currentMenu && !currentMenu.pageId) {
+        articleStore.fetchArticles(currentMenu.name, articleStore.currentPage, 10);
+      }
       // console.log(1);
     });
   });

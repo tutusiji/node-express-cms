@@ -52,15 +52,25 @@ onServerPrefetch(async () => {
 
 onMounted(() => {
   const currentPage = Number(sessionStorage.getItem('currentPage')) || 1;
+  // 如果没有服务器端数据，则正常获取数据
   if (!articleStore.list.length) {
     const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
     if (currentMenu) {
       articleStore.fetchArticles(currentMenu.name, currentPage, 10);
     }
   }
-  // 如果没有服务器端数据，则正常获取数据
   articleStore.currentPage = currentPage;
 });
+// 在客户端，监听路由变化并重新加载数据
+// watch(route, (to, from) => {
+//   console.log(to.path, from.path);
+//   if (to.path !== from.path) {
+//     const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+//     if (currentMenu) {
+//       articleStore.fetchArticles(currentMenu.name, 1, 10);
+//     }
+//   }
+// });
 
 const handleCurrentChange = (val: any) => {
   articleStore.currentPage = val;
