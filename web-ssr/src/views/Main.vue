@@ -107,11 +107,11 @@ const switchTabTo = async (item: itemType) => {
   router.afterEach(async () => {
     nextTick(() => {
       getStyle();
+      const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+      if (currentMenu && !currentMenu.pageId) {
+        articleStore.fetchArticles(currentMenu.name, articleStore.currentPage, 10);
+      }
     });
-    const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
-    if (currentMenu && !currentMenu.pageId) {
-      articleStore.fetchArticles(currentMenu.name, articleStore.currentPage, 10);
-    }
   });
   router.beforeEach(() => {
     articleDetailStore.detail = {
