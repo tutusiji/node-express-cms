@@ -326,7 +326,7 @@ module.exports = (app) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       // 设置文件存储位置
-      cb(null, path.posix.join(__dirname, "..", "uploads"));
+      cb(null, path.join(__dirname, "..", "..", "uploads"));
     },
     filename: function (req, file, cb) {
       // 保持原始文件名
