@@ -11,7 +11,7 @@
     class="articleDetails"
     v-html="articleDetailStore.detail.body"
   ></div>
-  <div v-if="route.params.id" class="otherArticle">
+  <div v-if="route.params.id && articleDetailStore.detail.title" class="otherArticle">
     <p v-if="articleDetailStore.detail.prevArticle">
       上一篇：
       <a :href="`./${articleDetailStore.detail.prevArticle._id}`">
