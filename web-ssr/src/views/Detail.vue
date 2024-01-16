@@ -63,15 +63,6 @@ onMounted(async () => {
     await articleDetailStore.fetchArticleDetail(pageId);
     Prism.highlightAll();
   }
-  // watch(
-  //   () => articleDetailStore.detail,
-  //   async () => {
-  //     if (articleDetailStore.detail.title) {
-  //       setTimeout(() => {});
-  //     }
-  //   },
-  //   { immediate: true }
-  // );
 });
 
 function goBackOrHome() {
