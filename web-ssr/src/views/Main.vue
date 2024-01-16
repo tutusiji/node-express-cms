@@ -49,10 +49,10 @@
 <script lang="ts" setup>
 import { useMenuStore } from '../store/menuStore';
 import { useSiteStore } from '../store/siteStore';
-// import { useArticleStore } from '../store/artcleStore';
-// import { useArticleDetailStore } from '../store/articleDetailStore';
-// const articleDetailStore = useArticleDetailStore();
-// const articleStore = useArticleStore();
+import { useArticleStore } from '../store/artcleStore';
+import { useArticleDetailStore } from '../store/articleDetailStore';
+const articleDetailStore = useArticleDetailStore();
+const articleStore = useArticleStore();
 const menuStore = useMenuStore();
 const siteStore = useSiteStore();
 const route = useRoute();
@@ -107,8 +107,22 @@ const switchTabTo = async (item: itemType) => {
   router.afterEach(() => {
     nextTick(() => {
       getStyle();
-      // console.log(1);
     });
+  });
+  router.beforeEach(() => {
+    nextTick(() => {
+      articleStore.list = [];
+      articleStore.currentPage = 1;
+      articleStore.totalItems = 0;
+    });
+    articleDetailStore.detail = {
+      body: '',
+      title: '',
+      date: '',
+      dateDisplay: false,
+      prevArticle: { _id: '', title: '' },
+      nextArticle: { _id: '', title: '' }
+    };
   });
 
   // setTimeout(() => {
