@@ -58,7 +58,7 @@ onServerPrefetch(async () => {
 // });
 
 onMounted(() => {
-  console.log(route);
+  // console.log(route);
   const currentPage = Number(sessionStorage.getItem('currentPage')) || 1;
   // 如果没有服务器端数据，则正常获取数据
   if (!articleStore.list.length) {
