@@ -25,7 +25,7 @@
       </a>
     </p>
   </div>
-  <div v-if="route.params.id" class="back" @click="router.push(`/${route.params.type}`)">
+  <div v-if="route.params.id && articleDetailStore.detail.title" class="back" @click="router.push(`/${route.params.type}`)">
     返回列表
   </div>
   <div v-else class="back" @click="router.push(`/`)">返回首页</div>
