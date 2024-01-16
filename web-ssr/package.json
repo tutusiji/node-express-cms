@@ -1,5 +1,5 @@
 {
-  "name": "vue3-ts-vite-ssr-starter",
+  "name": "vue3-ts-vite-ssr",
   "version": "3.0.0",
   "description": "Use vue3 vite typescript eslint SSR vuex vue-router element-plus scss",
   "author": "vok123",

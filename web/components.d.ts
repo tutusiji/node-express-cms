@@ -7,12 +7,12 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Detail: typeof import('./src/components/Detail.vue')['default']
-    ElPagination: typeof import('element-plus/es')['ElPagination']
-    Home: typeof import('./src/components/Home.vue')['default']
-    Main: typeof import('./src/components/Main.vue')['default']
-    RouterLink: typeof import('vue-router')['RouterLink']
-    RouterView: typeof import('vue-router')['RouterView']
+    Article: typeof import("./src/components/Article.vue")["default"];
+    ElPagination: typeof import("element-plus/es")["ElPagination"];
+    Home: typeof import("./src/components/Home.vue")["default"];
+    Main: typeof import("./src/components/Main.vue")["default"];
+    RouterLink: typeof import("vue-router")["RouterLink"];
+    RouterView: typeof import("vue-router")["RouterView"];
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

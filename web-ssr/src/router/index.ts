@@ -31,9 +31,9 @@ const routes = [
         component: () => import('../views/Home.vue')
       },
       {
-        path: '/detail/:id',
-        name: 'detail',
-        component: () => import('../views/Detail.vue')
+        path: '/article/:id',
+        name: 'article',
+        component: () => import('../views/Article.vue')
       },
       {
         path: '/project',
@@ -43,7 +43,7 @@ const routes = [
       {
         path: '/about',
         name: 'about',
-        component: () => import('../views/Detail.vue')
+        component: () => import('../views/Article.vue')
       }
     ]
   }
