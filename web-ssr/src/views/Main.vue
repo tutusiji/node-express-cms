@@ -49,9 +49,9 @@
 <script lang="ts" setup>
 import { useMenuStore } from '../store/menuStore';
 import { useSiteStore } from '../store/siteStore';
-import { useArticleStore } from '../store/artcleStore';
 import { useArticleDetailStore } from '../store/articleDetailStore';
 const articleDetailStore = useArticleDetailStore();
+import { useArticleStore } from '../store/artcleStore';
 const articleStore = useArticleStore();
 const menuStore = useMenuStore();
 const siteStore = useSiteStore();
@@ -107,13 +107,17 @@ const switchTabTo = async (item: itemType) => {
   router.afterEach(async () => {
     nextTick(() => {
       getStyle();
-      const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
-      if (currentMenu && !currentMenu.pageId) {
-        articleStore.fetchArticles(currentMenu.name, articleStore.currentPage, 10);
-      }
+      // const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+      // if (currentMenu && !currentMenu.pageId) {
+      //   articleStore.fetchArticles(currentMenu.name, articleStore.currentPage, 10);
+      // }
     });
   });
   router.beforeEach(() => {
+    articleStore.list = [];
+    articleStore.currentPage = 1;
+    articleStore.totalItems = 0;
+
     articleDetailStore.detail = {
       body: '',
       title: '',
