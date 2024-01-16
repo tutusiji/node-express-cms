@@ -11,24 +11,26 @@
     class="articleDetails"
     v-html="articleDetailStore.detail.body"
   ></div>
-  <div v-if="route.params.id && articleDetailStore.detail.title" class="otherArticle">
-    <p v-if="articleDetailStore.detail.prevArticle">
-      上一篇：
-      <a :href="`./${articleDetailStore.detail.prevArticle._id}`">
-        {{ articleDetailStore.detail.prevArticle.title }}
-      </a>
-    </p>
-    <p v-if="articleDetailStore.detail.nextArticle">
-      下一篇：
-      <a :href="`./${articleDetailStore.detail.nextArticle._id}`">
-        {{ articleDetailStore.detail.nextArticle.title }}
-      </a>
-    </p>
-  </div>
-  <div v-if="route.params.id && articleDetailStore.detail.title" class="back" @click="router.push(`/${route.params.type}`)">
-    返回列表
-  </div>
-  <div v-else class="back" @click="router.push(`/`)">返回首页</div>
+  <template v-if="articleDetailStore.detail.title">
+    <div v-if="route.params.id" class="otherArticle">
+      <p v-if="articleDetailStore.detail.prevArticle">
+        上一篇：
+        <a :href="`./${articleDetailStore.detail.prevArticle._id}`">
+          {{ articleDetailStore.detail.prevArticle.title }}
+        </a>
+      </p>
+      <p v-if="articleDetailStore.detail.nextArticle">
+        下一篇：
+        <a :href="`./${articleDetailStore.detail.nextArticle._id}`">
+          {{ articleDetailStore.detail.nextArticle.title }}
+        </a>
+      </p>
+    </div>
+    <div v-if="route.params.id" class="back" @click="router.push(`/${route.params.type}`)">
+      返回列表
+    </div>
+    <div v-else class="back" @click="router.push(`/`)">返回首页</div>
+  </template>
 </template>
 
 <script lang="ts" setup>
