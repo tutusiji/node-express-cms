@@ -49,16 +49,6 @@ onServerPrefetch(async () => {
 
 // 改变路由清空数据
 const router = useRouter();
-// router.beforeEach(() => {
-//   articleDetailStore.detail = {
-//     body: '',
-//     title: '',
-//     date: '',
-//     dateDisplay: false,
-//     prevArticle: { _id: '', title: '' },
-//     nextArticle: { _id: '', title: '' }
-//   };
-// });
 
 onMounted(async () => {
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
