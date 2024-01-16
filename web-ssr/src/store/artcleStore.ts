@@ -38,7 +38,7 @@ export const useArticleStore = defineStore('articler', {
       try {
         this.loading = true;
         const res = (await blogList({
-          parentName: '博客文章',
+          parentName: '博客文章', // TODO 站点根请求可配置
           categoryName,
           page,
           limit
