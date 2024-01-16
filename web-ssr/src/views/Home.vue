@@ -61,7 +61,7 @@ onMounted(() => {
   const currentPage = Number(sessionStorage.getItem('currentPage')) || 1;
   // 如果没有服务器端数据，则正常获取数据
   if (!articleStore.list.length) {
-    console.log('article list 没有数据');
+    console.log('Article list ssr reload');
     const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
     if (currentMenu) {
       articleStore.fetchArticles(currentMenu.name, currentPage, 10);

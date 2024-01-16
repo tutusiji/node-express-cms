@@ -25,6 +25,7 @@ yarn-error.log*
 ossLocal.js
 openaiKeyLocal.js
 CustomFonts.ttf
+uploading/
 dump
 /server/routes/admin/oss.js
 

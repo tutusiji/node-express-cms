@@ -48,7 +48,7 @@ onServerPrefetch(async () => {
 });
 
 // 改变路由清空数据
-// const router = useRouter();
+const router = useRouter();
 // router.beforeEach(() => {
 //   articleDetailStore.detail = {
 //     body: '',
@@ -63,9 +63,9 @@ onServerPrefetch(async () => {
 onMounted(async () => {
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
     Prism.highlightAll();
-    console.log('SSR 有数据 Detail');
+    console.log('Detail ssr local');
   } else {
-    console.log('SSR 没有数据 Detail');
+    console.log('Detail ssr reload');
     // 检查是否为单页面 获取id
     const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
     const pageId =

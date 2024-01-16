@@ -1,3 +1,3 @@
 <template>
-  <router-view />
+  <router-view :key="Date.parse(new Date())" />
 </template>
