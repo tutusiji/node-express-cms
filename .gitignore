@@ -26,6 +26,7 @@ ossLocal.js
 openaiKeyLocal.js
 # CustomFonts.ttf
 web-ssr/src/assets/fonts/CustomFont.ttf
+server/uploads/fonts
 uploading/
 dump
 /server/routes/admin/oss.js

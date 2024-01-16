@@ -233,7 +233,7 @@ module.exports = (app) => {
     __dirname,
     "..",
     "..",
-    "uploads/CustomFont.ttf"
+    "uploads/fonts/CustomFont.ttf"
   );
   const destPath = path.join(
     __dirname,
@@ -326,7 +326,7 @@ module.exports = (app) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       // 设置文件存储位置
-      cb(null, path.join(__dirname, "..", "..", "uploads"));
+      cb(null, path.join(__dirname, "..", "..", "uploads/fonts"));
     },
     filename: function (req, file, cb) {
       // 保持原始文件名
@@ -344,7 +344,7 @@ module.exports = (app) => {
       const file = req.file;
       // console.log("__dirname=====", __dirname);
       // 更新文件 URL
-      file.url = `${req.protocol}://${req.get("host")}/uploads/${
+      file.url = `${req.protocol}://${req.get("host")}/uploads/fonts/${
         file.originalname
       }`;
       res.send(file);
