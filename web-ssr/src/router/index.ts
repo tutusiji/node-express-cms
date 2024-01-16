@@ -22,23 +22,23 @@ const routerHistory = import.meta.env.SSR === false ? createWebHistory() : creat
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'coder',
     component: () => import('../views/Main.vue'),
     children: [
       {
         path: '/',
-        name: 'home',
+        name: 'coder',
         component: () => import('../views/Home.vue')
-      },
-      {
-        path: '/article/:id',
-        name: 'article',
-        component: () => import('../views/Article.vue')
       },
       {
         path: '/project',
         name: 'project',
         component: () => import('../views/Home.vue')
+      },
+      {
+        path: '/:type/article/:id',
+        name: 'article',
+        component: () => import('../views/Article.vue')
       },
       {
         path: '/about',

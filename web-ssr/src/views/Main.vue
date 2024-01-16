@@ -7,7 +7,9 @@
           <li
             v-for="item of menuStore.menu"
             :key="item._id"
-            :class="{ current: `${item.path}` === $route.path }"
+            :class="{
+              current: item.path === ($route.params.id ? `/${$route.params.type}` : $route.path)
+            }"
             @click="switchTabTo(item)"
           >
             {{ item.name }}
@@ -122,6 +124,7 @@ const switchTabTo = async (item: itemType) => {
       body: '',
       title: '',
       date: '',
+      categories: [],
       dateDisplay: false,
       prevArticle: { _id: '', title: '' },
       nextArticle: { _id: '', title: '' }

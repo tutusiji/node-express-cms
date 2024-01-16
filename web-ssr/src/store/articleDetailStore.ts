@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia';
 import { getArticleDetail } from '../http/api';
 
-type DetailType = {
+interface ArticleApiResponse {
   body: string;
   title: string;
   date: string;
+  categories: string[];
   dateDisplay: boolean;
   prevArticle: { _id: string; title: string };
   nextArticle: { _id: string; title: string };
-};
+}
 
 export const useArticleDetailStore = defineStore('articleDetail', {
   // 状态
@@ -17,6 +18,7 @@ export const useArticleDetailStore = defineStore('articleDetail', {
       body: '',
       title: '',
       date: '',
+      categories: [] as string[],
       dateDisplay: false,
       prevArticle: { _id: '', title: '' },
       nextArticle: { _id: '', title: '' }
@@ -28,8 +30,8 @@ export const useArticleDetailStore = defineStore('articleDetail', {
     async fetchArticleDetail(id: string) {
       this.loading = true;
       try {
-        const data = await getArticleDetail(id);
-        this.detail = data as unknown as DetailType;
+        const articleData = (await getArticleDetail(id)) as unknown as ArticleApiResponse;
+        this.detail = articleData;
       } catch (error) {
         console.error('Fetch article detail failed:', error);
       } finally {

@@ -6,10 +6,10 @@
       <div class="info">
         <div class="content">
           <div>
-            <a class="title" :href="`./article/${item._id}`">{{ item.title }}</a>
+            <a class="title" :href="`./${String(route.name)}/article/${item._id}`">{{ item.title }}</a>
           </div>
           <div v-show="item.summary" class="summary">
-            {{ item.summary }}<a class="desc" :href="`./article/${item._id}`">... 阅读全文 〉</a>
+            {{ item.summary }}<a class="desc" :href="`./${String(route.name)}/article/${item._id}&${String(route.name)}`">... 阅读全文 〉</a>
           </div>
         </div>
         <div class="date">

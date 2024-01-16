@@ -181,10 +181,9 @@ module.exports = (app) => {
         currentPage: pageNumber,
         limit: limitNumber,
         totalItems: totalCount,
-        category: categoryName,
+        category: parent._id,
         totalPages: Math.ceil(totalCount / limitNumber),
       };
-      // console.log("response======)", response);
       res.send(response);
     } catch (error) {
       res.status(500).send({ error: error.message });

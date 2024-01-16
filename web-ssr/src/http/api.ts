@@ -1,4 +1,5 @@
 import request from './request';
+import { AxiosResponse } from 'axios';
 
 // 定义API请求参数的类型
 interface BlogListParams {
@@ -6,6 +7,15 @@ interface BlogListParams {
   categoryName: string;
   page: number;
   limit: number;
+}
+interface ArticleApiResponse {
+  body: string;
+  title: string;
+  date: string;
+  categories: string[];
+  dateDisplay: boolean;
+  prevArticle: { _id: string; title: string };
+  nextArticle: { _id: string; title: string };
 }
 
 // 用户登录
@@ -35,7 +45,7 @@ export function siteInfo() {
 }
 
 // 文章详情
-export function getArticleDetail(data: string) {
+export function getArticleDetail(data: string): Promise<AxiosResponse<ArticleApiResponse>> {
   return request({
     url: `/articles/${data}`,
     method: 'get'

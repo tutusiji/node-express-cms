@@ -41,7 +41,7 @@ const menuStore = useMenuStore();
 // SSR 数据预取
 onServerPrefetch(async () => {
   // 检查是否为单页面 获取id
-  const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+  const currentMenu = menuStore.menu.find((item) => item.path === route.path);
   const pageId =
     currentMenu && currentMenu.pageId ? currentMenu.pageId : (route.params.id as string);
   await articleDetailStore.fetchArticleDetail(pageId);
@@ -57,7 +57,7 @@ onMounted(async () => {
   } else {
     console.log('Detail ssr reload');
     // 检查是否为单页面 获取id
-    const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+    const currentMenu = menuStore.menu.find((item) => item.path === route.path);
     const pageId =
       currentMenu && currentMenu.pageId ? currentMenu.pageId : (route.params.id as string);
     await articleDetailStore.fetchArticleDetail(pageId);
