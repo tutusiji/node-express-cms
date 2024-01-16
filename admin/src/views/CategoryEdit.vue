@@ -15,8 +15,8 @@
       <el-form-item label="名称">
         <el-input v-model="model.name"></el-input>
       </el-form-item>
-      <el-form-item label="路由Path">
-        <el-input v-model="model.path"></el-input>
+      <el-form-item label="页面name">
+        <el-input v-model="model.pageName"></el-input>
       </el-form-item>
       <el-form-item label="单页Id">
         <el-input v-model="model.pageId"></el-input>

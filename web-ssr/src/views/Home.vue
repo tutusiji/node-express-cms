@@ -9,7 +9,7 @@
             <a class="title" :href="`./${String(route.name)}/article/${item._id}`">{{ item.title }}</a>
           </div>
           <div v-show="item.summary" class="summary">
-            {{ item.summary }}<a class="desc" :href="`./${String(route.name)}/article/${item._id}&${String(route.name)}`">... 阅读全文 〉</a>
+            {{ item.summary }}<a class="desc" :href="`./${String(route.name)}/article/${item._id}`">... 阅读全文 〉</a>
           </div>
         </div>
         <div class="date">
@@ -44,7 +44,7 @@ const route = useRoute();
 
 // SSR 数据预取
 onServerPrefetch(async () => {
-  const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+  const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
   if (currentMenu) {
     await articleStore.fetchArticles(currentMenu.name, articleStore.currentPage, 10);
   }
@@ -58,11 +58,12 @@ onServerPrefetch(async () => {
 // });
 
 onMounted(() => {
+  console.log(route);
   const currentPage = Number(sessionStorage.getItem('currentPage')) || 1;
   // 如果没有服务器端数据，则正常获取数据
   if (!articleStore.list.length) {
     console.log('Article list ssr reload');
-    const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+    const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
     if (currentMenu) {
       articleStore.fetchArticles(currentMenu.name, currentPage, 10);
     }
@@ -73,7 +74,7 @@ onMounted(() => {
 // watch(route, (to, from) => {
 //   console.log(to.path, from.path);
 //   if (to.path !== from.path) {
-//     const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+//     const currentMenu = menuStore.menu.find((item) => `${item.pageName}` === route.name);
 //     if (currentMenu) {
 //       articleStore.fetchArticles(currentMenu.name, 1, 10);
 //     }
@@ -83,7 +84,7 @@ onMounted(() => {
 const handleCurrentChange = (val: any) => {
   articleStore.currentPage = val;
   sessionStorage.setItem('currentPage', val.toString());
-  const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+  const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
   if (currentMenu) {
     articleStore.fetchArticles(currentMenu.name, val, 10);
   }

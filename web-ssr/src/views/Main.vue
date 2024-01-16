@@ -8,7 +8,7 @@
             v-for="item of menuStore.menu"
             :key="item._id"
             :class="{
-              current: item.path === ($route.params.id ? `/${$route.params.type}` : $route.path)
+              current: item.pageName === (route.params.id ? route.params.type : route.name)
             }"
             @click="switchTabTo(item)"
           >
@@ -33,7 +33,7 @@
       <div class="container">
         <!-- v-if="$route.path === '/'" -->
         <div class="welcome">{{ siteStore.info.welcome }}</div>
-        <router-view :key="$route.path" />
+        <router-view :key="route.path" />
       </div>
     </div>
     <footer class="flex p-[20px]">
@@ -97,19 +97,19 @@ const getStyle = () => {
 };
 
 type itemType = {
-  path: string;
+  pageName: string;
 };
 
 const switchTabTo = async (item: itemType) => {
-  if (item.path !== route.path) {
+  if (item.pageName !== route.name) {
     sessionStorage.setItem('currentPage', '1');
   }
-  router.push(`${item.path}`);
+  router.push(`/${item.pageName}`);
 
   router.afterEach(async () => {
     nextTick(() => {
       getStyle();
-      // const currentMenu = menuStore.menu.find((item) => `${item.path}` === route.path);
+      // const currentMenu = menuStore.menu.find((item) => `${item.pageName}` === route.name);
       // if (currentMenu && !currentMenu.pageId) {
       //   articleStore.fetchArticles(currentMenu.name, articleStore.currentPage, 10);
       // }

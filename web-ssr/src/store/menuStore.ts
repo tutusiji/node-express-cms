@@ -4,7 +4,7 @@ import { blogMenu } from '../http/api';
 interface ArrMenuListType {
   _id: string;
   name: string;
-  path: string;
+  pageName: string;
   pageId: string;
 }
 

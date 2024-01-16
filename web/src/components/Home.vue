@@ -46,7 +46,7 @@ const loading = ref<Boolean>(false);
 const fetchData = async () => {
   loading.value = true;
   const currentMenu = menuStore.menu.find(
-    (item: { path: string }) => `${item.path}` === route.path
+    (item: { pageName: string }) => `${item.pageName}` === route.name
   );
   if (!currentMenu) return;
   const res = (await blogList({

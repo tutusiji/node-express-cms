@@ -7,7 +7,7 @@
           <li
             v-for="item of menuStore.menu"
             :key="item._id"
-            :class="{ current: `${item.path}` === $route.path }"
+            :class="{ current: `${item.pageName}` === $route.name }"
             @click="switchTabTo(item)"
           >
             {{ item.name }}
@@ -86,14 +86,14 @@ const getStyle = () => {
 };
 
 type itemType = {
-  path: String;
+  pageName: String;
 };
 
 const switchTabTo = (item: itemType) => {
-  if (item.path !== route.path) {
+  if (item.pageName !== route.name) {
     sessionStorage.setItem("currentPage", "1");
   }
-  router.push(`${item.path}`);
+  router.push(`/${item.pageName}`);
   router.afterEach(() => {
     nextTick(() => {
       getStyle();

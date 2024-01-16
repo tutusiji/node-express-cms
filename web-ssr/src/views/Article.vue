@@ -11,7 +11,7 @@
     class="articleDetails"
     v-html="articleDetailStore.detail.body"
   ></div>
-  <div v-if="articleDetailStore.detail && articleDetailStore.detail.title" class="otherArticle">
+  <div v-if="route.params.id" class="otherArticle">
     <p v-if="articleDetailStore.detail.prevArticle">
       上一篇：
       <a :href="`./${articleDetailStore.detail.prevArticle._id}`">
@@ -25,7 +25,10 @@
       </a>
     </p>
   </div>
-  <div v-show="articleDetailStore.detail.title" class="back" @click="goBackOrHome">返回</div>
+  <div v-if="route.params.id" class="back" @click="router.push(`/${route.params.type}`)">
+    返回列表
+  </div>
+  <div v-else class="back" @click="router.push(`/`)">返回首页</div>
 </template>
 
 <script lang="ts" setup>
@@ -37,41 +40,35 @@ import { useMenuStore } from '../store/menuStore';
 const route = useRoute();
 const articleDetailStore = useArticleDetailStore();
 const menuStore = useMenuStore();
+const router = useRouter();
 
 // SSR 数据预取
 onServerPrefetch(async () => {
   // 检查是否为单页面 获取id
-  const currentMenu = menuStore.menu.find((item) => item.path === route.path);
+  const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
   const pageId =
     currentMenu && currentMenu.pageId ? currentMenu.pageId : (route.params.id as string);
   await articleDetailStore.fetchArticleDetail(pageId);
 });
 
 // 改变路由清空数据
-const router = useRouter();
 
 onMounted(async () => {
+  console.log(route, route.params.id);
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
     Prism.highlightAll();
     console.log('Detail ssr local');
   } else {
     console.log('Detail ssr reload');
     // 检查是否为单页面 获取id
-    const currentMenu = menuStore.menu.find((item) => item.path === route.path);
+    const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
     const pageId =
       currentMenu && currentMenu.pageId ? currentMenu.pageId : (route.params.id as string);
+
     await articleDetailStore.fetchArticleDetail(pageId);
     Prism.highlightAll();
   }
 });
-
-function goBackOrHome() {
-  if (window.history.length > 1) {
-    router.go(-1);
-  } else {
-    router.push('/');
-  }
-}
 </script>
 
 <style lang="scss">
