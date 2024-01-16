@@ -142,14 +142,14 @@ const switchTabTo = async (item: itemType) => {
 
 <style scoped lang="scss">
 @font-face {
-  font-family: 'CustomFonts';
-  src: url('../assets/fonts/CustomFonts.ttf') format('truetype');
+  font-family: 'CustomFont';
+  src: url('../assets/fonts/CustomFont.ttf') format('truetype');
   font-style: normal;
   font-weight: normal;
 }
 
 .welcome {
-  font-family: 'CustomFonts';
+  font-family: 'CustomFont';
   padding: 10px;
 }
 .wrap {
@@ -181,7 +181,7 @@ nav {
     text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
     font-weight: 500;
     cursor: pointer;
-    font-family: 'CustomFonts';
+    font-family: 'CustomFont';
     text-decoration: none;
   }
   .menu {
@@ -193,7 +193,7 @@ nav {
       white-space: nowrap;
       padding: 1rem;
       font-size: 0.9rem;
-      font-family: 'CustomFonts';
+      font-family: 'CustomFont';
       color: #fff;
       text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
       &.current {
@@ -247,7 +247,7 @@ header {
     font-weight: 300;
     color: #fff;
     text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
-    font-family: 'CustomFonts';
+    font-family: 'CustomFont';
   }
 }
 .container {
@@ -289,7 +289,7 @@ ul.articleList {
       border-bottom: none;
     }
     .num {
-      font-family: 'CustomFonts';
+      font-family: 'CustomFont';
       margin-right: 1.3rem;
     }
     .info {
@@ -307,7 +307,7 @@ ul.articleList {
           font-weight: bold;
           word-break: break-all;
           color: #0d6fa1; // 34538b
-          font-family: 'CustomFonts';
+          font-family: 'CustomFont';
         }
         .summary {
           font-size: 0.9rem;
@@ -318,7 +318,7 @@ ul.articleList {
           color: #81ccf1;
           color: #5bbded;
           // text-decoration: underline;
-          font-family: 'CustomFonts';
+          font-family: 'CustomFont';
           white-space: nowrap;
         }
       }
@@ -327,7 +327,7 @@ ul.articleList {
         margin-left: 2rem;
         font-size: 0.8rem;
         color: #c5c5c5;
-        font-family: 'CustomFonts';
+        font-family: 'CustomFont';
         b {
           display: block;
           text-align: right;

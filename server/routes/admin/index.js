@@ -233,7 +233,7 @@ module.exports = (app) => {
     __dirname,
     "..",
     "..",
-    "uploads/CustomFonts.ttf"
+    "uploads/CustomFont.ttf"
   );
   const destPath = path.join(
     __dirname,
@@ -285,10 +285,9 @@ module.exports = (app) => {
               .status(500)
               .send({ message: "Error in server operations", error });
           }
-        }else{
+        } else {
           res.send({ message: "Fonts processed." });
         }
-
 
         // console.log(files[0]);
         // => { contents: <Buffer 00 01 00 ...> }
@@ -332,7 +331,7 @@ module.exports = (app) => {
     filename: function (req, file, cb) {
       // 保持原始文件名
       // cb(null, file.originalname);
-      cb(null, "CustomFonts.ttf");
+      cb(null, "CustomFont.ttf");
     },
   });
   const uploadFonts = multer({ storage: storage }).single("file");
