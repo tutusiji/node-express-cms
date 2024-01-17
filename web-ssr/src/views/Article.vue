@@ -116,6 +116,16 @@ onMounted(async () => {
     padding-left: 17px;
     list-style: decimal;
   }
+  pre,
+  code {
+    font-size: 14px !important;
+  }
+  code:not(.language-js) {
+    background-color: #2d2d2d !important;
+    line-height: 1.5;
+    padding: 2px;
+    border-radius: 3px;
+  }
 }
 .otherArticle {
   margin-top: 40px;
@@ -135,9 +145,5 @@ onMounted(async () => {
   &:hover {
     background-color: #f1f1f1;
   }
-}
-pre,
-code {
-  font-size: 14px !important;
 }
 </style>
