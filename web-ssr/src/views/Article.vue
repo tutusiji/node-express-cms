@@ -82,6 +82,9 @@ onMounted(async () => {
   text-align: center;
   word-break: break-all;
 }
+.articleDate{
+  font-family: 'CustomFont';
+}
 .articleDetails {
   word-break: break-all;
   line-height: 1.8;
@@ -122,7 +125,7 @@ onMounted(async () => {
   }
   code:not(.language-js) {
     background-color: #2d2d2d !important;
-    color: rgb(240, 141, 73);
+    color: rgb(240, 141, 73) !important;
     line-height: 1.5;
     padding: 3px;
     border-radius: 3px;
