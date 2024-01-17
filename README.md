@@ -391,21 +391,18 @@ Tuziki的个人记录泛技术小项目关于乘风破浪激流勇进你好！�
 
 ### PS：一些去除工程运行时错误的方法
 ```shell
-Unix (Linux, macOS, Git bash 等)
-
+# Unix (Linux, macOS, Git bash 等)
 export NODE_OPTIONS=--openssl-legacy-provider
-Windows
 
+# Windows
 set NODE_OPTIONS=--openssl-legacy-provider
-PowerShell
 
+# PowerShell
 $env:NODE_OPTIONS = "--openssl-legacy-provider"
 
-另外一个方法是在项目的 package.json 文件里将
-
+# 另外一个方法是在项目的 package.json 文件里将
 "start": "react-scripts start"
-　　替换成：
-
+# 替换成：
 "start": "react-scripts --openssl-legacy-provider start"
 ````
 
