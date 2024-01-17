@@ -75,8 +75,9 @@ onMounted(async () => {
 
 <style lang="scss">
 .articleTitle {
+  font-family: 'CustomFont';
   padding: 20px 0;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
   word-break: break-all;
@@ -95,6 +96,19 @@ onMounted(async () => {
   h6 {
     font-weight: bold;
   }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 22px;
+  }
+  h3 {
+    font-size: 20px;
+  }
+  h4 {
+    font-size: 18px;
+  }
+
   ul,
   ol,
   ul li,
