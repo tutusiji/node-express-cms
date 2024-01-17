@@ -11,7 +11,7 @@
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/dd825e09374ee989c56c1f1a30c3583f.png'>
 
-### web用户端
+### Web用户端
 
 技术栈：vue3 + typescript + vite + pinia + tailwind + sass + SSR
 
