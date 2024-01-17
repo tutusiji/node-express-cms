@@ -129,7 +129,7 @@ onMounted(async () => {
     line-height: 1.5;
     margin: 0 5px;
     padding: 3px 8px;
-    border-radius: 3px;
+    border-radius: 0.3em;
     font-family: Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
   }
 }
