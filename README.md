@@ -1,6 +1,11 @@
 ### WebFlex CMS 内容发布引擎
 
-https://www.tuziki.com/
+### 项目信息
+源码：https://github.com/tutusiji/node-express-cms
+
+网址：https://www.tuziki.com
+
+项目介绍：WebFlex CMS内容发布引擎——一个创新的内容管理系统，致力于简化网站、信息门户、独立站点的创建、管理和发布。它提供直观的用户界面、灵活的内容组织工具，服务端渲染以及SEO优化，以及高效的自动化部署功能。旨在为内容创作者和开发者提供流畅、高效的网站构建体验。后续将持续完成低代码搭建，可配置化的数据上报等功能。
 
 ## Web 用户端
 
