@@ -19,7 +19,7 @@ https://www.tuziki.com/
 因为 web 打包之后的目录在 web 根目录之外（会移动到 server 中），这里的 vite 配置在 build 时的 outDir 没法清空之前已经移动过去的文件，需要单独做处理
 引入`import { rmSync } from "fs" ` 用 node 的 rmSync 文件操作来删除之前构建的文件
 
-```
+```js
  if (command === "build") {
    // 在构建之前删除 /../server/web 目录
    const outDir = fileURLToPath(new URL("../server/web", import.meta.url));
@@ -33,8 +33,8 @@ spa 方案在 web 目录下，ssr 方案在 web-ssr 目录下。
 
 ssr 相关操作：
 
-```
-在web-ssr目录下，执行：
+```js
+// 在web-ssr目录下，执行：
 npm install
 npm run dev    本地环境开发
 npm run build  打包生产环境
@@ -43,7 +43,7 @@ npm run serve  运行生产环境
 
 服务端需要配置 pm2 运行时环境：sys.config.cjs，执行 `pm2 restart sys.config.cjs`
 
-```
+```js
 module.exports = {
   apps: [
     {
@@ -59,7 +59,7 @@ module.exports = {
 
 因为 SSR 的文件会替换之前的 web spa 的目录，这里需要对前后端的路由重新定义：
 
-```
+```shell
     # 部署脚本 proxy
 	location /deploy {
         proxy_pass            http://localhost:3567;
@@ -100,7 +100,6 @@ module.exports = {
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/20240114073704.png'>
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/111111111120240114073735.png'>
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/76ee2ebd29257e4370379212e3ed32f8.png'>
-<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/f19f382fe517009f8c45c81f1a7f59a7.png'>
 
 技术栈：vue2 + elementui + webpack + sass
 
@@ -142,7 +141,7 @@ SSR 更新策略：`npm run deploy -- ssr`,会自动提交本地 git 到服务�
 
 git 代理配置
 
-```
+```shell
 git config --global http.proxy "socks://127.0.0.1:10808"
 git config --global https.proxy "socks://127.0.0.1:10808"
 ```
@@ -154,7 +153,7 @@ git config --global https.proxy "socks://127.0.0.1:10808"
 
 #### deploy.js :
 
-```
+```js
 const https = require('https');
 ......
 
@@ -167,7 +166,7 @@ const httpsAgent = new https.Agent({
 
 > 到这里，此项目的编译&部署就只有两个操作了：会自动提交本地 git 到服务端，并通知服务端进行备份、打包、重启 pm2 服务等操作
 
-```
+```shell
 npm run build
 npm run deploy
 npm run deploy -- ssr  // 发布SSR的文件
@@ -179,14 +178,17 @@ npm run deploy -- ssr  // 发布SSR的文件
 
 只备份自上次备份以来发生变化的文件。这可以通过各种备份工具来实现，如 rsync，它支持增量备份。
 
-`` const backupCmd = `rsync -av --delete /var/www/node-express-blog/ /var/www/backup/node-express-blog/`; ``
+```js
+const backupCmd = `rsync -av --delete /var/www/node-express-blog/ /var/www/backup/node-express-blog/`; 
+```
 
 这个命令将只同步变化的文件到备份目录，并删除源目录中已删除的文件。
 
 排除大文件或目录：如果知道某些文件或目录（如 node_modules，日志文件等）不需要备份，可以在备份时排除它们。
 
-`` const backupCmd = `tar --exclude='node_modules' --exclude='path/to/large/dir' -czvf /var/www/backup/node-express-blog-${timestamp}.tar.gz .`;
- ``
+```js
+ const backupCmd = `tar --exclude='node_modules' --exclude='path/to/large/dir' -czvf /var/www/backup/node-express-blog-${timestamp}.tar.gz .`;
+```
 
 #### 方案二：git tag release 版本控制器
 
@@ -201,7 +203,7 @@ npm run deploy -- ssr  // 发布SSR的文件
 3. 关联消息:
    给标签添加一个描述性的消息，说明这个版本的重要更改或发布说明。
 
-```
+```js
 async function createGitTagAndPush() {
   const version = "v" + new Date().toISOString().split('T')[0]; // 生成版本号，如 v2024-01-12
   const message = "Release " + version;
@@ -228,7 +230,7 @@ createGitTagAndPush();
 
 #### 回滚操作：
 
-```
+```js
 async function rollbackToTag(tagName) {
   try {
     // 检出标签对应的代码
@@ -291,7 +293,7 @@ windows 用户可以使用 MongoDB 的客户端程序，一键导出即可
 
 批量插入数据
 
-```
+```sql
 mongo
 show dbs
 use 数据库名
@@ -311,7 +313,7 @@ exit
 
 启用 nginx 之后 https 的接口和链接会自动走 443 端口再转发，也就是说需要用到的端口都要额外的配置转发
 
-```
+```nginx
 location /deploy {
     proxy_pass            http://localhost:3567;
     proxy_set_header Host $host;
@@ -327,7 +329,7 @@ location / {
 
 ### pm2 指令
 
-```
+```shell
 npm install pm2 -g     # 命令行安装 pm2
 pm2 start app.js -i 4  # 后台运行pm2，启动4个实例。可以把 'max' 参数传递给 start，实际进程数目依赖于cpu的核心数目
 pm2 start app.js --name my-api # 命名进程
@@ -348,9 +350,41 @@ pm2 delete 0           # 杀死指定的进程
 pm2 delete all         # 杀死全部进程
 ```
 
-### PS
+### 字体图标
+使用百度Fontmin-v0.2.0 对特殊文本字符进行字体包的提取。
 
-去除运行时错误
+<img src="https://hkroom.oss-cn-shenzhen.aliyuncs.com/_20240113053919.png">
+
+这里已经集成Fontmin插件到server端。
+
+当用户在admin端创建新的文章内容之后，点击【字体管理】栏目，上传自己喜欢的字体包文件，必须是ttf格式的，不传默认内置是腾讯体。
+
+之后，点击【全站文本提取】按钮，全站提取目前只提取导航菜单、文章标题、logo文字、slogan、welcome的文字内容。不必在意重复的字符，生成的字体包文件会自动去重。
+
+提取完成之后再点击【生成并部署字体包】按钮，会调用字体包的抽取工具流程。会将生成的字体包最终打包放在指定的web端assets/fonts/目录下的CustomFont.ttf文件，web端页面组件默认会调用这个字体，此时这个定制的字体包只有几十kb，相比原先的10MB已经小了很多了！
+```css
+@font-face {
+  font-family: 'CustomFont';
+  src: url('../assets/fonts/CustomFont.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+.welcome {
+  font-family: 'CustomFont';
+  padding: 10px;
+}
+```
+
+<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/f19f382fe517009f8c45c81f1a7f59a7.png'>
+
+@lastest: ``
+Tuziki的个人记录泛技术小项目关于乘风破浪激流勇进你好！欢迎来看Tuziki !No.1234567890-阅读全文 >>》？?&%#@~*()+,，。._——qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM``
+
+英文及字符：``
+！!-<>》？?&%#@~*()+,，。.=_——`·1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM{}【】[]<>/|\$^、〉〈"'“”；:``
+
+### PS：一些去除工程运行时错误的方法
+```shell
 Unix (Linux, macOS, Git bash 等)
 
 export NODE_OPTIONS=--openssl-legacy-provider
@@ -367,16 +401,4 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 　　替换成：
 
 "start": "react-scripts --openssl-legacy-provider start"
-
-### 字体图标
-使用百度Fontmin-v0.2.0 对特殊文本字符进行字体包的提取。
-
-后期，这里可以集成Fontmin插件到server端，当用户创建/修改导航菜单并保存的时候，在保存完数据之后调用这个提取专用字体包的工具流程，再将提取完成的字体包文件上传至OSS端，页面组件中总是调用OSS资源即可。
-
-<img src="https://hkroom.oss-cn-shenzhen.aliyuncs.com/_20240113053919.png">
-
-@lastest: 
-Tuziki的个人记录泛技术小项目关于乘风破浪激流勇进你好！欢迎来看Tuziki !No.1234567890-阅读全文 >>》？?&%#@~*()+,，。._——qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM
-
-英文及字符：
-！!-<>》？?&%#@~*()+,，。.=_——`·1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM{}【】[]<>/|\$^、〉〈"'“”；:
+````
