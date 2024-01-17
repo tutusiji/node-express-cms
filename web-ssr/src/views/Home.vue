@@ -6,10 +6,15 @@
       <div class="info">
         <div class="content">
           <div>
-            <a class="title" :href="`./${String(route.name)}/article/${item._id}`">{{ item.title }}</a>
+            <a class="title" :href="`./${String(route.name)}/article/${item._id}`">{{
+              item.title
+            }}</a>
           </div>
           <div v-show="item.summary" class="summary">
-            {{ item.summary }}<a class="desc" :href="`./${String(route.name)}/article/${item._id}`">... 阅读全文 〉</a>
+            {{ item.summary
+            }}<a class="desc" :href="`./${String(route.name)}/article/${item._id}`"
+              >... 阅读全文 〉</a
+            >
           </div>
         </div>
         <div class="date">
@@ -88,5 +93,10 @@ const handleCurrentChange = (val: any) => {
   if (currentMenu) {
     articleStore.fetchArticles(currentMenu.name, val, 10);
   }
+  window.scrollTo({
+    top: 0, // 滚动到页面的顶部
+    behavior: 'smooth' // 平滑滚动
+  });
 };
+
 </script>
