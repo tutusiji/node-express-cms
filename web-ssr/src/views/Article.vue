@@ -122,9 +122,11 @@ onMounted(async () => {
   }
   code:not(.language-js) {
     background-color: #2d2d2d !important;
+    color: rgb(240, 141, 73);
     line-height: 1.5;
-    padding: 2px;
+    padding: 3px;
     border-radius: 3px;
+    font-family: Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
   }
 }
 .otherArticle {
