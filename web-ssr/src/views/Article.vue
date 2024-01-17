@@ -127,6 +127,7 @@ onMounted(async () => {
     background-color: #2d2d2d !important;
     color: rgb(240, 141, 73) !important;
     line-height: 1.5;
+    margin: 0 5px;
     padding: 3px 8px;
     border-radius: 3px;
     font-family: Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
