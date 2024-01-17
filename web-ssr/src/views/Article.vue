@@ -77,7 +77,7 @@ onMounted(async () => {
 .articleTitle {
   font-family: 'CustomFont';
   padding: 20px 0;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   text-align: center;
   word-break: break-all;
