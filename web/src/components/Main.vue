@@ -29,7 +29,7 @@
     </header>
     <div class="main">
       <div class="container">
-        <div class="welcome p-[10px] text-[14px]" v-if="$route.path === '/'">
+        <div class="welcome p-[10px] text-[15px]" v-if="$route.path === '/'">
           你好！欢迎来Tuziki !
         </div>
         <router-view :key="$route.path"></router-view>

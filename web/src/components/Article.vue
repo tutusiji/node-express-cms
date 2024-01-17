@@ -1,7 +1,7 @@
 <template>
   <div class="articleTitle" v-html="articleData.title"></div>
   <div
-    class="articleDate pb-4 text-[#999] text-center text-[14px] italic"
+    class="articleDate pb-4 text-[#999] text-center text-[15px] italic"
     v-if="articleData.title && articleData.dateDisplay"
   >
     {{ dayjs(articleData.date).format("YYYY-MM-DD ") }}

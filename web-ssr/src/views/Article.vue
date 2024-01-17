@@ -2,7 +2,7 @@
   <h3 class="articleTitle" v-html="articleDetailStore.detail.title"></h3>
   <div
     v-if="articleDetailStore.detail.dateDisplay"
-    class="articleDate pb-4 text-[#999] text-center text-[14px] italic"
+    class="articleDate pb-4 text-[#999] text-center text-[15px] italic"
   >
     {{ dayjs(articleDetailStore.detail.date).format('YYYY-MM-DD ') }}
   </div>
