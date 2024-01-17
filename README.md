@@ -59,7 +59,7 @@ module.exports = {
 
 因为 SSR 的文件会替换之前的 web spa 的目录，这里需要对前后端的路由重新定义：
 
-```shell
+```js
     # 部署脚本 proxy
 	location /deploy {
         proxy_pass            http://localhost:3567;
