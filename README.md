@@ -5,7 +5,12 @@ https://www.tuziki.com/
 ## Web 用户端
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/dd825e09374ee989c56c1f1a30c3583f.png'>
+
+### web用户端
+
 技术栈：vue3 + typescript + vite + pinia + tailwind + sass + SSR
+
+spa 方案在 web 目录下，ssr 方案在 web-ssr 目录下。
 
 主要实现功能：
 
@@ -28,8 +33,6 @@ https://www.tuziki.com/
 ```
 
 ### 服务端渲染 SSR
-
-spa 方案在 web 目录下，ssr 方案在 web-ssr 目录下。
 
 ssr 相关操作：
 
@@ -57,49 +60,13 @@ module.exports = {
 };
 ```
 
-因为 SSR 的文件会替换之前的 web spa 的目录，这里需要对前后端的路由重新定义：
-
-```nginx
-    # 部署脚本 proxy
-	location /deploy {
-        proxy_pass            http://localhost:3567;
-        proxy_set_header Host $host;
-        include               nginxconfig.io/proxy.conf;
-    }
-
-    # API 路由
-	location ~ ^/(web|admin)/api {
-	    proxy_pass http://127.0.0.1:3000;
-	    proxy_set_header Host $host;
-	    include nginxconfig.io/proxy.conf;
-	}
-	# 静态文件服务 - 管理端
-	location /admin {
-	    proxy_pass http://127.0.0.1:3000/admin;
-	    proxy_set_header Host $host;
-	    include nginxconfig.io/proxy.conf;
-	}
-
-	# 静态文件服务 - 上传文件
-	location /uploads {
-	    proxy_pass http://127.0.0.1:3000/uploads;
-	    proxy_set_header Host $host;
-	    include nginxconfig.io/proxy.conf;
-	}
-
-     # 主页面SSR服务 - server-ssr.js
-	location / {
-	    proxy_pass http://localhost:3111;
-	    proxy_set_header Host $host;
-	    include nginxconfig.io/proxy.conf;
-	}
-```
-
 ## Admin 管理端
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/20240114073704.png'>
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/111111111120240114073735.png'>
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/76ee2ebd29257e4370379212e3ed32f8.png'>
+
+### Admin 管理端
 
 技术栈：vue2 + elementui + webpack + sass
 
@@ -111,6 +78,7 @@ module.exports = {
 > 4.  管理员登录，管理
 > 5.  登录 jwt 鉴权，路由限制
 > 6.  集成chatGPT、百度千帆大模型优化精简文章摘要、优化内容显示
+> 7.  站点配置信息管理、全站字体包管理
 
 ## Server 服务端
 
@@ -121,11 +89,11 @@ module.exports = {
 > 1.  创建、查询、修改、删除分类、关联子分类、文章、其它数据、列表分页查询
 > 2.  通用 CRUD 接口封装
 > 3.  中间件封装，登录鉴权
-> 4.  图片数据的 OSS 存储
-> 5.  站点配置信息管理、根据内容文本按需动态打包出个性化精简字体包
+> 4.  图片数据的 OSS 存储，文件上传下载
+> 5.  根据内容文本按需动态打包出个性化精简字体包
 > 6.  web 用户端和 admin 管理端打包之后的文件会自动到 server 端里面，当启动 server 服务时，会由 express 定义 web 端和 admin 端的入口路由，SSR用户端的页面由SSR的server管理
 
-### 脚手架工具——服务端更新策略
+### 脚手架工具——服务端自动化部署
 
 服务端安装 git 来拉取代码，并执行 pm2 持久化运行。这里另外封装了一个 nodejs 文件上传脚本在服务端运行，与原有的 server 服务独立开，以便迁移或者完成一些其他操作比如文件备份、log 输出等
 
@@ -305,7 +273,6 @@ exit
 ```
 
 ### nginx 配置
-这里是之前的web spa页面配置，如果使用ssr方案就需要修改为上面那段。
 
 测试：`nginx -t`
 
@@ -314,6 +281,7 @@ exit
 启用 nginx 之后 https 的接口和链接会自动走 443 端口再转发，也就是说需要用到的端口都要额外的配置转发
 
 ```nginx
+# Web spa nginx页面配置
 location /deploy {
     proxy_pass            http://localhost:3567;
     proxy_set_header Host $host;
@@ -326,6 +294,44 @@ location / {
     include               nginxconfig.io/proxy.conf;
 }
 ```
+若启用SSR方案，则需要注意 SSR 的服务接管了web页面的入口，这里需要对前后端的路由重新定义：
+
+```nginx
+    # 部署脚本 proxy
+	location /deploy {
+        proxy_pass            http://localhost:3567;
+        proxy_set_header Host $host;
+        include               nginxconfig.io/proxy.conf;
+    }
+
+    # API服务 路由
+	location ~ ^/(web|admin)/api {
+	    proxy_pass http://127.0.0.1:3000;
+	    proxy_set_header Host $host;
+	    include nginxconfig.io/proxy.conf;
+	}
+	# 静态文件服务 - 管理端
+	location /admin {
+	    proxy_pass http://127.0.0.1:3000/admin;
+	    proxy_set_header Host $host;
+	    include nginxconfig.io/proxy.conf;
+	}
+
+	# 静态文件服务 - 上传文件
+	location /uploads {
+	    proxy_pass http://127.0.0.1:3000/uploads;
+	    proxy_set_header Host $host;
+	    include nginxconfig.io/proxy.conf;
+	}
+
+     # 主页面SSR服务 - server-ssr.js
+	location / {
+	    proxy_pass http://localhost:3111;
+	    proxy_set_header Host $host;
+	    include nginxconfig.io/proxy.conf;
+	}
+```
+
 
 ### pm2 指令
 
@@ -377,11 +383,11 @@ pm2 delete all         # 杀死全部进程
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/f19f382fe517009f8c45c81f1a7f59a7.png'>
 
+英文字母、常用字符集合：``
+！!-<>》？?&%#@~*()+,，。.=_——`·1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM{}【】[]<>/|\$^、〉〈"'“”；:``
+
 @lastest: ``
 Tuziki的个人记录泛技术小项目关于乘风破浪激流勇进你好！欢迎来看Tuziki !No.1234567890-阅读全文 >>》？?&%#@~*()+,，。._——qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM``
-
-英文及字符：``
-！!-<>》？?&%#@~*()+,，。.=_——`·1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM{}【】[]<>/|\$^、〉〈"'“”；:``
 
 ### PS：一些去除工程运行时错误的方法
 ```shell
@@ -404,7 +410,7 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 ````
 
 ### TODO 
-2. 优化脚手架工具，优化全站数据备份、回滚操作流程
+1. 优化脚手架工具，优化全站数据备份、回滚操作流程
 4. 开发个性化loading组件
 9. uploading上传脚本单独开发部署，舍弃OSS存储
 10. 字体包操作的UI调整，补充字符做存储
@@ -412,4 +418,4 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 12. 文章列表添加缩略图
 13. 小项目列表添加功能性按钮，可玩指数、实现进度，UI样式调整
 14. web-ssr端页面组件的数据缓存隔离优化
-15. 写一份详细的项目开发日志
+15. 写一份详细的项目开发文档、使用规范、部署流程
