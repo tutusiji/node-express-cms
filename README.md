@@ -402,3 +402,14 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 
 "start": "react-scripts --openssl-legacy-provider start"
 ````
+
+### TODO 
+2. 优化脚手架工具，优化全站数据备份、回滚操作流程
+4. 开发个性化loading组件
+9. uploading上传脚本单独开发部署，舍弃OSS存储
+10. 字体包操作的UI调整，补充字符做存储
+11. 虚拟列表、上拉加载数据
+12. 文章列表添加缩略图
+13. 小项目列表添加功能性按钮，可玩指数、实现进度，UI样式调整
+14. web-ssr端页面组件的数据缓存隔离优化
+15. 写一份详细的项目开发日志
