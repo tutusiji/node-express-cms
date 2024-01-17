@@ -26,10 +26,10 @@
       </div>
     </li>
   </ul>
-  <div v-show="articleStore.list.length > 0" class="clear-both overflow-hidden py-10">
+  <div v-show="articleStore.list.length > 0" class="flex justify-between items-center py-10">
+    <div class="gotop" @click="goTop">返回顶部↑</div>
     <el-pagination
       v-model:current-page="articleStore.currentPage"
-      class="float-right"
       background
       layout="prev, pager, next"
       :total="articleStore.totalItems"
@@ -93,10 +93,11 @@ const handleCurrentChange = (val: any) => {
   if (currentMenu) {
     articleStore.fetchArticles(currentMenu.name, val, 10);
   }
+};
+const goTop = () => {
   window.scrollTo({
     top: 0, // 滚动到页面的顶部
     behavior: 'smooth' // 平滑滚动
   });
 };
-
 </script>

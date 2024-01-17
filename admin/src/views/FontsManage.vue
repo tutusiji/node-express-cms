@@ -65,7 +65,7 @@ export default {
       tranStatus: false,
       fileList: [],
       current: 1,
-      addwords: "0123456789.阅读全文 〈〉><《》Nno-",
+      addwords: "0123456789.阅读全文 〈〉><《》Nno-返回顶部↑",
     };
   },
   created() {},

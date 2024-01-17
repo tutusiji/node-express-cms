@@ -124,7 +124,7 @@ onMounted(async () => {
     font-size: 14px !important;
   }
   code:not(.language-js) {
-    background-color: #2d2d2d !important;
+    background-color: #3e3e3e !important;
     color: rgb(240, 141, 73) !important;
     line-height: 1.5;
     margin: 0 5px;

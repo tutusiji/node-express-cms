@@ -150,7 +150,6 @@ const switchTabTo = async (item: itemType) => {
   font-style: normal;
   font-weight: normal;
 }
-
 .welcome {
   font-family: 'CustomFont';
   padding: 10px;
@@ -273,6 +272,14 @@ footer {
 </style>
 
 <style lang="scss">
+.gotop {
+  cursor: pointer;
+  font-family: 'CustomFont';
+  &::selection {
+    background-color: transparent; /* 背景色透明 */
+    color: inherit; /* 文字颜色保持不变 */
+  }
+}
 ul.articleList {
   min-height: 200px;
   // background-color: #fafafa;
