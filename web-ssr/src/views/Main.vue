@@ -66,7 +66,7 @@ onMounted(async () => {
     async (newMenu) => {
       if (newMenu.length > 0) {
         await nextTick();
-        getStyle();
+        getMenuStyle();
       }
     },
     { immediate: true }
@@ -86,7 +86,7 @@ onServerPrefetch(async () => {
 const switchX = ref<number>(0);
 const lineWidth = ref<number>(75);
 
-const getStyle = () => {
+const getMenuStyle = () => {
   const parentRect = document.querySelector('.menu');
   const itemRect = document.querySelector('.current');
   if (!itemRect || !parentRect) return;
@@ -102,21 +102,20 @@ type itemType = {
 };
 
 const switchTabTo = async (item: itemType) => {
-  console.log(item);
   router.push(`/${item.pageName}${item.pageId ? '' : '/1'}`);
-  // 重新计算导航菜单样式
-  router.afterEach(() => {
-    nextTick(() => {
-      getStyle();
-    });
-  });
-
   // 检查当前导航菜单是否为拥有id的单页面 重置页码
   if (!item.pageId) {
     articleStore.currentPage = 1;
     articleStore.totalItems = 0;
   }
 };
+// 重新计算导航菜单样式
+router.afterEach(() => {
+  nextTick(() => {
+    getMenuStyle();
+  });
+  // console.log('after currentPage', articleStore.currentPage);
+});
 router.beforeEach((to) => {
   // 重置列表pinia
   if (to.meta.type === 'list') {
@@ -134,9 +133,6 @@ router.beforeEach((to) => {
       nextArticle: { _id: '', title: '' }
     };
   }
-});
-router.afterEach(() => {
-  console.log('after currentPage', articleStore.currentPage);
 });
 </script>
 

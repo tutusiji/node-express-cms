@@ -67,7 +67,7 @@ onServerPrefetch(async () => {
 // 改变路由清空数据
 
 onMounted(async () => {
-  console.log('article===', articleStore.currentPage);
+  // console.log('article===', articleStore.currentPage);
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
     Prism.highlightAll();
     console.log('Detail ssr local');

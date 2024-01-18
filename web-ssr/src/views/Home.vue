@@ -61,8 +61,8 @@ onServerPrefetch(async () => {
 });
 
 onMounted(() => {
-  console.log(route);
-  console.log('currentPage---', articleStore.currentPage);
+  // console.log(route);
+  // console.log('currentPage---', articleStore.currentPage);
   const currentPage = articleStore.currentPage || 1;
   // 如果没有pinia数据，则正常获取ssr数据
   if (!articleStore.list.length) {

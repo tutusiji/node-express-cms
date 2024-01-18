@@ -64,7 +64,7 @@ watch(
   async (newMenu) => {
     if (newMenu.length > 0) {
       await nextTick();
-      getStyle();
+      getMenuStyle();
     }
   },
   { immediate: true }
@@ -73,7 +73,7 @@ watch(
 const switchX = ref<Number>(0);
 const lineWidth = ref<Number>(75);
 
-const getStyle = () => {
+const getMenuStyle = () => {
   const parentRect = document.querySelector(".menu");
   const itemRect = document.querySelector(".current");
   if (!itemRect || !parentRect) return;
@@ -95,12 +95,6 @@ const switchTabTo = (item: itemType) => {
   }
 
   router.push(`/${item.pageName}`);
-  router.afterEach(() => {
-    nextTick(() => {
-      getStyle();
-      // console.log(1);
-    });
-  });
 
   // setTimeout(() => {
   //   console.log(2);
@@ -112,6 +106,12 @@ const switchTabTo = (item: itemType) => {
   //   console.log(4);
   // });
 };
+router.afterEach(() => {
+  nextTick(() => {
+    getMenuStyle();
+    // console.log(1);
+  });
+});
 </script>
 
 <style scoped lang="scss">
