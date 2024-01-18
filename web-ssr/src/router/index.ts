@@ -56,6 +56,11 @@ const routes = [
         meta: {
           type: 'article'
         }
+      },
+      // “捕获所有”路由，重定向到首页
+      {
+        path: '/:catchAll(.*)',
+        redirect: '/coder/1'
       }
     ]
   }
