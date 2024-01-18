@@ -22,28 +22,40 @@ const routerHistory = import.meta.env.SSR === false ? createWebHistory() : creat
 const routes = [
   {
     path: '/',
+    redirect: '/coder/1',
     component: () => import('../views/Main.vue'),
     children: [
       {
-        path: '/',
+        path: '/coder/:page',
         name: 'coder',
         component: () => import('../views/Home.vue'),
-        alias: '/coder'
+        meta: {
+          type: 'list'
+        }
       },
       {
-        path: '/project',
+        path: '/project/:page',
         name: 'project',
-        component: () => import('../views/Home.vue')
+        component: () => import('../views/Home.vue'),
+        meta: {
+          type: 'list'
+        }
       },
       {
         path: '/:type/article/:id',
         name: 'article',
-        component: () => import('../views/Article.vue')
+        component: () => import('../views/Article.vue'),
+        meta: {
+          type: 'article'
+        }
       },
       {
         path: '/about',
         name: 'about',
-        component: () => import('../views/Article.vue')
+        component: () => import('../views/Article.vue'),
+        meta: {
+          type: 'article'
+        }
       }
     ]
   }

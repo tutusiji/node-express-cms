@@ -15,18 +15,28 @@
     <div v-if="route.params.id" class="otherArticle">
       <p v-if="articleDetailStore.detail.prevArticle">
         上一篇：
-        <a :href="`./${articleDetailStore.detail.prevArticle._id}`">
+        <a
+          :href="`./${articleDetailStore.detail.prevArticle._id}`"
+          @click.prevent="router.push(`./${articleDetailStore.detail.prevArticle._id}`)"
+        >
           {{ articleDetailStore.detail.prevArticle.title }}
         </a>
       </p>
       <p v-if="articleDetailStore.detail.nextArticle">
         下一篇：
-        <a :href="`./${articleDetailStore.detail.nextArticle._id}`">
+        <a
+          :href="`./${articleDetailStore.detail.nextArticle._id}`"
+          @click.prevent="router.push(`./${articleDetailStore.detail.nextArticle._id}`)"
+        >
           {{ articleDetailStore.detail.nextArticle.title }}
         </a>
       </p>
     </div>
-    <div v-if="route.params.id" class="back" @click="router.push(`/${route.params.type}`)">
+    <div
+      v-if="route.params.id"
+      class="back"
+      @click="router.push(`/${route.params.type}/${articleStore.currentPage}`)"
+    >
       返回列表
     </div>
     <div v-else class="back" @click="router.push(`/`)">返回首页</div>
@@ -38,35 +48,34 @@ import dayjs from 'dayjs';
 import Prism from 'prismjs'; // 代码高亮插件的core
 import 'prismjs/themes/prism-tomorrow.min.css'; // 高亮主题
 import { useArticleDetailStore } from '../store/articleDetailStore';
-import { useMenuStore } from '../store/menuStore';
-const route = useRoute();
 const articleDetailStore = useArticleDetailStore();
+import { useMenuStore } from '../store/menuStore';
+import { useArticleStore } from '../store/artcleStore';
+const articleStore = useArticleStore();
 const menuStore = useMenuStore();
+const route = useRoute();
 const router = useRouter();
 
 // SSR 数据预取
 onServerPrefetch(async () => {
-  // 检查是否为单页面 获取id
+  // 检查当前导航菜单是否为拥有id的单页面
   const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
-  const pageId =
-    currentMenu && currentMenu.pageId ? currentMenu.pageId : (route.params.id as string);
+  const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
   await articleDetailStore.fetchArticleDetail(pageId);
 });
 
 // 改变路由清空数据
 
 onMounted(async () => {
-  // console.log(route, route.params.id);
+  console.log('article===', articleStore.currentPage);
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
     Prism.highlightAll();
     console.log('Detail ssr local');
   } else {
     console.log('Detail ssr reload');
-    // 检查是否为单页面 获取id
+    // 检查当前导航菜单是否为拥有id的单页面
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
-    const pageId =
-      currentMenu && currentMenu.pageId ? currentMenu.pageId : (route.params.id as string);
-
+    const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
     await articleDetailStore.fetchArticleDetail(pageId);
     Prism.highlightAll();
   }
@@ -82,7 +91,7 @@ onMounted(async () => {
   text-align: center;
   word-break: break-all;
 }
-.articleDate{
+.articleDate {
   font-family: 'CustomFont';
 }
 .articleDetails {
@@ -130,7 +139,7 @@ onMounted(async () => {
     margin: 0 5px;
     padding: 3px 8px;
     border-radius: 0.3em;
-    font-family: Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
+    font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
   }
 }
 .otherArticle {

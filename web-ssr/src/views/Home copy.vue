@@ -106,6 +106,17 @@ onMounted(() => {
   );
 });
 
+// 在客户端，监听路由变化并重新加载数据
+// watch(route, (to, from) => {
+//   console.log(to.path, from.path);
+//   if (to.path !== from.path) {
+//     const currentMenu = menuStore.menu.find((item) => `${item.pageName}` === route.name);
+//     if (currentMenu) {
+//       articleStore.fetchArticles(currentMenu.name, 1, 10);
+//     }
+//   }
+// });
+
 const handleCurrentChange = (val: any) => {
   pageCurrent.value = val;
   sessionStorage.setItem('currentPage', val);

@@ -98,28 +98,32 @@ const getStyle = () => {
 
 type itemType = {
   pageName: string;
+  pageId: string;
 };
 
 const switchTabTo = async (item: itemType) => {
-  if (item.pageName !== route.name) {
-    sessionStorage.setItem('currentPage', '1');
-  }
-  router.push(`/${item.pageName}`);
-
-  router.afterEach(async () => {
+  console.log(item);
+  router.push(`/${item.pageName}${item.pageId ? '' : '/1'}`);
+  // 重新计算导航菜单样式
+  router.afterEach(() => {
     nextTick(() => {
       getStyle();
-      // const currentMenu = menuStore.menu.find((item) => `${item.pageName}` === route.name);
-      // if (currentMenu && !currentMenu.pageId) {
-      //   articleStore.fetchArticles(currentMenu.name, articleStore.currentPage, 10);
-      // }
     });
   });
-  router.beforeEach(() => {
-    articleStore.list = [];
+
+  // 检查当前导航菜单是否为拥有id的单页面 重置页码
+  if (!item.pageId) {
     articleStore.currentPage = 1;
     articleStore.totalItems = 0;
-
+  }
+};
+router.beforeEach((to) => {
+  // 重置列表pinia
+  if (to.meta.type === 'list') {
+    articleStore.list = [];
+  }
+  // 重置详情pinia
+  if (to.meta.type === 'article') {
     articleDetailStore.detail = {
       body: '',
       title: '',
@@ -129,18 +133,11 @@ const switchTabTo = async (item: itemType) => {
       prevArticle: { _id: '', title: '' },
       nextArticle: { _id: '', title: '' }
     };
-  });
-
-  // setTimeout(() => {
-  //   console.log(2);
-  // }, 0);
-
-  // nextTick(() => {
-  //   console.log(3);
-  // }).then(() => {
-  //   console.log(4);
-  // });
-};
+  }
+});
+router.afterEach(() => {
+  console.log('after currentPage', articleStore.currentPage);
+});
 </script>
 
 <style scoped lang="scss">
