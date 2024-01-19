@@ -83,6 +83,7 @@ async function deploy() {
   } catch (error) {
     // console.error("部署失败:", error);
     console.log(chalk.red(`部署失败：${error}`));
+    spinner.stop();
   }
 }
 
