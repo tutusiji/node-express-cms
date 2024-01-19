@@ -89,13 +89,17 @@ onMounted(async () => {
   font-size: 1.5rem;
   font-weight: 700;
   text-align: center;
-  word-break: break-all;
+  word-wrap: break-word;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 .articleDate {
   font-family: 'CustomFont';
 }
 .articleDetails {
-  word-break: break-all;
+  word-wrap: break-word;
+  word-break: keep-all;
+  overflow-wrap: break-word;
   line-height: 1.8;
   img {
     max-width: 100%;
