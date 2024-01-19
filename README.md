@@ -372,6 +372,8 @@ exit
 
 测试：`nginx -t`
 
+启动：`nginx -s start`
+
 重启：`nginx -s reload`
 
 启用 nginx 之后 https 的接口和链接会自动走 443 端口再转发，也就是说需要用到的端口都要额外的配置转发
