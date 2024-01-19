@@ -41,9 +41,9 @@ async function hasChanges() {
 }
 
 async function deploy() {
+  const spinner = ora(chalk.yellow(`努力搬运中...`)); // 菊花loading开始，推送开始
   try {
     // 检查是否有本地更改
-    const spinner = ora(chalk.yellow(`努力搬运中...`)); // 菊花loading开始，推送开始
     spinner.start();
     if (await hasChanges()) {
       console.log(chalk.magenta(`正在添加文件...`));
