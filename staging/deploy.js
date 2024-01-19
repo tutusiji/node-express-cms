@@ -61,10 +61,7 @@ async function deploy() {
 
     // 发送更新通知的POST请求
     // console.log("正在发送更新通知...");
-    console.log(chalk.redBright(`正在发送更新通知...`));
-    setTimeout(() => {
-      console.log(chalk.yellowBright(`服务端正在拼命操作...`));
-    }, 200);
+    console.log(chalk.redBright(`已通知服务端正在拼命操作...`));
     const notifData = { updateWeb: true };
     if (isSSR) {
       notifData.updateSSR = true;
