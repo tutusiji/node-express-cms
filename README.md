@@ -499,7 +499,7 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 
 1. 优化脚手架工具，优化全站数据备份、回滚操作流程
 2. 开发个性化 loading 组件
-3. uploading 上传脚本单独开发部署，舍弃 OSS 存储
+3. uploading 上传脚本单独开发部署，不能一直依赖于 OSS 云存储
 4. 字体包操作的 UI 调整，补充字符做存储
 5. 虚拟列表、上拉加载数据
 6. 文章列表添加缩略图
