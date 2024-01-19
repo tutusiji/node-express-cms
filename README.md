@@ -39,6 +39,16 @@ if (command === "build") {
 ```
 
 ### 服务端渲染 SSR
+在web-ssr中的文件采用vue的内置ssr方案，很适合做基于现有web spa项目的ssr改造,也可以构建时生成静态的html页面(SSG):
+
+服务端入口文件`entry-server.js`
+
+客户端入口文件`entry-client.ts`
+
+服务端SSR `server-ssr.js`
+
+本地SSG `prerender.js`
+
 
 ssr 相关操作：
 
