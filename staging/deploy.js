@@ -34,7 +34,6 @@ async function hasChanges() {
     const status = await execShellCommand("git status --porcelain");
     return status !== ""; // 如果有更改，返回true
   } catch (error) {
-    // console.error("检查更改时出错:", error);
     console.log(chalk.red(`检查更改时出错${error}`));
     return false; // 发生错误时，假设没有更改
   }
@@ -47,20 +46,16 @@ async function deploy() {
     spinner.start();
     if (await hasChanges()) {
       console.log(chalk.magenta(`正在添加文件...`));
-      //   console.log("正在添加文件...");
       await execShellCommand("git add .");
-      //   console.log("正在提交更改...");
       console.log(chalk.cyan(`正在提交更改`));
       await execShellCommand('git commit -m "文件更新"');
     }
 
     // 执行Git推送
-    // console.log("正在推送到远程仓库...");
     console.log(chalk.blueBright(`正在推送到远程仓库...`));
     await execShellCommand("git push");
 
     // 发送更新通知的POST请求
-    // console.log("正在发送更新通知...");
     console.log(chalk.redBright(`已通知服务端正在拼命操作...`));
     const notifData = { updateWeb: true };
     if (isSSR) {
@@ -78,7 +73,6 @@ async function deploy() {
     );
     spinner.stop();
   } catch (error) {
-    // console.error("部署失败:", error);
     console.log(chalk.red(`部署失败：${error}`));
     spinner.stop();
   }

@@ -1,19 +1,20 @@
 # WebFlex CMS 内容发布引擎
 
 ## 项目信息
+
 源码：https://github.com/tutusiji/node-express-cms
 
 网址：https://www.tuziki.com
 
-项目介绍：WebFlex CMS内容发布引擎——一个创新的内容管理系统，致力于简化网站、信息门户、独立站点的创建、管理和发布。它提供直观的用户界面、灵活的内容组织工具，服务端渲染以及SEO优化，以及高效的自动化部署功能。旨在为内容创作者和开发者提供流畅、高效的网站构建体验。后续将持续完成低代码搭建，可配置化的数据上报等功能。
+项目介绍：WebFlex CMS 内容发布引擎——一个创新的内容管理系统，致力于简化网站、信息门户、独立站点的创建、管理和发布。它提供直观的用户界面、灵活的内容组织工具，服务端渲染以及 SEO 优化，以及高效的自动化部署功能。旨在为内容创作者和开发者提供流畅、高效的网站构建体验。后续将持续完成低代码搭建，可配置化的数据上报等功能。
 
 ## Web 用户端
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/dd825e09374ee989c56c1f1a30c3583f.png'>
 
-### Web用户端
+### Web 用户端
 
-技术栈：vue3 + typescript + vite + pinia + tailwind + sass + SSR
+技术栈：``vue3 + typescript + vite + pinia + tailwind + sass + SSR``
 
 spa 方案在 web 目录下，ssr 方案在 web-ssr 目录下。
 
@@ -27,14 +28,14 @@ spa 方案在 web 目录下，ssr 方案在 web-ssr 目录下。
 > 6.  采用服务端渲染 SSR，有利于 SEO 优化
 
 因为 web 打包之后的目录在 web 根目录之外（会移动到 server 中），这里的 vite 配置在 build 时的 outDir 没法清空之前已经移动过去的文件，需要单独做处理
-引入`import { rmSync } from "fs" ` 用 node 的 rmSync 文件操作来删除之前构建的文件
+引入`import { rmSync } from "fs" ` 用 node 的 ``rmSync`` 文件操作来删除之前构建的文件
 
 ```js
- if (command === "build") {
-   // 在构建之前删除 /../server/web 目录
-   const outDir = fileURLToPath(new URL("../server/web", import.meta.url));
-   rmSync(outDir, { recursive: true, force: true });
- }
+if (command === "build") {
+  // 在构建之前删除 /../server/web 目录
+  const outDir = fileURLToPath(new URL("../server/web", import.meta.url));
+  rmSync(outDir, { recursive: true, force: true });
+}
 ```
 
 ### 服务端渲染 SSR
@@ -49,19 +50,19 @@ npm run build  打包生产环境
 npm run serve  运行生产环境
 ```
 
-服务端需要配置 pm2 运行时环境：sys.config.cjs，执行 `pm2 restart sys.config.cjs`
+服务端需要配置 pm2 运行时环境：``sys.config.cjs``，执行 `pm2 restart sys.config.cjs`
 
 ```js
 module.exports = {
   apps: [
     {
-      name: 'ssr-app',
-      script: 'server-ssr.js',
+      name: "ssr-app",
+      script: "server-ssr.js",
       env: {
-        NODE_ENV: 'production'
-      }
-    }
-  ]
+        NODE_ENV: "production",
+      },
+    },
+  ],
 };
 ```
 
@@ -73,7 +74,7 @@ module.exports = {
 
 ### Admin 管理端
 
-技术栈：vue2 + elementui + webpack + sass
+技术栈：`vue2 + elementui + webpack + sass`
 
 主要实现功能：
 
@@ -82,12 +83,12 @@ module.exports = {
 > 3.  图片上传下载
 > 4.  管理员登录，管理
 > 5.  登录 jwt 鉴权，路由限制
-> 6.  集成chatGPT、百度千帆大模型优化精简文章摘要、优化内容显示
+> 6.  集成 chatGPT、百度千帆大模型优化精简文章摘要、优化内容显示
 > 7.  站点配置信息管理、全站字体包管理
 
 ## Server 服务端
 
-技术栈：nodejs + expressjs + MongoDB
+技术栈：`nodejs + expressjs + MongoDB`
 
 主要实现功能：
 
@@ -96,7 +97,7 @@ module.exports = {
 > 3.  中间件封装，登录鉴权
 > 4.  图片数据的 OSS 存储，文件上传下载
 > 5.  根据内容文本按需动态打包出个性化精简字体包
-> 6.  web 用户端和 admin 管理端打包之后的文件会自动到 server 端里面，当启动 server 服务时，会由 express 定义 web 端和 admin 端的入口路由，SSR用户端的页面由SSR的server管理
+> 6.  web 用户端和 admin 管理端打包之后的文件会自动到 server 端里面，当启动 server 服务时，会由 express 定义 web 端和 admin 端的入口路由，SSR 用户端的页面由 SSR 的 server 管理
 
 ### 脚手架工具——服务端自动化部署
 
@@ -112,7 +113,7 @@ module.exports = {
 
 SSR 更新策略：`npm run deploy -- ssr`,会自动提交本地 git 到服务端，并通知服务端进行备份、打包、重启 pm2 服务等操作.
 
-git 代理配置
+git 代理配置:
 
 ```shell
 git config --global http.proxy "socks://127.0.0.1:10808"
@@ -124,20 +125,88 @@ git config --global https.proxy "socks://127.0.0.1:10808"
 1. 有时会直接在服务端做一些文件的操作，打断点，看日志，导致 git 提交时会有冲突，可以强行拉取远端文件`git reset --hard origin/master` 当然解决冲突也是可以的
 2. 运行本地 nodejs 脚本通过接口发送更新指令到服务端，Node.js 在处理 HTTPS 请求时，会验证 SSL 证书的有效性。如果证书有问题（如自签名、过期或不被信任的发行机构），Node.js 默认会拒绝连接，并显示类似的错误。所以接口会调不通，如果在服务端运行`curl -X POST -H "Content-Type: application/json" -d '{"update": true}' http://localhost:3567/deploy`能够正常返回，而公网接口无法访问则多半是 SSL 证书校验不通过，或者是端口未开启或者占用。这里因为是本地发起，可以绕过校验，也可以将证书文件的 cert.pem 文件添加到 axios 的请求 httpsAgent 中去，两种方式都可以，这里为了简单就先采用绕过的方法。
 
-#### deploy.js :
+本机运行脚本：`deploy.js`
 
 ```js
-const https = require('https');
-......
-
+// ......
+const https = require("https");
+// ......
 const httpsAgent = new https.Agent({
-  rejectUnauthorized: false // 忽略SSL证书验证
+  rejectUnauthorized: false, // 忽略SSL证书验证
 });
-......
-
+// ......
+async function deploy() {
+  const spinner = ora(chalk.yellow(`努力搬运中...`)); // 菊花loading开始，推送开始
+  try {
+    // 检查是否有本地更改
+    spinner.start();
+    if (await hasChanges()) {
+      console.log(chalk.magenta(`正在添加文件...`));
+      await execShellCommand("git add .");
+      console.log(chalk.cyan(`正在提交更改`));
+      await execShellCommand('git commit -m "文件更新"');
+    }
+    // 执行Git推送
+    console.log(chalk.blueBright(`正在推送到远程仓库...`));
+    await execShellCommand("git push");
+    // 发送更新通知的POST请求
+    console.log(chalk.redBright(`已通知服务端正在拼命操作...`));
+    const notifData = { updateWeb: true };
+    if (isSSR) {
+      notifData.updateSSR = true;
+    }
+    const response = await axios.post(serverUrl, notifData, {
+      httpsAgent,
+      headers: {
+        "x-deploy-key": TuziKey, // 使用与服务端相同的密钥
+      },
+    });
+    console.log(chalk.green(`服务端返回：`, response.data.message));
+    spinner.succeed(
+      chalk.greenBright(`😯部署成功 Happy🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`)
+    );
+    spinner.stop();
+  } catch (error) {
+    console.log(chalk.red(`部署失败：${error}`));
+    spinner.stop();
+  }
+}
+deploy();
+// ......
 ```
 
-> 到这里，此项目的编译&部署就只有两个操作了：会自动提交本地 git 到服务端，并通知服务端进行备份、打包、重启 pm2 服务等操作
+而在服务端也需要对 secretKey 做校验：`update.js`
+
+```js
+// ......
+const requestKey = ctx.request.headers["x-deploy-key"];
+if (requestKey !== TuziKey) {
+  ctx.status = 401;
+  ctx.body = { message: "Unauthorized: Invalid or missing API key" };
+  return;
+}
+// ......
+// 执行 git pull
+await execShellCommand("git pull", "/var/www/node-express-blog");
+// ......
+// 判断是否为ssr的操作
+if (updateSSR) {
+  await execShellCommand("npm run build", "/var/www/node-express-blog/web-ssr");
+  await execShellCommand(
+    "pm2 restart sys.config.cjs", // 重启server-ssr服务端
+    "/var/www/node-express-blog/web-ssr"
+  );
+} else {
+  // 重新启动服务端的PM2进程
+  await execShellCommand(
+    "pm2 restart sys.config.cjs", // 重启server服务端
+    "/var/www/node-express-blog/server"
+  );
+}
+// ......
+```
+
+> 到这里，此项目的编译&部署就只有两个操作了：会自动提交本地 git 到服务端，并通知服务端进行备份、打包、重启 pm2 服务等操作,注意本地 `secretKey` 里面的值要和服务端保持一致
 
 ```shell
 npm run build
@@ -149,10 +218,10 @@ npm run deploy -- ssr  // 发布SSR的文件
 
 #### 方案一：增量备份
 
-只备份自上次备份以来发生变化的文件。这可以通过各种备份工具来实现，如 rsync，它支持增量备份。
+只备份自上次备份以来发生变化的文件。这可以通过各种备份工具来实现，如 ``rsync``，它支持增量备份。
 
 ```js
-const backupCmd = `rsync -av --delete /var/www/node-express-blog/ /var/www/backup/node-express-blog/`; 
+const backupCmd = `rsync -av --delete /var/www/node-express-blog/ /var/www/backup/node-express-blog/`;
 ```
 
 这个命令将只同步变化的文件到备份目录，并删除源目录中已删除的文件。
@@ -160,7 +229,7 @@ const backupCmd = `rsync -av --delete /var/www/node-express-blog/ /var/www/backu
 排除大文件或目录：如果知道某些文件或目录（如 node_modules，日志文件等）不需要备份，可以在备份时排除它们。
 
 ```js
- const backupCmd = `tar --exclude='node_modules' --exclude='path/to/large/dir' -czvf /var/www/backup/node-express-blog-${timestamp}.tar.gz .`;
+const backupCmd = `tar --exclude='node_modules' --exclude='path/to/large/dir' -czvf /var/www/backup/node-express-blog-${timestamp}.tar.gz .`;
 ```
 
 #### 方案二：git tag release 版本控制器
@@ -178,19 +247,28 @@ const backupCmd = `rsync -av --delete /var/www/node-express-blog/ /var/www/backu
 
 ```js
 async function createGitTagAndPush() {
-  const version = "v" + new Date().toISOString().split('T')[0]; // 生成版本号，如 v2024-01-12
+  const version = "v" + new Date().toISOString().split("T")[0]; // 生成版本号，如 v2024-01-12
   const message = "Release " + version;
 
   try {
     // 确保所有更改都已提交
     await execShellCommand("git add .", "/var/www/node-express-blog");
-    await execShellCommand('git commit -m "Prepare for release"', "/var/www/node-express-blog");
+    await execShellCommand(
+      'git commit -m "Prepare for release"',
+      "/var/www/node-express-blog"
+    );
 
     // 创建标签
-    await execShellCommand(`git tag -a ${version} -m "${message}"`, "/var/www/node-express-blog");
+    await execShellCommand(
+      `git tag -a ${version} -m "${message}"`,
+      "/var/www/node-express-blog"
+    );
 
     // 推送标签到远程仓库
-    await execShellCommand(`git push origin ${version}`, "/var/www/node-express-blog");
+    await execShellCommand(
+      `git push origin ${version}`,
+      "/var/www/node-express-blog"
+    );
 
     console.log(`Tagged release ${version} and pushed to remote repository.`);
   } catch (error) {
@@ -208,7 +286,10 @@ async function rollbackToTag(tagName) {
   try {
     // 检出标签对应的代码
     await execShellCommand(`git fetch --tags`, "/var/www/node-express-blog");
-    await execShellCommand(`git checkout tags/${tagName}`, "/var/www/node-express-blog");
+    await execShellCommand(
+      `git checkout tags/${tagName}`,
+      "/var/www/node-express-blog"
+    );
 
     await execShellCommand("npm run build", "/var/www/node-express-blog");
 
@@ -222,10 +303,10 @@ async function rollbackToTag(tagName) {
 }
 
 // 回滚到标签 v2024-01-12
-rollbackToTag('v2024-01-12');
+rollbackToTag("v2024-01-12");
 ```
 
-关于备份与回滚的操作，还需要完善接口，将服务端的git信息提取出来返回给到用户端，用户选择回滚到指定的版本，再选择做build操作，还是直接 restart...
+关于备份与回滚的操作，还需要完善接口，将服务端的 git 信息提取出来返回给到用户端，用户选择回滚到指定的版本，再选择做 build 操作，还是直接 restart...
 
 #### 浏览器与 Node.js 的差异
 
@@ -299,7 +380,8 @@ location / {
     include               nginxconfig.io/proxy.conf;
 }
 ```
-若启用SSR方案，则需要注意 SSR 的服务接管了web页面的入口，这里需要对前后端的路由重新定义：
+
+若启用 SSR 方案，则需要注意 SSR 的服务接管了 web 页面的入口，这里需要对前后端的路由重新定义：
 
 ```nginx
     # 部署脚本 proxy
@@ -337,7 +419,6 @@ location / {
 	}
 ```
 
-
 ### pm2 指令
 
 ```shell
@@ -362,26 +443,28 @@ pm2 delete all         # 杀死全部进程
 ```
 
 ### 字体图标
-使用百度Fontmin-v0.2.0 对特殊文本字符进行字体包的提取。
+
+使用百度 Fontmin-v0.2.0 对特殊文本字符进行字体包的提取。
 
 <img src="https://hkroom.oss-cn-shenzhen.aliyuncs.com/_20240113053919.png">
 
-这里已经集成Fontmin插件到server端。
+这里已经集成 Fontmin 插件到 server 端。
 
-当用户在admin端创建新的文章内容之后，点击【字体管理】栏目，上传自己喜欢的字体包文件，任何命名都可但必须是ttf格式的，不传默认内置是腾讯体。
+当用户在 admin 端创建新的文章内容之后，点击【字体管理】栏目，上传自己喜欢的字体包文件，任何命名都可但必须是 ttf 格式的，不传默认内置是腾讯体。
 
-之后，点击【全站文本提取】按钮，全站提取目前只提取导航菜单、文章标题、logo文字、slogan、welcome的文字内容。不必在意重复的字符，生成的字体包文件会自动去重。
+之后，点击【全站文本提取】按钮，全站提取目前只提取导航菜单、文章标题、logo 文字、slogan、welcome 的文字内容。不必在意重复的字符，生成的字体包文件会自动去重。
 
-提取完成之后再点击【生成并部署字体包】按钮，会调用字体包的抽取工具流程。会将生成的字体包最终打包放在指定的web端assets/fonts/目录下的CustomFont.ttf文件，web端页面组件默认会调用这个字体，此时这个定制的字体包只有几十kb，相比原先的10MB已经小了很多了！
+提取完成之后再点击【生成并部署字体包】按钮，会调用字体包的抽取工具流程。会将生成的字体包最终打包放在指定的 web 端 assets/fonts/目录下的 `CustomFont.ttf` 文件，web 端页面组件默认会调用这个字体，此时这个定制的字体包只有几十 kb，相比原先的 10MB 已经小了很多了！
+
 ```css
 @font-face {
-  font-family: 'CustomFont';
-  src: url('../assets/fonts/CustomFont.ttf') format('truetype');
+  font-family: "CustomFont";
+  src: url("../assets/fonts/CustomFont.ttf") format("truetype");
   font-style: normal;
   font-weight: normal;
 }
 .welcome {
-  font-family: 'CustomFont';
+  font-family: "CustomFont";
   padding: 10px;
 }
 ```
@@ -391,10 +474,11 @@ pm2 delete all         # 杀死全部进程
 英文字母、常用字符集合：``
 ！!-<>》？?&%#@~*()+,，。.=_——`·1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM{}【】[]<>/|\$^、〉〈"'“”；:``
 
-@lastest: ``
-Tuziki的个人记录泛技术小项目关于乘风破浪激流勇进你好！欢迎来看Tuziki !No.1234567890-阅读全文 >>》？?&%#@~*()+,，。._——qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM``
+@lastest: `
+Tuziki的个人记录泛技术小项目关于乘风破浪激流勇进你好！欢迎来看Tuziki !No.1234567890-阅读全文 >>》？?&%#@~*()+,，。._——qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM`
 
 ### PS：一些去除工程运行时错误的方法
+
 ```shell
 # Unix (Linux, macOS, Git bash 等)
 export NODE_OPTIONS=--openssl-legacy-provider
@@ -409,15 +493,16 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 "start": "react-scripts start"
 # 替换成：
 "start": "react-scripts --openssl-legacy-provider start"
-````
+```
 
-### TODO 
+### TODO
+
 1. 优化脚手架工具，优化全站数据备份、回滚操作流程
-4. 开发个性化loading组件
-9. uploading上传脚本单独开发部署，舍弃OSS存储
-10. 字体包操作的UI调整，补充字符做存储
-11. 虚拟列表、上拉加载数据
-12. 文章列表添加缩略图
-13. 小项目列表添加功能性按钮，可玩指数、实现进度，UI样式调整
-14. web-ssr端页面组件的数据缓存隔离优化
-15. 写一份详细的项目开发文档、使用规范、部署流程
+2. 开发个性化 loading 组件
+3. uploading 上传脚本单独开发部署，舍弃 OSS 存储
+4. 字体包操作的 UI 调整，补充字符做存储
+5. 虚拟列表、上拉加载数据
+6. 文章列表添加缩略图
+7. 小项目列表添加功能性按钮，可玩指数、实现进度，UI 样式调整
+8. web-ssr 端页面组件的数据缓存隔离优化
+9. 写一份详细的项目开发文档、使用规范、部署流程

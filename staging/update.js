@@ -11,7 +11,6 @@ app.use(koaBody());
 
 // 部署路由
 router.post("/deploy", async (ctx, next) => {
-  console.log(ctx);
   const requestKey = ctx.request.headers["x-deploy-key"];
   if (requestKey !== TuziKey) {
     ctx.status = 401;
