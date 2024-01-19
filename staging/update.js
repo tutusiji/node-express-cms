@@ -2,7 +2,8 @@ const Koa = require("koa");
 const Router = require("koa-router");
 const { koaBody } = require("koa-body");
 const { exec } = require("child_process");
-
+const { TuziKey } = require("./secretKeyLocal.js");
+// const { TuziKey } = require("./secretKey.js");
 const app = new Koa();
 const router = new Router();
 
@@ -10,6 +11,13 @@ app.use(koaBody());
 
 // 部署路由
 router.post("/deploy", async (ctx, next) => {
+  console.log(ctx);
+  const requestKey = ctx.request.headers["x-deploy-key"];
+  if (requestKey !== TuziKey) {
+    ctx.status = 401;
+    ctx.body = { message: "Unauthorized: Invalid or missing API key" };
+    return;
+  }
   const { updateWeb, updateSSR } = ctx.request.body;
   if (updateWeb) {
     try {

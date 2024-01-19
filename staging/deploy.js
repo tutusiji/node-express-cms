@@ -6,6 +6,8 @@ const chalk = require("chalk");
 const ora = require("ora");
 const args = process.argv.slice(2); // 获取所有命令行参数，忽略前两个参数(node 和 script 路径)
 const isSSR = args.includes("ssr"); // 检查是否传递了 ssr 参数
+const { TuziKey } = require("./secretKeyLocal.js");
+// const { TuziKey } = require("./secretKey.js");
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false, // 忽略SSL证书验证
@@ -60,14 +62,19 @@ async function deploy() {
     // 发送更新通知的POST请求
     // console.log("正在发送更新通知...");
     console.log(chalk.redBright(`正在发送更新通知...`));
-    setTimeout(()=>{
-     console.log(chalk.yellowBright(`服务端正在拼命操作...`)); 
-    },200)
+    setTimeout(() => {
+      console.log(chalk.yellowBright(`服务端正在拼命操作...`));
+    }, 200);
     const notifData = { updateWeb: true };
     if (isSSR) {
       notifData.updateSSR = true;
     }
-    const response = await axios.post(serverUrl, notifData, { httpsAgent });
+    const response = await axios.post(serverUrl, notifData, {
+      httpsAgent,
+      headers: {
+        "x-deploy-key": TuziKey, // 使用与服务端相同的密钥
+      },
+    });
     console.log(chalk.green(`服务端返回：`, response.data.message));
     spinner.succeed(
       chalk.greenBright(`😯部署成功 Happy🌹 🌹 🌹 🌹 🌹 🌹 🌹 🌹`)
