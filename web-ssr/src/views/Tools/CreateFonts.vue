@@ -117,7 +117,7 @@ function loadFont(fontName, fontUrl) {
   // 检测字体是否加载完成
   const font = new FontFaceObserver(fontName);
   font
-    .load(null, 30000) // 等待60秒
+    .load(null, 60000) // 等待60秒
     .then(() => {
       loadfontStatus.value = false;
     })
