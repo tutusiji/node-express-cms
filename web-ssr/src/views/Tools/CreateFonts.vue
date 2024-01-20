@@ -35,8 +35,11 @@
 <script lang="ts" setup>
 import Prism from 'prismjs'; // 代码高亮插件的core
 import 'prismjs/themes/prism-tomorrow.min.css'; // 高亮主题
+// import { ElMessage } from 'element-plus';
 import { UploadFilled } from '@element-plus/icons-vue';
 import { EditPen } from '@element-plus/icons-vue';
+import { ElNotification } from 'element-plus';
+import 'element-plus/theme-chalk/el-notification.css';
 import FontFaceObserver from 'fontfaceobserver';
 import { createFonts } from '../../http/api';
 
@@ -75,6 +78,22 @@ function loadFont(fontName, fontUrl) {
 }
 
 const fetchfonts = async () => {
+  let txt = '';
+  if (!fontOriginName.value || !textarea.value) {
+    if (!fontOriginName.value) {
+      txt = '请上传一个ttf字体包之后再进行操作！';
+    }
+    if (!textarea.value) {
+      txt = '请输入所要提取的文本！';
+    }
+    ElNotification({
+      title: '提示',
+      message: txt,
+      type: 'warning'
+    });
+    return;
+  }
+
   loading.value = true;
 
   const res = await createFonts({
@@ -120,10 +139,10 @@ onMounted(() => {
   font-size: 24px;
   box-sizing: border-box;
   padding: 2px 4px;
-   background-image: linear-gradient(to right, #eee 1px, transparent 1px),
-                    linear-gradient(to bottom, #eee 1px, transparent 1px);
+  background-image: linear-gradient(to right, #eee 1px, transparent 1px),
+    linear-gradient(to bottom, #eee 1px, transparent 1px);
   background-size: 10px 10px;
-  border-bottom:1px solid #eee;
+  border-bottom: 1px solid #eee;
   // background-position:-1px -1px;
 }
 </style>
