@@ -223,6 +223,7 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
 };
 
 const submitUpload = () => {
+  loadfontStatus.value = false;
   if (!fileList.value.length) {
     ElNotification({
       title: '提示',
