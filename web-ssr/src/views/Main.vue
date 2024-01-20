@@ -222,13 +222,12 @@ nav {
   }
 }
 
-header {
+.header {
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 16px;
   background-position: 50% 68%;
   background-color: #868e96;
   background-attachment: scroll;
-  position: relative;
   background-size: cover;
   // background-image: url('//hkroom.oss-cn-shenzhen.aliyuncs.com/bg.jpg');
   background-repeat: no-repeat;
@@ -303,11 +302,11 @@ footer {
       padding: 0 10px;
     }
 
-    header .content {
+    .header .content {
       padding: 72px 10px;
     }
 
-    header {
+    .header {
       margin-bottom: 10px;
     }
 
