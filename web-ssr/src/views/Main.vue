@@ -187,6 +187,7 @@ nav {
     text-decoration: none;
     &:hover{
       color: #fff;
+      text-decoration: none;
     }
   }
 
