@@ -223,7 +223,6 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
 };
 
 const submitUpload = () => {
-  console.log(fileList.value);
   if (!fileList.value.length) {
     ElNotification({
       title: '提示',
