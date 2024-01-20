@@ -21,12 +21,23 @@
     </el-col>
     <el-col :span="12">
       <div v-loading="loadfont" element-loading-text="正在导入字体..." class="previewfonts">
+        <div class="loadbar">
+          <el-progress :text-inside="true" :stroke-width="20" :percentage="fontprogress">
+            <div class="progress mt-[-8px]">本地字体包加载进度{{ fontprogress }}%</div>
+          </el-progress>
+        </div>
         {{ textarea }}
       </div>
     </el-col>
   </el-row>
   <div class="flex items-center justify-center my-4">
-    <el-button size="large" type="primary" :icon="EditPen" :loading="loading" @click="fetchfonts">
+    <el-button
+      size="large"
+      type="primary"
+      :icon="EditPen"
+      :loading="loading"
+      @click="onUploadfonts"
+    >
       生成字体子集
     </el-button>
   </div>
@@ -47,8 +58,10 @@ const textarea = ref('字体包子集在线抽取');
 const fontOriginName = ref('');
 const loading = ref(false);
 const loadfont = ref(false);
+const fontprogress = ref(0);
 
 const baseURL = import.meta.env.VITE_BASE_URL;
+const baseHost = import.meta.env.VITE_BASE_HOST;
 
 function loadFont(fontName, fontUrl) {
   loadfont.value = true;
@@ -77,7 +90,7 @@ function loadFont(fontName, fontUrl) {
     });
 }
 
-const fetchfonts = async () => {
+const onUploadfonts = async () => {
   let txt = '';
   if (!fontOriginName.value || !textarea.value) {
     if (!fontOriginName.value) {
@@ -114,6 +127,56 @@ function downloadFile(url, filename) {
   document.body.removeChild(a);
 }
 
+function fetchFontProgress(url, onProgress, totalBytes) {
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error, status = ${response.status}`);
+      }
+
+      const reader = response.body.getReader();
+      let receivedBytes = 0;
+
+      function processResult(result) {
+        if (result.done) {
+          console.log('Fetch complete');
+          return;
+        }
+
+        receivedBytes += result.value.length;
+        const progress = (receivedBytes / totalBytes) * 100;
+        onProgress(progress);
+
+        return reader.read().then(processResult);
+      }
+
+      return reader.read().then(processResult);
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+    });
+}
+console.log(`${baseHost}uploads/fonts/文鼎大颜楷.ttf`);
+// 使用示例
+const totalBytes = 6.99 * 1024 * 1024; // 6.5MB in bytes
+// fetchFontProgress(
+//   `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
+//   (received, total) => {
+//     const progress = (received / total) * 100;
+//     console.log(`Progress: ${progress.toFixed(2)}%`);
+//     loadLocalFonts.value = `${progress.toFixed(2)}%`;
+//   },
+//   totalBytes
+// );
+fetchFontProgress(
+  `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
+  (progress) => {
+    console.log(`Progress: ${progress.toFixed(0)}%`);
+    fontprogress.value = `${progress.toFixed(0)}`;
+  },
+  totalBytes
+);
+
 const afterUpload = (res) => {
   console.log('res', res);
   loadFont('AnyFonts', `${res.url}?v=${new Date().getTime()}`);
@@ -125,13 +188,13 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
-// @font-face {
-//   font-family: 'AnyFonts';
-//   src: url('http://localhost:3000/uploads/fonts/文鼎中隶-lite.ttf') format('truetype');
-//   font-style: normal;
-//   font-weight: normal;
-// }
+<style lang="scss" scoped>
+@font-face {
+  font-family: 'AnyFonts';
+  src: url('https://www.tuziki.com/uploads/fonts/文鼎大颜楷.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
 
 .previewfonts {
   height: 220px;
@@ -143,6 +206,9 @@ onMounted(() => {
     linear-gradient(to bottom, #eee 1px, transparent 1px);
   background-size: 10px 10px;
   border-bottom: 1px solid #eee;
+  border-right: 1px solid #eee;
   // background-position:-1px -1px;
+  .loadbar {
+  }
 }
 </style>
