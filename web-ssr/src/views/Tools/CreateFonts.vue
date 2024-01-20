@@ -20,8 +20,8 @@
       <el-input v-model="textarea" placeholder="Please input" rows="10" clearable type="textarea" />
     </el-col>
     <el-col :span="12">
-      <div v-loading="loadfont" element-loading-text="正在导入字体..." class="previewfonts">
-        <div class="loadbar">
+      <div v-loading="loadfontStatus" element-loading-text="正在导入字体..." class="previewfonts">
+        <div v-show="fontprogress !== 100" class="loadbar">
           <el-progress :text-inside="true" :stroke-width="20" :percentage="fontprogress">
             <div class="progress mt-[-8px]">本地字体包加载进度{{ fontprogress }}%</div>
           </el-progress>
@@ -57,14 +57,14 @@ import { createFonts } from '../../http/api';
 const textarea = ref('字体包子集在线抽取');
 const fontOriginName = ref('');
 const loading = ref(false);
-const loadfont = ref(false);
+const loadfontStatus = ref(false);
 const fontprogress = ref(0);
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 const baseHost = import.meta.env.VITE_BASE_HOST;
 
 function loadFont(fontName, fontUrl) {
-  loadfont.value = true;
+  loadfontStatus.value = true;
   const newStyle = document.createElement('style');
   newStyle.appendChild(
     document.createTextNode(`
@@ -82,11 +82,11 @@ function loadFont(fontName, fontUrl) {
   font
     .load(null, 20000)
     .then(() => {
-      loadfont.value = false;
+      loadfontStatus.value = false;
     })
     .catch((error) => {
       console.error('Font loading failed', error);
-      loadfont.value = false;
+      loadfontStatus.value = false;
     });
 }
 
@@ -168,15 +168,6 @@ const totalBytes = 6.99 * 1024 * 1024; // 6.5MB in bytes
 //   },
 //   totalBytes
 // );
-const fetchFonts = fetchFontProgress(
-  `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
-  (progress) => {
-    console.log(`Progress: ${progress.toFixed(0)}%`);
-    fontprogress.value = `${progress.toFixed(0)}`;
-    loadFont('AnyFonts', `${baseHost}uploads/fonts/文鼎大颜楷.ttf?v=${new Date().getTime()}`);
-  },
-  totalBytes
-);
 
 const afterUpload = (res) => {
   console.log('res', res);
@@ -186,7 +177,30 @@ const afterUpload = (res) => {
 
 onMounted(() => {
   Prism.highlightAll();
-  fetchFonts();
+  fetchFontProgress(
+    `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
+    (progress) => {
+      const num = Number(progress.toFixed(0));
+      fontprogress.value = num;
+      // loadFont('AnyFonts', `${baseHost}uploads/fonts/文鼎大颜楷.ttf?v=${new Date().getTime()}`);
+      if (num === 100) {
+        console.log(`Progress: ${num}%`);
+        const newStyle = document.createElement('style');
+        newStyle.appendChild(
+          document.createTextNode(`
+    @font-face {
+      font-family: 'AnyFonts';
+      src: url('${baseHost}uploads/fonts/文鼎大颜楷.ttf?v=${new Date().getTime()}') format('truetype');
+      font-style: normal;
+      font-weight: normal;
+    }
+  `)
+        );
+        document.head.appendChild(newStyle);
+      }
+    },
+    totalBytes
+  );
 });
 </script>
 
