@@ -1,12 +1,16 @@
 <template>
   <h3 class="text-[18px] font-bold py-4">上传字体包：</h3>
   <el-upload
+    ref="upload"
     class="upload-demo"
     drag
     :action="`${baseURL}/uploadFonts`"
     :on-success="afterUpload"
     :multiple="false"
     :limit="1"
+    :on-exceed="handleExceed"
+    :auto-upload="false"
+    :before-upload="beforeUpload"
   >
     <el-icon class="el-icon--upload"><upload-filled /></el-icon>
     <div class="el-upload__text">拖拽文件到这里 or <em>点击上传</em></div>
@@ -14,6 +18,17 @@
       <div class="el-upload__tip">当前只支持ttf格式的字体文件上传，每次只能传一个字体包</div>
     </template>
   </el-upload>
+  <div class="flex items-center justify-center my-10">
+    <el-button
+      size="large"
+      type="primary"
+      :icon="UploadFilled"
+      :loading="loadfontStatus"
+      @click="submitUpload"
+    >
+      上传字体包
+    </el-button>
+  </div>
   <el-row :gutter="20">
     <el-col :span="12" class="relative">
       <h3 class="text-[18px] font-bold py-4">输入文字：</h3>
@@ -62,13 +77,16 @@
 <script lang="ts" setup>
 import Prism from 'prismjs'; // 代码高亮插件的core
 import 'prismjs/themes/prism-tomorrow.min.css'; // 高亮主题
-// import { ElMessage } from 'element-plus';
-import { UploadFilled } from '@element-plus/icons-vue';
-import { EditPen } from '@element-plus/icons-vue';
-import { ElNotification } from 'element-plus';
-import 'element-plus/theme-chalk/el-notification.css';
 import FontFaceObserver from 'fontfaceobserver';
 import { createFonts } from '../../http/api';
+// import { ElMessage } from 'element-plus';
+import { EditPen, UploadFilled } from '@element-plus/icons-vue';
+import { ElNotification } from 'element-plus';
+import 'element-plus/theme-chalk/el-notification.css';
+import { genFileId } from 'element-plus';
+import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus';
+
+const upload = ref<UploadInstance>();
 
 const textarea = ref('这是一个Web在线字体包子集抽取工具，欢迎使用！！！');
 const fontOriginName = ref('');
@@ -199,6 +217,46 @@ const afterUpload = (res) => {
   fontOriginName.value = res.filename;
 };
 
+const handleExceed: UploadProps['onExceed'] = (files) => {
+  upload.value!.clearFiles();
+  const file = files[0] as UploadRawFile;
+  file.uid = genFileId();
+  upload.value!.handleStart(file);
+};
+
+const submitUpload = () => {
+  upload.value!.submit();
+};
+
+const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
+  console.log('rawFile====================', rawFile);
+  // 检查文件类型
+  // const isTTF = file.type === 'font/ttf' || file.type === 'application/x-font-ttf';
+  // 或者通过文件扩展名检查
+  const isTTFExtension = rawFile.name.endsWith('.ttf');
+  if (!isTTFExtension) {
+    ElNotification({
+      title: '提示',
+      message: '只能上传 .ttf 格式的字体文件',
+      type: 'warning'
+    });
+    return false;
+  }
+  // 定义允许的最大文件大小（例如，5MB）
+  const maxSizeInMB = 25;
+  const isValidSize = rawFile.size / 1024 / 1024 < maxSizeInMB;
+
+  if (!isValidSize) {
+    ElNotification({
+      title: '提示',
+      message: `文件大小不能超过 ${maxSizeInMB}MB`,
+      type: 'warning'
+    });
+    return false;
+  }
+  return true;
+};
+
 onMounted(() => {
   Prism.highlightAll();
   fetchFontProgress(
@@ -206,7 +264,7 @@ onMounted(() => {
     (progress) => {
       const num = Number(progress.toFixed(0));
       fontprogress.value = num;
-      console.log(`Progress: ${num}%`);
+      // console.log(`Progress: ${num}%`);
     },
     totalBytes
   )
