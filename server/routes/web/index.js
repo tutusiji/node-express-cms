@@ -920,11 +920,14 @@ module.exports = (app) => {
   });
 
   function getFileNameWithLowerCaseExtension(fileName) {
-    const lastDotIndex = fileName.lastIndexOf(".");
-    if (lastDotIndex === -1) return fileName; // 没有扩展名的情况
+    // 移除文件名中的所有空格
+    const sanitizedFileName = fileName.replace(/\s+/g, "");
 
-    const name = fileName.substring(0, lastDotIndex);
-    const extension = fileName.substring(lastDotIndex).toLowerCase(); // 只转换扩展名为小写
+    const lastDotIndex = sanitizedFileName.lastIndexOf(".");
+    if (lastDotIndex === -1) return sanitizedFileName; // 没有扩展名的情况
+
+    const name = sanitizedFileName.substring(0, lastDotIndex);
+    const extension = sanitizedFileName.substring(lastDotIndex).toLowerCase(); // 只转换扩展名为小写
 
     return name + extension;
   }
