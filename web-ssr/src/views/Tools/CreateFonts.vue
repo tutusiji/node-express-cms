@@ -114,7 +114,7 @@ function loadFont(fontName, fontUrl) {
   // 检测字体是否加载完成
   const font = new FontFaceObserver(fontName);
   font
-    .load(null, 20000)
+    .load(null, 30000) // 等待60秒
     .then(() => {
       loadfontStatus.value = false;
     })
@@ -136,7 +136,8 @@ const onUploadfonts = async () => {
     ElNotification({
       title: '提示',
       message: txt,
-      type: 'warning'
+      type: 'warning',
+      offset: 100
     });
     return;
   }
@@ -238,7 +239,8 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
     ElNotification({
       title: '提示',
       message: '只能上传 .ttf 格式的字体文件',
-      type: 'warning'
+      type: 'warning',
+      offset: 100
     });
     return false;
   }
@@ -250,7 +252,8 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
     ElNotification({
       title: '提示',
       message: `文件大小不能超过 ${maxSizeInMB}MB`,
-      type: 'warning'
+      type: 'warning',
+      offset: 100
     });
     return false;
   }
