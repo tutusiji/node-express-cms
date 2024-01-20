@@ -984,7 +984,7 @@ module.exports = (app) => {
       fontmin.run(async function (err, files) {
         res.send({
           name: `${fontName}-lite.ttf`,
-          url: `${req.protocol}://${req.get(
+          url: `//${req.get(
             "host"
           )}/uploads/fonts/${fontName}-lite.ttf`,
           message: "Fonts processed and ssr server restarted.",
