@@ -138,7 +138,7 @@ router.beforeEach((to) => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 @font-face {
   font-family: 'CustomFont';
   src: url('../assets/fonts/CustomFont.ttf') format('truetype');

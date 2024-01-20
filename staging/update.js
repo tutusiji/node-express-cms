@@ -46,6 +46,7 @@ router.post("/deploy", async (ctx, next) => {
           "/var/www/node-express-blog/server"
         );
       }
+      // pm2 restart all
 
       ctx.status = 200;
       ctx.body = { message: "Server update and restart successful!" };

@@ -53,9 +53,5 @@
     "vite-plugin-prismjs": "^0.0.8",
     "vue-eslint-parser": "^9.1.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vok123/vue3-ts-vite-ssr-starter.git"
-  },
   "license": "MIT"
 }
