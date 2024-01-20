@@ -919,13 +919,23 @@ module.exports = (app) => {
     }
   });
 
+  function getFileNameWithLowerCaseExtension(fileName) {
+    const lastDotIndex = fileName.lastIndexOf(".");
+    if (lastDotIndex === -1) return fileName; // 没有扩展名的情况
+
+    const name = fileName.substring(0, lastDotIndex);
+    const extension = fileName.substring(lastDotIndex).toLowerCase(); // 只转换扩展名为小写
+
+    return name + extension;
+  }
+
   //  字体包文件上传
   //__dirname 绝对地址
   // 设置 Multer 存储引擎
   const multer = require("multer");
   const path = require("path");
   const iconv = require("iconv-lite");
-  console.log("__dirname=====", __dirname);
+  // console.log("__dirname=====", __dirname);
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       // 设置文件存储位置
@@ -935,7 +945,10 @@ module.exports = (app) => {
       // cb(null, file.originalname); // 保持原始文件名
       // cb(null, "AnyFonts.ttf");
       const decodedName = iconv.decode(
-        Buffer.from(file.originalname, "binary"),
+        Buffer.from(
+          getFileNameWithLowerCaseExtension(file.originalname),
+          "binary"
+        ),
         "utf-8"
       );
       cb(null, decodedName);
@@ -947,9 +960,7 @@ module.exports = (app) => {
     const file = req.file;
     console.log("file=====", file);
     // 更新文件 URL
-    file.url = `//${req.get("host")}/uploads/fonts/${
-      file.filename
-    }`;
+    file.url = `//${req.get("host")}/uploads/fonts/${file.filename}`;
     // file.url = `${req.protocol}://${req.get("host")}/uploads/fonts/${
     //   file.filename
     // }`;
@@ -984,9 +995,7 @@ module.exports = (app) => {
       fontmin.run(async function (err, files) {
         res.send({
           name: `${fontName}-lite.ttf`,
-          url: `//${req.get(
-            "host"
-          )}/uploads/fonts/${fontName}-lite.ttf`,
+          url: `//${req.get("host")}/uploads/fonts/${fontName}-lite.ttf`,
           message: "Fonts processed and ssr server restarted.",
         });
         if (err) {
