@@ -73,7 +73,7 @@ function loadFont(fontName, fontUrl) {
   // 检测字体是否加载完成
   const font = new FontFaceObserver(fontName);
   font
-    .load()
+    .load(null, 20000)
     .then(() => {
       loadfont.value = false;
     })
@@ -127,5 +127,12 @@ onMounted(() => {
   height: 220px;
   font-family: 'AnyFonts';
   font-size: 20px;
+  box-sizing: border-box;
+  padding: 2px 4px;
+   background-image: linear-gradient(to right, #eee 1px, transparent 1px),
+                    linear-gradient(to bottom, #eee 1px, transparent 1px);
+  background-size: 10px 10px;
+  border-bottom:1px solid #eee;
+  // background-position:-1px -1px;
 }
 </style>
