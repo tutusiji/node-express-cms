@@ -177,34 +177,6 @@ function fetchFontProgress(url, onProgress, totalBytes) {
 
 // 使用 fetchFontProgress 函数...
 
-fetchFontProgress(
-  `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
-  (progress) => {
-    const num = Number(progress.toFixed(0));
-    fontprogress.value = num;
-    console.log(`Progress: ${num}%`);
-  },
-  totalBytes
-)
-  .then(() => {
-    // const fontBlobUrl = URL.createObjectURL(blob);
-    const newStyle = document.createElement('style');
-    newStyle.appendChild(
-      document.createTextNode(`
-      @font-face {
-        font-family: 'AnyFonts';
-        src: url('${blobUrl.value}') format('truetype');
-        font-style: normal;
-        font-weight: normal;
-      }
-    `)
-    );
-    document.head.appendChild(newStyle);
-  })
-  .catch((error) => {
-    console.error('Error loading font:', error);
-  });
-
 const afterUpload = (res) => {
   console.log('res', res);
   loadFont('AnyFonts', `${res.url}?v=${new Date().getTime()}`);
@@ -213,6 +185,33 @@ const afterUpload = (res) => {
 
 onMounted(() => {
   Prism.highlightAll();
+  fetchFontProgress(
+    `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
+    (progress) => {
+      const num = Number(progress.toFixed(0));
+      fontprogress.value = num;
+      console.log(`Progress: ${num}%`);
+    },
+    totalBytes
+  )
+    .then(() => {
+      // const fontBlobUrl = URL.createObjectURL(blob);
+      const newStyle = document.createElement('style');
+      newStyle.appendChild(
+        document.createTextNode(`
+      @font-face {
+        font-family: 'AnyFonts';
+        src: url('${blobUrl.value}') format('truetype');
+        font-style: normal;
+        font-weight: normal;
+      }
+    `)
+      );
+      document.head.appendChild(newStyle);
+    })
+    .catch((error) => {
+      console.error('Error loading font:', error);
+    });
 });
 </script>
 
