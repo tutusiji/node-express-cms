@@ -52,7 +52,7 @@ import { createFonts } from '../../http/api';
 const textarea = ref('字体包子集在线抽取');
 const fontOriginName = ref('');
 const loading = ref(false);
-const loadfont = ref(true);
+const loadfont = ref(false);
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
