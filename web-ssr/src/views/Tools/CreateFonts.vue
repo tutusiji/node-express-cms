@@ -241,7 +241,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   // 检查文件类型
   // const isTTF = file.type === 'font/ttf' || file.type === 'application/x-font-ttf';
   // 或者通过文件扩展名检查
-  const isTTFExtension = rawFile.name.endsWith('.ttf');
+  const isTTFExtension = rawFile.name.endsWith('.ttf' || '.TTF');
   if (!isTTFExtension) {
     ElNotification({
       title: '提示',
