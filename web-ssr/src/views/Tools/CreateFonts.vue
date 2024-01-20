@@ -126,7 +126,7 @@ onMounted(() => {
 .previewfonts {
   height: 220px;
   font-family: 'AnyFonts';
-  font-size: 20px;
+  font-size: 24px;
   box-sizing: border-box;
   padding: 2px 4px;
    background-image: linear-gradient(to right, #eee 1px, transparent 1px),
