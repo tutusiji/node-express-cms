@@ -9,7 +9,7 @@
     :limit="1"
   >
     <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-    <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
+    <div class="el-upload__text">拖拽文件到这里 or <em>点击上传</em></div>
     <template #tip>
       <div class="el-upload__tip">当前只支持ttf格式的字体文件上传，每次只能传一个字体包</div>
     </template>
