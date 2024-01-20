@@ -185,6 +185,9 @@ nav {
     cursor: pointer;
     font-family: 'CustomFont';
     text-decoration: none;
+    &:hover{
+      color: #fff;
+    }
   }
 
   .menu {
