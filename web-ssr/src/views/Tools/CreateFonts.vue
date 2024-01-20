@@ -168,11 +168,12 @@ const totalBytes = 6.99 * 1024 * 1024; // 6.5MB in bytes
 //   },
 //   totalBytes
 // );
-fetchFontProgress(
+const fetchFonts = fetchFontProgress(
   `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
   (progress) => {
     console.log(`Progress: ${progress.toFixed(0)}%`);
     fontprogress.value = `${progress.toFixed(0)}`;
+    loadFont('AnyFonts', `${baseHost}uploads/fonts/文鼎大颜楷.ttf?v=${new Date().getTime()}`);
   },
   totalBytes
 );
@@ -185,16 +186,17 @@ const afterUpload = (res) => {
 
 onMounted(() => {
   Prism.highlightAll();
+  fetchFonts();
 });
 </script>
 
 <style lang="scss" scoped>
-@font-face {
-  font-family: 'AnyFonts';
-  src: url('https://www.tuziki.com/uploads/fonts/文鼎大颜楷.ttf') format('truetype');
-  font-style: normal;
-  font-weight: normal;
-}
+// @font-face {
+//   font-family: 'AnyFonts';
+//   src: url('https://www.tuziki.com/uploads/fonts/文鼎大颜楷.ttf') format('truetype');
+//   font-style: normal;
+//   font-weight: normal;
+// }
 
 .previewfonts {
   height: 220px;
