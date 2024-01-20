@@ -30,15 +30,6 @@
       生成字体子集
     </el-button>
   </div>
-  <h3 class="text-[18px] font-bold py-4">使用：</h3>
-  <pre>
-<code class="language-css line-numbers">@font-face {
-  font-family: 'CustomFont';
-  src: url('../assets/fonts/CustomFont.ttf') format('truetype');
-  font-style: normal;
-  font-weight: normal;
-}</code>
-</pre>
 </template>
 
 <script lang="ts" setup>
