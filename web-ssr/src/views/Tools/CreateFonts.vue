@@ -2,6 +2,7 @@
   <h3 class="text-[18px] font-bold py-4">上传字体包：</h3>
   <el-upload
     ref="upload"
+    v-model:file-list="fileList"
     class="upload-demo"
     drag
     :action="`${baseURL}/uploadFonts`"
@@ -84,9 +85,11 @@ import { EditPen, UploadFilled } from '@element-plus/icons-vue';
 import { ElNotification } from 'element-plus';
 import 'element-plus/theme-chalk/el-notification.css';
 import { genFileId } from 'element-plus';
-import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus';
+import type { UploadInstance, UploadProps, UploadRawFile, UploadUserFile } from 'element-plus';
 
 const upload = ref<UploadInstance>();
+
+const fileList = ref<UploadUserFile[]>([]);
 
 const textarea = ref('这是一个Web在线字体包子集抽取工具，欢迎使用！！！');
 const fontOriginName = ref('');
@@ -212,12 +215,6 @@ function fetchFontProgress(url, onProgress, totalBytes) {
 
 // 使用 fetchFontProgress 函数...
 
-const afterUpload = (res) => {
-  // console.log('res', res);
-  loadFont('AnyFonts', `${res.url}?v=${new Date().getTime()}`);
-  fontOriginName.value = res.filename;
-};
-
 const handleExceed: UploadProps['onExceed'] = (files) => {
   upload.value!.clearFiles();
   const file = files[0] as UploadRawFile;
@@ -226,6 +223,16 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
 };
 
 const submitUpload = () => {
+  console.log(fileList.value);
+  if (!fileList.value.length) {
+    ElNotification({
+      title: '提示',
+      message: '请上传一个.ttf格式的字体文件',
+      type: 'warning',
+      offset: 80
+    });
+    return false;
+  }
   upload.value!.submit();
 };
 
@@ -240,7 +247,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
       title: '提示',
       message: '只能上传 .ttf 格式的字体文件',
       type: 'warning',
-      offset: 100
+      offset: 80
     });
     return false;
   }
@@ -253,11 +260,17 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
       title: '提示',
       message: `文件大小不能超过 ${maxSizeInMB}MB`,
       type: 'warning',
-      offset: 100
+      offset: 80
     });
     return false;
   }
   return true;
+};
+
+const afterUpload = (res) => {
+  // console.log('res', res);
+  loadFont('AnyFonts', `${res.url}?v=${new Date().getTime()}`);
+  fontOriginName.value = res.filename;
 };
 
 onMounted(() => {
