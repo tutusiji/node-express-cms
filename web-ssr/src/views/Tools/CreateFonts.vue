@@ -46,7 +46,12 @@
     </el-col>
     <el-col :span="12">
       <h3 class="text-[18px] font-bold py-4">字体预览：</h3>
-      <div v-loading="loadfontStatus" element-loading-text="正在导入字体..." class="previewfonts">
+      <div
+        v-loading="loadfontStatus"
+        element-loading-text="正在导入字体..."
+        class="previewfonts"
+        :style="`font-family:${fontOriginName.split('.')[0]};`"
+      >
         <div v-show="fontprogress !== 100" class="loadbar">
           <el-progress
             :text-inside="true"
@@ -269,7 +274,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
 
 const afterUpload = (res) => {
   console.log('afterUpload', res);
-  loadFont('AnyFonts', `${res.url}?v=${new Date().getTime()}`);
+  loadFont(res.filename.split('.')[0], `${res.url}?v=${new Date().getTime()}`);
   fontOriginName.value = res.filename;
 };
 
