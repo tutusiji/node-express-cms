@@ -972,11 +972,11 @@ module.exports = (app) => {
   var rename = require("gulp-rename");
   router.post("/createFonts", async (req, res) => {
     const words = req.body.words;
-    const fontName = req.body.fontOriginName;
+    const fontName = req.body.fontOriginName.split(".")[0];
     console.log(words, fontName);
     try {
       const fontmin = new Fontmin()
-        .src(path.join(__dirname, "..", "..", `uploads/fonts/${fontName}`))
+        .src(path.join(__dirname, "..", "..", `uploads/fonts/${fontName}.ttf`))
         .dest(path.join(__dirname, "..", "..", `uploads/fonts`))
         // .use(Fontmin.ttf2woff()) // 转换为 WOFF 格式
         .use(
@@ -985,7 +985,7 @@ module.exports = (app) => {
             hinting: true, // keep ttf hint info (fpgm, prep, cvt). default = true
           })
         )
-        .use(rename(`${fontName.split(".")[0]}-lite.ttf`));
+        .use(rename(`${fontName}-lite.ttf`));
       // .use(
       //   Fontmin.rename({
       //     ext: ".ttf",
