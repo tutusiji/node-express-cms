@@ -20,7 +20,7 @@
       <el-input v-model="textarea" placeholder="Please input" rows="10" clearable type="textarea" />
     </el-col>
     <el-col :span="12">
-      <div class="previewfonts">
+      <div v-loading="loadfont" element-loading-text="正在导入字体..." class="previewfonts">
         {{ textarea }}
       </div>
     </el-col>
@@ -46,15 +46,18 @@ import Prism from 'prismjs'; // 代码高亮插件的core
 import 'prismjs/themes/prism-tomorrow.min.css'; // 高亮主题
 import { UploadFilled } from '@element-plus/icons-vue';
 import { EditPen } from '@element-plus/icons-vue';
+import FontFaceObserver from 'fontfaceobserver';
 import { createFonts } from '../../http/api';
 
 const textarea = ref('字体包子集在线抽取');
 const fontOriginName = ref('');
 const loading = ref(false);
+const loadfont = ref(true);
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 function loadFont(fontName, fontUrl) {
+  loadfont.value = true;
   const newStyle = document.createElement('style');
   newStyle.appendChild(
     document.createTextNode(`
@@ -67,6 +70,17 @@ function loadFont(fontName, fontUrl) {
   `)
   );
   document.head.appendChild(newStyle);
+  // 检测字体是否加载完成
+  const font = new FontFaceObserver(fontName);
+  font
+    .load()
+    .then(() => {
+      loadfont.value = false;
+    })
+    .catch((error) => {
+      console.error('Font loading failed', error);
+      loadfont.value = false;
+    });
 }
 
 const fetchfonts = async () => {
@@ -110,6 +124,7 @@ onMounted(() => {
 // }
 
 .previewfonts {
+  height: 220px;
   font-family: 'AnyFonts';
   font-size: 20px;
 }
