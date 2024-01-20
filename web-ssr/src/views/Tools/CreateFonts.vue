@@ -38,7 +38,7 @@
       :loading="loading"
       @click="onUploadfonts"
     >
-      生成字体子集
+      生成字体子集包
     </el-button>
   </div>
 </template>
@@ -190,7 +190,7 @@ onMounted(() => {
           document.createTextNode(`
     @font-face {
       font-family: 'AnyFonts';
-      src: url('${baseHost}uploads/fonts/文鼎大颜楷.ttf?v=${new Date().getTime()}') format('truetype');
+      src: url('${baseHost}uploads/fonts/文鼎大颜楷.ttf') format('truetype');
       font-style: normal;
       font-weight: normal;
     }
