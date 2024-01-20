@@ -29,6 +29,15 @@
       <el-form-item label="立即发布">
         <el-switch v-model="model.status"></el-switch>
       </el-form-item>
+      <el-form-item label="功能性插件">
+        <el-input
+          v-model="model.slotName"
+          style="width:200px; margin-right: 20px;"
+        ></el-input>
+        <el-switch style="margin-left: 20px;" v-model="model.slotStatus">
+        </el-switch>
+        是否开启
+      </el-form-item>
       <el-form-item label="摘要">
         <el-input
           type="textarea"
@@ -60,9 +69,11 @@
         <el-button @click="getGPT" :loading="gptStatus" type="primary" plain
           >ChatGPT</el-button
         >
-        <div style="color: #999;">标准提示语——将以下内容精简成文本，字数不超过</div>
+        <div style="color: #999;">
+          标准提示语——将以下内容精简成文本，字数不超过
+        </div>
       </el-form-item>
-      
+
       <el-form-item>
         <el-button type="primary" native-type="submit">保存文章</el-button>
       </el-form-item>
@@ -99,6 +110,8 @@ export default {
         status: true,
         date: new Date(),
         dateDisplay: true,
+        slotName: "",
+        slotStatus: false,
         summary: "",
         words: 400,
         prompt: "将以下内容精简成文本，字数不超过",
@@ -166,7 +179,7 @@ export default {
       const summaryText = this.convertRichTextToPlainText(this.model.body);
       const res = await this.$http.post(`rest/articles/${this.id}/summary`, {
         prompt: `${this.model.prompt}${this.model.words}—— \n`,
-        summaryText:`${this.model.title}——${summaryText}`,
+        summaryText: `${this.model.title}——${summaryText}`,
       });
       this.model.summary = JSON.parse(res.data).result;
       this.gptStatus = false;

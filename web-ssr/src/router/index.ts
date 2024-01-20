@@ -47,7 +47,14 @@ const routes = [
         component: () => import('../views/Article.vue'),
         meta: {
           type: 'article'
-        }
+        },
+        children: [
+          {
+            path: 'createFonts',
+            name: 'createFonts',
+            component: () => import('../views/Tools/CreateFonts.vue')
+          }
+        ]
       },
       {
         path: '/about',
@@ -57,6 +64,15 @@ const routes = [
           type: 'article'
         }
       },
+      // 字体包子集在线抽取小工具
+      // {
+      //   path: '/:type/article/65aaf0aaeb8ff12f39e87ff1',
+      //   name: 'makeFonts',
+      //   component: () => import('../views/Tools/MakeFonts.vue'),
+      //   meta: {
+      //     type: 'article'
+      //   }
+      // },
       // “捕获所有”路由，重定向到首页
       {
         path: '/:catchAll(.*)',

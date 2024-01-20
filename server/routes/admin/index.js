@@ -264,7 +264,7 @@ module.exports = (app) => {
           console.error(err);
           return res
             .status(500)
-            .send({ message: "Error 字体包生成", error: err });
+            .send({ message: "Error 字体包生成错误", error: err });
         }
         if (process.env.NODE_ENV === "production") {
           try {

@@ -5,6 +5,8 @@ interface ArticleApiResponse {
   body: string;
   title: string;
   date: string;
+  slotName: string;
+  slotStatus: boolean;
   categories: string[];
   dateDisplay: boolean;
   prevArticle: { _id: string; title: string };
@@ -18,6 +20,8 @@ export const useArticleDetailStore = defineStore('articleDetail', {
       body: '',
       title: '',
       date: '',
+      slotName: '',
+      slotStatus: false,
       categories: [] as string[],
       dateDisplay: false,
       prevArticle: { _id: '', title: '' },

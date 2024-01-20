@@ -8,6 +8,8 @@ const schema = new mongoose.Schema(
     prompt: { type: String },
     words: { type: Number },
     status: { type: Boolean },
+    slotName: { type: String },
+    slotStatus: { type: Boolean },
     dateDisplay: { type: Boolean },
     categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],
     body: { type: String },

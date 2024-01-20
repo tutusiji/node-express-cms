@@ -12,10 +12,17 @@ interface ArticleApiResponse {
   body: string;
   title: string;
   date: string;
+  slotName: string;
+  slotStatus: boolean;
   categories: string[];
   dateDisplay: boolean;
   prevArticle: { _id: string; title: string };
   nextArticle: { _id: string; title: string };
+}
+
+interface fontsType {
+  words: string;
+  fontOriginName: string;
 }
 
 // 用户登录
@@ -49,5 +56,14 @@ export function getArticleDetail(data: string): Promise<AxiosResponse<ArticleApi
   return request({
     url: `/articles/${data}`,
     method: 'get'
+  });
+}
+
+// 获取用户信息
+export function createFonts(data: fontsType) {
+  return request({
+    url: '/createFonts',
+    method: 'post',
+    data
   });
 }

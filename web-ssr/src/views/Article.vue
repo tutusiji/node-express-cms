@@ -6,6 +6,7 @@
   >
     {{ dayjs(articleDetailStore.detail.date).format('YYYY-MM-DD ') }}
   </div>
+  <router-view v-if="articleDetailStore.detail.slotStatus" :key="$route.path" />
   <div
     v-loading="articleDetailStore.loading"
     class="articleDetails"
@@ -17,7 +18,11 @@
         上一篇：
         <a
           :href="`./${articleDetailStore.detail.prevArticle._id}`"
-          @click.prevent="router.push(`./${articleDetailStore.detail.prevArticle._id}`)"
+          @click.prevent="
+            router.push(
+              `/${route.params.type}/article/${articleDetailStore.detail.prevArticle._id}`
+            )
+          "
         >
           {{ articleDetailStore.detail.prevArticle.title }}
         </a>
@@ -26,7 +31,11 @@
         下一篇：
         <a
           :href="`./${articleDetailStore.detail.nextArticle._id}`"
-          @click.prevent="router.push(`./${articleDetailStore.detail.nextArticle._id}`)"
+          @click.prevent="
+            router.push(
+              `/${route.params.type}/article/${articleDetailStore.detail.nextArticle._id}`
+            )
+          "
         >
           {{ articleDetailStore.detail.nextArticle.title }}
         </a>
@@ -44,8 +53,8 @@
 </template>
 
 <script lang="ts" setup>
-import dayjs from 'dayjs';
 import Prism from 'prismjs'; // 代码高亮插件的core
+import dayjs from 'dayjs';
 import 'prismjs/themes/prism-tomorrow.min.css'; // 高亮主题
 import { useArticleDetailStore } from '../store/articleDetailStore';
 const articleDetailStore = useArticleDetailStore();
@@ -78,6 +87,9 @@ onMounted(async () => {
     const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
     await articleDetailStore.fetchArticleDetail(pageId);
     Prism.highlightAll();
+    if (articleDetailStore.detail.slotStatus) {
+      router.push(`/${route.params.type}/article/${pageId}/${articleDetailStore.detail.slotName}`);
+    }
   }
 });
 </script>
@@ -113,16 +125,16 @@ onMounted(async () => {
     font-weight: bold;
   }
   h1 {
-    font-size: 24px;
-  }
-  h2 {
     font-size: 22px;
   }
-  h3 {
+  h2 {
     font-size: 20px;
   }
-  h4 {
+  h3 {
     font-size: 18px;
+  }
+  h4 {
+    font-size: 16px;
   }
 
   ul,

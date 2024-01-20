@@ -127,6 +127,8 @@ router.beforeEach((to) => {
       body: '',
       title: '',
       date: '',
+      slotName: '',
+      slotStatus: false,
       categories: [],
       dateDisplay: false,
       prevArticle: { _id: '', title: '' },
@@ -136,24 +138,28 @@ router.beforeEach((to) => {
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 @font-face {
   font-family: 'CustomFont';
   src: url('../assets/fonts/CustomFont.ttf') format('truetype');
   font-style: normal;
   font-weight: normal;
 }
+
 .welcome {
   font-family: 'CustomFont';
   padding: 10px;
 }
+
 .wrap {
   min-height: 100vh;
   flex-direction: column;
+
   .main {
     flex: 1;
   }
 }
+
 nav {
   z-index: 1;
   position: absolute;
@@ -170,6 +176,7 @@ nav {
     justify-content: space-between;
     align-items: center;
   }
+
   .logo {
     font-size: 1.1rem;
     color: #fff;
@@ -179,10 +186,12 @@ nav {
     font-family: 'CustomFont';
     text-decoration: none;
   }
+
   .menu {
     display: flex;
     align-items: center;
     position: relative;
+
     li {
       cursor: pointer;
       white-space: nowrap;
@@ -191,11 +200,13 @@ nav {
       font-family: 'CustomFont';
       color: #fff;
       text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
+
       &.current {
         // border-bottom: 1px solid rgba($color: #000000, $alpha: 0.8);
       }
     }
   }
+
   .linebg {
     position: absolute;
     left: 0;
@@ -207,6 +218,7 @@ nav {
     // border-radius: 100%;
   }
 }
+
 header {
   position: relative;
   margin-bottom: 30px;
@@ -217,6 +229,7 @@ header {
   background-size: cover;
   // background-image: url('//hkroom.oss-cn-shenzhen.aliyuncs.com/bg.jpg');
   background-repeat: no-repeat;
+
   &::before {
     content: '';
     position: absolute;
@@ -228,11 +241,13 @@ header {
     opacity: 0.5;
     // filter: blur(10px);
   }
+
   .content {
     margin: 0 auto;
     max-width: 1064px;
     padding: 100px 0;
   }
+
   .slogan {
     position: relative;
     display: flex;
@@ -245,11 +260,13 @@ header {
     font-family: 'CustomFont';
   }
 }
+
 .container {
   margin: 0 auto;
   max-width: 1064px;
   padding: 0 20px;
 }
+
 footer {
   display: flex;
   align-items: center;
@@ -258,124 +275,64 @@ footer {
   text-align: center;
   color: #999;
   font-weight: 300;
+
   a {
     font-weight: 300;
   }
 }
-</style>
 
-<style lang="scss">
 .gotop {
   cursor: pointer;
   font-family: 'CustomFont';
-  &::selection {
-    background-color: transparent; /* 背景色透明 */
-    color: inherit; /* 文字颜色保持不变 */
-  }
-}
-ul.articleList {
-  min-height: 200px;
-  // background-color: #fafafa;
 
-  li {
-    display: flex;
-    align-items: baseline;
-    padding: 1.1rem 1rem;
-    border-bottom: 1px solid #eee;
-    &:hover {
-      background-color: #fafafa;
-    }
-    &:active {
-      background-color: #fafafa;
-    }
-    &:nth-last-child(1) {
-      border-bottom: none;
-    }
-    .num {
-      font-family: 'CustomFont';
-      margin-right: 1.3rem;
-    }
-    .info {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      .content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        .title {
-          cursor: pointer;
-          line-height: 28px;
-          font-size: 1.2rem;
-          font-weight: bold;
-          word-break: break-all;
-          color: #0d6fa1; // 34538b
-          font-family: 'CustomFont';
-        }
-        .summary {
-          font-size: 0.9rem;
-          word-break: break-all;
-          padding-top: 6px;
-        }
-        .desc {
-          color: #81ccf1;
-          color: #5bbded;
-          // text-decoration: underline;
-          font-family: 'CustomFont';
-          white-space: nowrap;
-        }
-      }
-      .date {
-        width: 3rem;
-        margin-left: 2rem;
-        font-size: 0.8rem;
-        color: #c5c5c5;
-        font-family: 'CustomFont';
-        b {
-          display: block;
-          text-align: right;
-        }
-        em {
-          display: block;
-          color: #666;
-          font-size: 0.9rem;
-          text-align: right;
-        }
-      }
-    }
+  &::selection {
+    background-color: transparent;
+    /* 背景色透明 */
+    color: inherit;
+    /* 文字颜色保持不变 */
   }
 }
+
 @media screen and (max-width: 600px) {
   .wrap {
     nav .content,
     .container {
       padding: 0 10px;
     }
+
     header .content {
       padding: 72px 10px;
     }
+
     header {
       margin-bottom: 10px;
     }
+
     .welcome {
       padding: 10px 0;
     }
+
     nav .menu li {
       padding: 0.7rem;
     }
+
     ul.articleList {
       li {
         padding: 10px 0;
         align-items: baseline;
+
         .num {
           margin-right: 0.8rem;
         }
+
         .info {
           display: block;
+
           .date {
             width: auto;
             margin-top: 8px;
             margin-left: 0;
+
             b {
               display: inline;
               float: left;
@@ -383,6 +340,7 @@ ul.articleList {
               margin-right: 10px;
               font-size: 0.9rem;
             }
+
             em {
               display: inline;
               color: #c5c5c5;
@@ -394,6 +352,7 @@ ul.articleList {
     }
   }
 }
+
 .next {
   width: 100px;
   height: 40px;
@@ -403,6 +362,7 @@ ul.articleList {
   margin: 30px auto 30px;
   cursor: pointer;
   color: #666;
+
   &:hover {
     background-color: #f1f1f1;
   }

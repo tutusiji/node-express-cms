@@ -10,7 +10,8 @@
               class="title"
               :href="`./article/${item._id}`"
               @click.prevent="router.push(`./article/${item._id}`)"
-            >{{ item.title }}</a>
+              >{{ item.title }}</a
+            >
           </div>
           <div v-show="item.summary" class="summary">
             {{ item.summary
@@ -18,7 +19,8 @@
               class="desc"
               :href="`./article/${item._id}`"
               @click.prevent="router.push(`./article/${item._id}`)"
-            >... 阅读全文 〉</a>
+              >... 阅读全文 〉</a
+            >
           </div>
         </div>
         <div class="date">
@@ -82,3 +84,90 @@ const goTop = () => {
   });
 };
 </script>
+
+<style scoped lang="scss">
+ul.articleList {
+  min-height: 200px;
+  // background-color: #fafafa;
+
+  li {
+    display: flex;
+    align-items: baseline;
+    padding: 1.1rem 1rem;
+    border-bottom: 1px solid #eee;
+
+    &:hover {
+      background-color: #fafafa;
+    }
+
+    &:active {
+      background-color: #fafafa;
+    }
+
+    &:nth-last-child(1) {
+      border-bottom: none;
+    }
+
+    .num {
+      font-family: 'CustomFont';
+      margin-right: 1.3rem;
+    }
+
+    .info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+
+      .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        .title {
+          cursor: pointer;
+          line-height: 28px;
+          font-size: 1.2rem;
+          font-weight: bold;
+          word-break: break-all;
+          color: #0d6fa1; // 34538b
+          font-family: 'CustomFont';
+        }
+
+        .summary {
+          font-size: 0.9rem;
+          word-break: break-all;
+          padding-top: 6px;
+        }
+
+        .desc {
+          color: #81ccf1;
+          color: #5bbded;
+          // text-decoration: underline;
+          font-family: 'CustomFont';
+          white-space: nowrap;
+        }
+      }
+
+      .date {
+        width: 3rem;
+        margin-left: 2rem;
+        font-size: 0.8rem;
+        color: #c5c5c5;
+        font-family: 'CustomFont';
+
+        b {
+          display: block;
+          text-align: right;
+        }
+
+        em {
+          display: block;
+          color: #666;
+          font-size: 0.9rem;
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+</style>

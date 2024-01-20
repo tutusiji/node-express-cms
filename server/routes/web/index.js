@@ -164,10 +164,20 @@ module.exports = (app) => {
         categories: category._id,
       });
 
-      // 添加序列号
+      // 添加序列号 正序
+      // if (result.length > 0 && result[0].list) {
+      //   for (let i = 0; i < result[0].list.length; i++) {
+      //     result[0].list[i].serialNumber = skip + i + 1;
+      //   }
+      // }
+      // 计算当前页面的第一个元素在整个列表中的位置（倒序开始的位置）
+      const startSerial = totalCount - (pageNumber - 1) * limitNumber;
+
+      // 添加倒序序列号 倒序
       if (result.length > 0 && result[0].list) {
         for (let i = 0; i < result[0].list.length; i++) {
-          result[0].list[i].serialNumber = skip + i + 1;
+          // 从startSerial开始递减
+          result[0].list[i].serialNumber = startSerial - i;
         }
       }
 
@@ -865,7 +875,6 @@ module.exports = (app) => {
   });
 
   // 文章详情，包括相同分类的前后文章
-  // 文章详情，包括相同分类的前后文章
   router.get("/articles/:id", async (req, res) => {
     try {
       const currentArticle = await Article.findById(req.params.id).lean();
@@ -907,6 +916,88 @@ module.exports = (app) => {
       res.send(response);
     } catch (error) {
       res.status(500).send({ message: "Error 没有查询到相关id", error });
+    }
+  });
+
+  //  字体包文件上传
+  //__dirname 绝对地址
+  // 设置 Multer 存储引擎
+  const multer = require("multer");
+  const path = require("path");
+  const iconv = require("iconv-lite");
+  console.log("__dirname=====", __dirname);
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      // 设置文件存储位置
+      cb(null, path.join(__dirname, "..", "..", "uploads/fonts"));
+    },
+    filename: function (req, file, cb) {
+      // cb(null, file.originalname); // 保持原始文件名
+      // cb(null, "AnyFonts.ttf");
+      const decodedName = iconv.decode(
+        Buffer.from(file.originalname, "binary"),
+        "utf-8"
+      );
+      cb(null, decodedName);
+    },
+  });
+  const uploadFonts = multer({ storage: storage }).single("file");
+
+  router.post("/uploadFonts", uploadFonts, async (req, res) => {
+    const file = req.file;
+    console.log("file=====", file);
+    // 更新文件 URL
+    file.url = `${req.protocol}://${req.get("host")}/uploads/fonts/${
+      file.filename
+    }`;
+    res.send(file);
+  });
+
+  // 字体包 生成
+  const Fontmin = require("fontmin");
+  var rename = require("gulp-rename");
+  router.post("/createFonts", async (req, res) => {
+    const words = req.body.words;
+    const fontName = req.body.fontOriginName.split(".")[0];
+    console.log(words, fontName);
+    try {
+      const fontmin = new Fontmin()
+        .src(path.join(__dirname, "..", "..", `uploads/fonts/${fontName}.ttf`))
+        .dest(path.join(__dirname, "..", "..", `uploads/fonts`))
+        // .use(Fontmin.ttf2woff()) // 转换为 WOFF 格式
+        .use(
+          Fontmin.glyph({
+            text: words,
+            hinting: true, // keep ttf hint info (fpgm, prep, cvt). default = true
+          })
+        )
+        .use(rename(`${fontName}-lite.ttf`));
+      // .use(
+      //   Fontmin.rename({
+      //     ext: ".ttf",
+      //     basename: `${fontName}-lite`, // 新的基础文件名
+      //   })
+      // );
+      fontmin.run(async function (err, files) {
+        res.send({
+          name: `${fontName}-lite.ttf`,
+          url: `${req.protocol}://${req.get(
+            "host"
+          )}/uploads/fonts/${fontName}-lite.ttf`,
+          message: "Fonts processed and ssr server restarted.",
+        });
+        if (err) {
+          console.error(err);
+          return res
+            .status(500)
+            .send({ message: "Error 字体包生成错误1", error: err });
+        }
+        // console.log(files[0]);
+        // => { contents: <Buffer 00 01 00 ...> }
+      });
+    } catch (error) {
+      // 错误处理
+      res.status(500).send({ message: "Error 字体包生成错误2", error });
     }
   });
 
