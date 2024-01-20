@@ -205,12 +205,12 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-// @font-face {
-//   font-family: 'AnyFonts';
-//   src: url('https://www.tuziki.com/uploads/fonts/文鼎大颜楷.ttf') format('truetype');
-//   font-style: normal;
-//   font-weight: normal;
-// }
+@font-face {
+  font-family: 'AnyFonts';
+  src: url('https://www.tuziki.com/uploads/fonts/文鼎大颜楷.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
 
 .previewfonts {
   height: 220px;
