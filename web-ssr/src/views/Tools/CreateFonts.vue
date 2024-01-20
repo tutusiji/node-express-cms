@@ -14,12 +14,13 @@
       <div class="el-upload__tip">当前只支持ttf格式的字体文件上传，每次只能传一个字体包</div>
     </template>
   </el-upload>
-  <h3 class="text-[18px] font-bold py-4">文字预览：</h3>
   <el-row :gutter="20">
     <el-col :span="12">
+      <h3 class="text-[18px] font-bold py-4">输入文字：</h3>
       <el-input v-model="textarea" placeholder="Please input" rows="10" clearable type="textarea" />
     </el-col>
     <el-col :span="12">
+      <h3 class="text-[18px] font-bold py-4">字体预览：</h3>
       <div v-loading="loadfontStatus" element-loading-text="正在导入字体..." class="previewfonts">
         <div v-show="fontprogress !== 100" class="loadbar">
           <el-progress :text-inside="true" :stroke-width="20" :percentage="fontprogress">
