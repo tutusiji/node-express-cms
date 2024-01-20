@@ -127,47 +127,83 @@ function downloadFile(url, filename) {
   document.body.removeChild(a);
 }
 
+const totalBytes = 6.99 * 1024 * 1024; // 6.99 MB
+const blobUrl = ref<string>('');
+
 function fetchFontProgress(url, onProgress, totalBytes) {
-  fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error, status = ${response.status}`);
-      }
-
-      const reader = response.body.getReader();
-      let receivedBytes = 0;
-
-      function processResult(result) {
-        if (result.done) {
-          console.log('Fetch complete');
-          return;
+  return new Promise((resolve, reject) => {
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error, status = ${response.status}`);
         }
 
-        receivedBytes += result.value.length;
-        const progress = (receivedBytes / totalBytes) * 100;
-        onProgress(progress);
+        const contentLength = response.headers.get('Content-Length') || totalBytes;
+        let receivedBytes = 0;
+        let chunks = []; // 用于存储接收到的数据块
 
-        return reader.read().then(processResult);
-      }
+        const reader = response.body.getReader();
 
-      return reader.read().then(processResult);
-    })
-    .catch((error) => {
-      console.error('Fetch error:', error);
-    });
+        function read() {
+          reader.read().then(({ done, value }) => {
+            if (done) {
+              // 所有数据块已接收，合并它们并创建一个 Blob
+              let blob = new Blob(chunks, { type: 'font/ttf' }); // 确保指定正确的MIME类型
+              console.log(blob, URL.createObjectURL(blob));
+              blobUrl.value = URL.createObjectURL(blob);
+              resolve();
+              return;
+            }
+
+            // 更新进度并存储数据块
+            receivedBytes += value.length;
+            chunks.push(value);
+            const progress = (receivedBytes / contentLength) * 100;
+            onProgress(progress);
+
+            // 继续读取下一部分
+            read();
+          });
+        }
+
+        read(); // 开始读取流
+      })
+      .catch((error) => {
+        console.error('Fetch error:', error);
+        reject(error);
+      });
+  });
 }
-console.log(`${baseHost}uploads/fonts/文鼎大颜楷.ttf`);
-// 使用示例
-const totalBytes = 6.99 * 1024 * 1024; // 6.5MB in bytes
-// fetchFontProgress(
-//   `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
-//   (received, total) => {
-//     const progress = (received / total) * 100;
-//     console.log(`Progress: ${progress.toFixed(2)}%`);
-//     loadLocalFonts.value = `${progress.toFixed(2)}%`;
-//   },
-//   totalBytes
-// );
+
+// 使用 fetchFontProgress 函数...
+
+fetchFontProgress(
+  `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
+  (progress) => {
+    const num = Number(progress.toFixed(0));
+    fontprogress.value = num;
+    console.log(`Progress: ${num}%`);
+  },
+  totalBytes
+)
+  .then(() => {
+    // const fontBlobUrl = URL.createObjectURL(blob);
+    const newStyle = document.createElement('style');
+    newStyle.appendChild(
+      document.createTextNode(`
+      @font-face {
+        font-family: 'AnyFonts';
+        src: url('${blobUrl.value}') format('truetype');
+        font-style: normal;
+        font-weight: normal;
+      }
+    `)
+    );
+    document.head.appendChild(newStyle);
+  })
+  .catch((error) => {
+    console.error('Error loading font:', error);
+  });
 
 const afterUpload = (res) => {
   console.log('res', res);
@@ -177,40 +213,16 @@ const afterUpload = (res) => {
 
 onMounted(() => {
   Prism.highlightAll();
-  fetchFontProgress(
-    `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
-    (progress) => {
-      const num = Number(progress.toFixed(0));
-      fontprogress.value = num;
-      // loadFont('AnyFonts', `${baseHost}uploads/fonts/文鼎大颜楷.ttf?v=${new Date().getTime()}`);
-      if (num === 100) {
-        console.log(`Progress: ${num}%`);
-        const newStyle = document.createElement('style');
-        newStyle.appendChild(
-          document.createTextNode(`
-    @font-face {
-      font-family: 'AnyFonts';
-      src: url('${baseHost}uploads/fonts/文鼎大颜楷.ttf') format('truetype');
-      font-style: normal;
-      font-weight: normal;
-    }
-  `)
-        );
-        document.head.appendChild(newStyle);
-      }
-    },
-    totalBytes
-  );
 });
 </script>
 
 <style lang="scss" scoped>
-@font-face {
-  font-family: 'AnyFonts';
-  src: url('https://www.tuziki.com/uploads/fonts/文鼎大颜楷.ttf') format('truetype');
-  font-style: normal;
-  font-weight: normal;
-}
+// @font-face {
+//   font-family: 'AnyFonts';
+//   src: url('https://www.tuziki.com/uploads/fonts/文鼎大颜楷.ttf') format('truetype');
+//   font-style: normal;
+//   font-weight: normal;
+// }
 
 .previewfonts {
   height: 220px;
