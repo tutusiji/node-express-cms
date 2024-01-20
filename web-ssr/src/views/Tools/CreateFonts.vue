@@ -147,7 +147,7 @@ const onUploadfonts = async () => {
     words: textarea.value,
     fontOriginName: fontOriginName.value
   });
-  console.log('res----', res);
+  // console.log('res----', res);
   downloadFile(res.url, res.name);
   loading.value = false;
 };
@@ -183,7 +183,7 @@ function fetchFontProgress(url, onProgress, totalBytes) {
             if (done) {
               // 所有数据块已接收，合并它们并创建一个 Blob
               let blob = new Blob(chunks, { type: 'font/ttf' }); // 确保指定正确的MIME类型
-              console.log(blob, URL.createObjectURL(blob));
+              // console.log(blob, URL.createObjectURL(blob));
               blobUrl.value = URL.createObjectURL(blob);
               resolve();
               return;
@@ -212,7 +212,7 @@ function fetchFontProgress(url, onProgress, totalBytes) {
 // 使用 fetchFontProgress 函数...
 
 const afterUpload = (res) => {
-  console.log('res', res);
+  // console.log('res', res);
   loadFont('AnyFonts', `${res.url}?v=${new Date().getTime()}`);
   fontOriginName.value = res.filename;
 };
@@ -229,7 +229,7 @@ const submitUpload = () => {
 };
 
 const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  console.log('rawFile====================', rawFile);
+  // console.log('rawFile====================', rawFile);
   // 检查文件类型
   // const isTTF = file.type === 'font/ttf' || file.type === 'application/x-font-ttf';
   // 或者通过文件扩展名检查
@@ -301,7 +301,7 @@ onMounted(() => {
   height: 220px;
   font-family: 'AnyFonts';
   font-size: 22px;
-  line-height: 1.5;
+  line-height: 1.4;
   box-sizing: border-box;
   background-image: linear-gradient(to right, #eee 1px, transparent 1px),
     linear-gradient(to bottom, #eee 1px, transparent 1px);
