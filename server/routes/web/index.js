@@ -947,9 +947,12 @@ module.exports = (app) => {
     const file = req.file;
     console.log("file=====", file);
     // 更新文件 URL
-    file.url = `${req.protocol}://${req.get("host")}/uploads/fonts/${
+    file.url = `//${req.get("host")}/uploads/fonts/${
       file.filename
     }`;
+    // file.url = `${req.protocol}://${req.get("host")}/uploads/fonts/${
+    //   file.filename
+    // }`;
     res.send(file);
   });
 
