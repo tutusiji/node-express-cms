@@ -267,7 +267,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
 };
 
 const afterUpload = (res) => {
-  // console.log('res', res);
+  console.log('afterUpload', res);
   loadFont('AnyFonts', `${res.url}?v=${new Date().getTime()}`);
   fontOriginName.value = res.filename;
 };
