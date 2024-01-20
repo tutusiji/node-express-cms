@@ -15,23 +15,38 @@
     </template>
   </el-upload>
   <el-row :gutter="20">
-    <el-col :span="12">
+    <el-col :span="12" class="relative">
       <h3 class="text-[18px] font-bold py-4">输入文字：</h3>
-      <el-input v-model="textarea" placeholder="Please input" rows="10" clearable type="textarea" />
+      <el-input
+        v-model="textarea"
+        placeholder="输入预览文字、符号"
+        rows="10"
+        clearable
+        type="textarea"
+      />
+      <span class="absolute bottom-0 right-7 text-[12px] pointer-events-none"
+        >{{ textarea.length }} 字</span
+      >
     </el-col>
     <el-col :span="12">
       <h3 class="text-[18px] font-bold py-4">字体预览：</h3>
       <div v-loading="loadfontStatus" element-loading-text="正在导入字体..." class="previewfonts">
         <div v-show="fontprogress !== 100" class="loadbar">
-          <el-progress :text-inside="true" :stroke-width="20" :percentage="fontprogress">
-            <div class="progress mt-[-8px]">本地字体包加载进度{{ fontprogress }}%</div>
+          <el-progress
+            :text-inside="true"
+            :stroke-width="20"
+            :percentage="fontprogress"
+            striped
+            striped-flow
+          >
+            <div class="progress mt-[-8px]">本地字体包正在加载{{ fontprogress }}%</div>
           </el-progress>
         </div>
-        {{ textarea }}
+        <div class="px-[4px] py-[2px]">{{ textarea }}</div>
       </div>
     </el-col>
   </el-row>
-  <div class="flex items-center justify-center my-4">
+  <div class="flex items-center justify-center my-10">
     <el-button
       size="large"
       type="primary"
@@ -55,7 +70,7 @@ import 'element-plus/theme-chalk/el-notification.css';
 import FontFaceObserver from 'fontfaceobserver';
 import { createFonts } from '../../http/api';
 
-const textarea = ref('字体包子集在线抽取');
+const textarea = ref('这是一个Web在线字体包子集抽取工具，欢迎使用！！！');
 const fontOriginName = ref('');
 const loading = ref(false);
 const loadfontStatus = ref(false);
@@ -227,16 +242,23 @@ onMounted(() => {
 .previewfonts {
   height: 220px;
   font-family: 'AnyFonts';
-  font-size: 24px;
+  font-size: 22px;
+  line-height: 1.5;
   box-sizing: border-box;
-  padding: 2px 4px;
   background-image: linear-gradient(to right, #eee 1px, transparent 1px),
     linear-gradient(to bottom, #eee 1px, transparent 1px);
   background-size: 10px 10px;
   border-bottom: 1px solid #eee;
   border-right: 1px solid #eee;
-  // background-position:-1px -1px;
-  .loadbar {
+  overflow-y: auto;
+}
+</style>
+
+<style lang="scss">
+.previewfonts {
+  .el-progress-bar__inner,
+  .el-progress-bar__outer {
+    border-radius: 0 !important;
   }
 }
 </style>
