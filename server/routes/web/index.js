@@ -162,6 +162,7 @@ module.exports = (app) => {
       }
       const totalCount = await Article.countDocuments({
         categories: category._id,
+        status: { $ne: false }
       });
 
       // 添加序列号 正序
