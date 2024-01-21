@@ -79,7 +79,7 @@ module.exports = {
 ## Admin 管理端
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/20240114073704.png'>
-<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/111111111120240114073735.png'>
+<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/Snipaste_2024-01-21_07-35-38.png'>
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/76ee2ebd29257e4370379212e3ed32f8.png'>
 
 ### Admin 管理端
