@@ -76,36 +76,57 @@ onServerPrefetch(async () => {
   await articleDetailStore.fetchArticleDetail(pageId);
 });
 
+function createGitalk(pageId: string) {
+  const gitalkContainer = document.getElementById('gitalk-container');
+  if (gitalkContainer) {
+    // 清除 Gitalk 容器的内容
+    gitalkContainer.innerHTML = '';
+
+    // 创建 Gitalk 实例
+    const gitalk = new Gitalk({
+      // Gitalk 的配置
+      clientID: '62dfeca2c385cf2b645d',
+      clientSecret: 'b5e2ebafc39bc5ba2982bbd96320ebd35fa75274',
+      repo: 'gitalk-comment',
+      owner: 'tutusiji',
+      admin: ['tutusiji'],
+      id: pageId, // 假设 pageId 来自路由参数
+      title: articleDetailStore.detail.title, // 根据实际情况获取标题
+      distractionFreeMode: false
+    });
+
+    gitalk.render('gitalk-container');
+  } else {
+    console.error('Gitalk 容器未找到');
+  }
+}
+
+watch(() => route.path, () => {
+  const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
+  const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
+  // 路由变化时重新创建 Gitalk
+  createGitalk(pageId);
+});
+
 onMounted(async () => {
   // console.log('article===', articleStore.currentPage);
-  let pageId = '';
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
     Prism.highlightAll();
+    const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
+    const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
+    createGitalk(pageId);
     console.log('Detail ssr local');
   } else {
     console.log('Detail ssr reload');
     // 检查当前导航菜单是否为拥有id的单页面
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
-    pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
+    const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
     await articleDetailStore.fetchArticleDetail(pageId);
     Prism.highlightAll();
     if (articleDetailStore.detail.slotStatus) {
       router.push(`/${route.params.type}/article/${pageId}/${articleDetailStore.detail.slotName}`);
     }
-    watch(route, () => {
-    // console.log('路由发生变化', to, from);
-      const gitalk = new Gitalk({
-        clientID: '62dfeca2c385cf2b645d', // GitHub Application Client ID
-        clientSecret: 'b5e2ebafc39bc5ba2982bbd96320ebd35fa75274', // GitHub Application Client Secret
-        repo: 'gitalk-comment', // 存放评论的仓库
-        owner: 'tutusiji', // 仓库的创建者，
-        admin: ['tutusiji'], // 如果仓库有多个人可以操作，那么在这里以数组形式写出
-        id:pageId, // 用于标记评论是哪个页面的，确保唯一，并且长度小于50
-        title:articleDetailStore.detail.title, // 页面标题
-        distractionFreeMode: false // 是否开启输入评论时的全屏遮罩效果
-      });
-      gitalk.render('gitalk-container'); // 渲染Gitalk评论组件
-    });
+    createGitalk(pageId);
   }
 });
 </script>
