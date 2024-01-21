@@ -162,7 +162,7 @@ module.exports = (app) => {
       }
       const totalCount = await Article.countDocuments({
         categories: category._id,
-        status: { $ne: false }
+        status: { $ne: false }, // 过滤掉 status 为 false 的文档
       });
 
       // 添加序列号 正序
