@@ -50,12 +50,15 @@
     </div>
     <div v-else class="back" @click="router.push(`/`)">返回首页</div>
   </template>
+  <div id="gitalk-container"></div>
 </template>
 
 <script lang="ts" setup>
 import Prism from 'prismjs'; // 代码高亮插件的core
 import dayjs from 'dayjs';
 import 'prismjs/themes/prism-tomorrow.min.css'; // 高亮主题
+import Gitalk from 'gitalk';
+import 'gitalk/dist/gitalk.css';
 import { useArticleDetailStore } from '../store/articleDetailStore';
 const articleDetailStore = useArticleDetailStore();
 import { useMenuStore } from '../store/menuStore';
@@ -73,10 +76,9 @@ onServerPrefetch(async () => {
   await articleDetailStore.fetchArticleDetail(pageId);
 });
 
-// 改变路由清空数据
-
 onMounted(async () => {
   // console.log('article===', articleStore.currentPage);
+  let pageId = '';
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
     Prism.highlightAll();
     console.log('Detail ssr local');
@@ -84,13 +86,25 @@ onMounted(async () => {
     console.log('Detail ssr reload');
     // 检查当前导航菜单是否为拥有id的单页面
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
-    const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
+    pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
     await articleDetailStore.fetchArticleDetail(pageId);
     Prism.highlightAll();
     if (articleDetailStore.detail.slotStatus) {
       router.push(`/${route.params.type}/article/${pageId}/${articleDetailStore.detail.slotName}`);
     }
   }
+  const gitalk = new Gitalk({
+    clientID: '62dfeca2c385cf2b645d', // GitHub Application Client ID
+    clientSecret: 'b5e2ebafc39bc5ba2982bbd96320ebd35fa75274', // GitHub Application Client Secret
+    repo: 'gitalk-comment', // 存放评论的仓库
+    owner: 'tutusiji', // 仓库的创建者，
+    admin: ['tutusiji'], // 如果仓库有多个人可以操作，那么在这里以数组形式写出
+    id:pageId, // 用于标记评论是哪个页面的，确保唯一，并且长度小于50
+    title:articleDetailStore.detail.title, // 页面标题
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container'); // 渲染Gitalk评论组件
+
 });
 </script>
 
