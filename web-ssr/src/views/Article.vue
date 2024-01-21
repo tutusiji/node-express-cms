@@ -93,17 +93,20 @@ onMounted(async () => {
       router.push(`/${route.params.type}/article/${pageId}/${articleDetailStore.detail.slotName}`);
     }
   }
-  const gitalk = new Gitalk({
-    clientID: '62dfeca2c385cf2b645d', // GitHub Application Client ID
-    clientSecret: 'b5e2ebafc39bc5ba2982bbd96320ebd35fa75274', // GitHub Application Client Secret
-    repo: 'gitalk-comment', // 存放评论的仓库
-    owner: 'tutusiji', // 仓库的创建者，
-    admin: ['tutusiji'], // 如果仓库有多个人可以操作，那么在这里以数组形式写出
-    id:pageId, // 用于标记评论是哪个页面的，确保唯一，并且长度小于50
-    title:articleDetailStore.detail.title, // 页面标题
-    distractionFreeMode: false // 是否开启输入评论时的全屏遮罩效果
+  watch(route, () => {
+    // console.log('路由发生变化', to, from);
+    const gitalk = new Gitalk({
+      clientID: '62dfeca2c385cf2b645d', // GitHub Application Client ID
+      clientSecret: 'b5e2ebafc39bc5ba2982bbd96320ebd35fa75274', // GitHub Application Client Secret
+      repo: 'gitalk-comment', // 存放评论的仓库
+      owner: 'tutusiji', // 仓库的创建者，
+      admin: ['tutusiji'], // 如果仓库有多个人可以操作，那么在这里以数组形式写出
+      id:pageId, // 用于标记评论是哪个页面的，确保唯一，并且长度小于50
+      title:articleDetailStore.detail.title, // 页面标题
+      distractionFreeMode: false // 是否开启输入评论时的全屏遮罩效果
+    });
+    gitalk.render('gitalk-container'); // 渲染Gitalk评论组件
   });
-  gitalk.render('gitalk-container'); // 渲染Gitalk评论组件
 
 });
 </script>
