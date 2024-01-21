@@ -101,7 +101,7 @@ onMounted(async () => {
     admin: ['tutusiji'], // 如果仓库有多个人可以操作，那么在这里以数组形式写出
     id:pageId, // 用于标记评论是哪个页面的，确保唯一，并且长度小于50
     title:articleDetailStore.detail.title, // 页面标题
-    distractionFreeMode: true
+    distractionFreeMode: false // 是否开启输入评论时的全屏遮罩效果
   });
   gitalk.render('gitalk-container'); // 渲染Gitalk评论组件
 
