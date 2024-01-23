@@ -57,8 +57,8 @@ const route = useRoute();
 onServerPrefetch(async () => {
   const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
   if (currentMenu) {
-    articleStore.currentPage = Number(route.params.page);
     menuStore.menuCurrentName = currentMenu.name;
+    articleStore.currentPage = Number(route.params.page);
     await articleStore.fetchArticles(currentMenu.name, Number(route.params.page), 10);
   }
 });
