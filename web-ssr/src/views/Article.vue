@@ -124,7 +124,7 @@ function setTitle(title: string, description: string) {
     document.title = `${title} - Tuziki的个人记录`;
     let descriptionMeta = document.querySelector('meta[name="description"]');
     if (descriptionMeta) {
-      descriptionMeta.setAttribute('content', description);
+      descriptionMeta.setAttribute('content', description || `${title} - Tuziki的个人记录`);
     }
   }
 }
