@@ -99,23 +99,27 @@ const getMenuStyle = () => {
 type itemType = {
   pageName: string;
   pageId: string;
+  name: string;
 };
+const menuCurrentName = ref<string>('Tuziki的个人记录');
 
 const switchTabTo = async (item: itemType) => {
   router.push(`/${item.pageName}${item.pageId ? '' : '/1'}`);
-  // 检查当前导航菜单是否为拥有id的单页面 重置页码
+  // 检查当前导航菜单是否为拥有id的单页面 list重置页码
   if (!item.pageId) {
     articleStore.currentPage = 1;
     articleStore.totalItems = 0;
+    menuCurrentName.value = `${item.name} - Tuziki的个人记录`;
   }
 };
+
 // 重置store数据
 router.beforeEach((to) => {
   // 重置列表pinia
   if (to.meta.type === 'list') {
     articleStore.list = [];
     if (document.title) {
-      document.title = 'Tuziki的个人记录';
+      document.title = menuCurrentName.value;
     }
     let descriptionMeta = document.querySelector('meta[name="description"]');
     if (descriptionMeta) {
