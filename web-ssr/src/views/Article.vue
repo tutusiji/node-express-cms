@@ -219,6 +219,9 @@ onMounted(async () => {
   a{
     text-decoration: underline;
   }
+  .ql-align-center{
+    text-align: center;
+  }
 }
 .otherArticle {
   margin-top: 40px;
