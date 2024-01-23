@@ -74,7 +74,7 @@ onServerPrefetch(async () => {
   const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
   const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
   await articleDetailStore.fetchArticleDetail(pageId);
-  setTitle(articleDetailStore.detail.title);
+  setTitle(articleDetailStore.detail.title, articleDetailStore.detail.summary);
 });
 
 function createGitalk(pageId: string) {
@@ -119,9 +119,13 @@ watch(
 //   next();
 // });
 
-function setTitle(title: string) {
+function setTitle(title: string, description: string) {
   if (typeof window !== 'undefined') {
     document.title = `${title} - Tuziki的个人记录`;
+    let descriptionMeta = document.querySelector('meta[name="description"]');
+    if (descriptionMeta) {
+      descriptionMeta.setAttribute('content', description);
+    }
   }
 }
 
@@ -129,7 +133,7 @@ onMounted(async () => {
   // console.log('article===', articleStore.currentPage);
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
     console.log('Detail ssr local');
-    setTitle(articleDetailStore.detail.title);
+    setTitle(articleDetailStore.detail.title, articleDetailStore.detail.summary);
     Prism.highlightAll();
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
     const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
@@ -140,7 +144,7 @@ onMounted(async () => {
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
     const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
     await articleDetailStore.fetchArticleDetail(pageId);
-    setTitle(articleDetailStore.detail.title);
+    setTitle(articleDetailStore.detail.title, articleDetailStore.detail.summary);
     Prism.highlightAll();
     if (articleDetailStore.detail.slotStatus) {
       router.push(`/${route.params.type}/article/${pageId}/${articleDetailStore.detail.slotName}`);

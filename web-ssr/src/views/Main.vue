@@ -117,6 +117,10 @@ router.beforeEach((to) => {
     if (document.title) {
       document.title = 'Tuziki的个人记录';
     }
+    let descriptionMeta = document.querySelector('meta[name="description"]');
+    if (descriptionMeta) {
+      descriptionMeta.setAttribute('content', document.title);
+    }
   }
   // 重置详情pinia
   if (to.meta.type === 'article') {
