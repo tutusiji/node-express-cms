@@ -162,7 +162,6 @@ onMounted(async () => {
   font-weight: 700;
   text-align: center;
   word-wrap: break-word;
-  word-break: keep-all;
   overflow-wrap: break-word;
 }
 .articleDate {
@@ -170,7 +169,6 @@ onMounted(async () => {
 }
 .articleDetails {
   word-wrap: break-word;
-  word-break: keep-all;
   overflow-wrap: break-word;
   line-height: 1.8;
   img {
