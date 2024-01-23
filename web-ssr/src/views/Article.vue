@@ -212,7 +212,7 @@ onMounted(async () => {
     text-shadow: 0 1px 1px rgb(0, 0, 0, 0.8);
     line-height: 1.5;
     margin: 0 4px;
-    padding: 3px 8px;
+    padding: 3px 7px;
     border-radius: 0.3em;
     font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
   }
