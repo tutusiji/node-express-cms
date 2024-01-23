@@ -143,7 +143,6 @@ ul.articleList {
         }
 
         .desc {
-          color: #81ccf1;
           color: #5bbded;
           // text-decoration: underline;
           font-family: 'CustomFont';
@@ -172,5 +171,8 @@ ul.articleList {
       }
     }
   }
+}
+.el-pagination.is-background .btn-next.is-active, .el-pagination.is-background .btn-prev.is-active, .el-pagination.is-background .el-pager li.is-active {
+    background-color: #5bbded; /* 更改为你想要的背景颜色 */
 }
 </style>
