@@ -468,7 +468,7 @@ pm2 delete all         # 杀死全部进程
 
 <img src="https://hkroom.oss-cn-shenzhen.aliyuncs.com/_20240113053919.png">
 
-这里已经集成 Fontmin 插件到 server 端。
+这里已经集成 Fontmin 插件到 server 端。功能体验：<a target="_blank" href="https://www.tuziki.com/project/article/65ab4edc84586ba45d558b24/createFonts">小工具——字体包子集在线抽取</a>
 
 当用户在 admin 端创建新的文章内容之后，点击【字体管理】栏目，上传自己喜欢的字体包文件，任何命名都可但必须是 ttf 格式的。
 
