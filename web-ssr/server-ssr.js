@@ -72,10 +72,10 @@ export async function createServer(root = process.cwd(), isProd = isProduction) 
         render = (await import('./dist/server/entry-server.js')).render;
       }
 
-      const [appHtml, state, links, teleports] = await render(url, manifest);
+      const [appHtml, appTitle, state, links, teleports] = await render(url, manifest);
       // console.log('appHtml===', typeof appHtml, appHtml);
-      // console.log('state===', typeof state, state);
       const html = template
+        .replace(`<!--app-title-->`, appTitle)
         .replace(`<!--preload-links-->`, links)
         .replace(`'<pinia-store>'`, state)
         .replace(`<!--app-html-->`, appHtml)
