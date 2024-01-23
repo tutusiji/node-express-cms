@@ -216,6 +216,9 @@ onMounted(async () => {
     border-radius: 0.3em;
     font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
   }
+  a{
+    text-decoration: underline;
+  }
 }
 .otherArticle {
   margin-top: 40px;
