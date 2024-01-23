@@ -58,6 +58,7 @@ onServerPrefetch(async () => {
   const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
   if (currentMenu) {
     articleStore.currentPage = Number(route.params.page);
+    menuStore.menuCurrentName = currentMenu.name;
     await articleStore.fetchArticles(currentMenu.name, Number(route.params.page), 10);
   }
 });
@@ -71,6 +72,8 @@ onMounted(() => {
     console.log('Article list ssr reload');
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
     if (currentMenu) {
+      menuStore.menuCurrentName = currentMenu.name;
+      document.title = `Tuziki的个人记录 - ${currentMenu.name}`;
       articleStore.currentPage = Number(route.params.page);
       articleStore.fetchArticles(currentMenu.name, currentPage, 10);
     }

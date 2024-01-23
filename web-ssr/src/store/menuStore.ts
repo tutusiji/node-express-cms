@@ -11,7 +11,8 @@ interface ArrMenuListType {
 export const useMenuStore = defineStore('menuer', {
   // 状态
   state: () => ({
-    menu: [] as ArrMenuListType[]
+    menu: [] as ArrMenuListType[],
+    menuCurrentName: ''
   }),
   // 状态数据计算属性 相当于computed
   getters: {

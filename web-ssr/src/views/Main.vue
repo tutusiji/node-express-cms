@@ -101,7 +101,6 @@ type itemType = {
   pageId: string;
   name: string;
 };
-const menuCurrentName = ref<string>('Tuziki的个人记录');
 
 const switchTabTo = async (item: itemType) => {
   router.push(`/${item.pageName}${item.pageId ? '' : '/1'}`);
@@ -109,7 +108,6 @@ const switchTabTo = async (item: itemType) => {
   if (!item.pageId) {
     articleStore.currentPage = 1;
     articleStore.totalItems = 0;
-    menuCurrentName.value = `${item.name} - Tuziki的个人记录`;
   }
 };
 
@@ -118,9 +116,6 @@ router.beforeEach((to) => {
   // 重置列表pinia
   if (to.meta.type === 'list') {
     articleStore.list = [];
-    if (document.title) {
-      document.title = menuCurrentName.value;
-    }
     let descriptionMeta = document.querySelector('meta[name="description"]');
     if (descriptionMeta) {
       descriptionMeta.setAttribute('content', document.title);
