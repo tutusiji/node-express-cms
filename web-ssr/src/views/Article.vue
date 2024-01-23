@@ -1,5 +1,5 @@
 <template>
-  <h3 class="articleTitle" v-html="articleDetailStore.detail.title"></h3>
+  <h1 class="articleTitle" v-html="articleDetailStore.detail.title"></h1>
   <div
     v-if="articleDetailStore.detail.dateDisplay"
     class="articleDate pb-4 text-[#999] text-center text-[15px] italic"
@@ -121,7 +121,7 @@ watch(
 
 function setTitle(title: string) {
   if (typeof window !== 'undefined') {
-    document.title = `${title}——Tuziki的个人记录`;
+    document.title = `${title} - Tuziki的个人记录`;
   }
 }
 

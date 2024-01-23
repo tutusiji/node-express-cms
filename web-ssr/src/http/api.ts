@@ -13,6 +13,7 @@ interface ArticleApiResponse {
   title: string;
   date: string;
   slotName: string;
+  summary: string;
   slotStatus: boolean;
   categories: string[];
   dateDisplay: boolean;

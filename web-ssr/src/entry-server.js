@@ -46,6 +46,7 @@ export async function render(url, manifest) {
     await router.isReady();
     const ctx = {};
     let appTitle = 'Tuziki的个人记录';
+    let appDescription = `<meta name="description" content="${appTitle}" />`;
     const appHtml = await renderToString(app, ctx);
 
     // 从组件上下文获取 articleList 的状态
@@ -53,9 +54,12 @@ export async function render(url, manifest) {
     const teleports = renderTeleports(ctx.teleports);
     const state = JSON.stringify(store.state.value);
     if (store.state.value && store.state.value.articleDetail.detail.title) {
-      appTitle = `${store.state.value.articleDetail.detail.title}——Tuziki的个人记录`;
+      appTitle = `${store.state.value.articleDetail.detail.title} - Tuziki的个人记录`;
+      appDescription = `<meta name="description" content="${
+        store.state.value.articleDetail.detail.summary || appTitle
+      }" />`;
     }
-    return [appHtml, appTitle, state, preloadLinks, teleports];
+    return [appHtml, appTitle, appDescription, state, preloadLinks, teleports];
   } catch (error) {
     console.log(error);
   }
