@@ -209,8 +209,9 @@ onMounted(async () => {
   code:not(.language-js) {
     background-color: #3e3e3e !important;
     color: rgb(240, 141, 73) !important;
+    text-shadow: 0 1px 1px rgb(0, 0, 0, 0.8);
     line-height: 1.5;
-    margin: 0 5px;
+    margin: 0 4px;
     padding: 3px 8px;
     border-radius: 0.3em;
     font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
