@@ -266,6 +266,7 @@ module.exports = (app) => {
             .status(500)
             .send({ message: "Error 字体包生成错误", error: err });
         }
+        // 当为服务端环境时，才去重新编译部署
         if (process.env.NODE_ENV === "production") {
           try {
             // 执行 SSR 编译
