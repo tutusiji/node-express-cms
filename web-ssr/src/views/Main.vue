@@ -156,7 +156,7 @@ router.afterEach(() => {
 
 .welcome {
   font-family: 'CustomFont';
-  padding: 10px;
+  padding: 10px 0;
 }
 
 .wrap {
