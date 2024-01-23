@@ -60,7 +60,7 @@ npm run build  打包生产环境
 npm run serve  运行生产环境
 ```
 
-服务端需要配置 pm2 运行时环境：``sys.config.cjs``，执行 `pm2 restart sys.config.cjs`
+服务端web-ssr需要配置 pm2 运行时环境：``sys.config.cjs``，执行 `pm2 restart sys.config.cjs`
 
 ```js
 module.exports = {
@@ -109,13 +109,16 @@ module.exports = {
 > 5.  根据内容文本按需动态打包出个性化精简字体包
 > 6.  web 用户端和 admin 管理端打包之后的文件会自动到 server 端里面，当启动 server 服务时，会由 express 定义 web 端和 admin 端的入口路由，SSR 用户端的页面由 SSR 的 server 管理
 
-### 脚手架工具——服务端自动化部署
+Server服务端在linux上运行，需要配置 pm2 运行时的生产环境：`sys.config.cjs`，在server目录执行 `pm2 restart sys.config.cjs` 会标记为env为production
+
+
+### CI/CD——服务端自动化部署
 
 服务端安装 git 来拉取代码，并执行 pm2 持久化运行。这里另外封装了一个 nodejs 文件上传脚本在服务端运行，与原有的 server 服务独立开，以便迁移或者完成一些其他操作比如文件备份、log 输出等
 
-服务端：`staging\update.js` // 接收更新指令，拉取 git 更新文件，进行备份、打包、重启 pm2 服务。这里的 update.js 也需要持久化运行`pm2 restart staging\update.js`
+服务端更新脚本：`staging/update.js` // 接收更新指令，拉取 git 更新文件，进行备份、打包、重启 pm2 服务。这里的`staging/update.js` 也需要持久化运行`pm2 restart update.js`
 
-本地： `staging\deploy.js` // 发送更新指令，推送 git 文件（推送失败记得挂代理^\_^）
+本地通知脚本： `staging/deploy.js` // 发送更新指令，推送 git 文件（推送失败记得挂代理^\_^）
 
 > 本地的 `deploy.js` 可以集成到 package.json 中 `"deploy": "node ../staging/deploy.js"` 从来可以简化操作，直接运行 `npm run deploy`
 
@@ -134,6 +137,11 @@ git config --global https.proxy "socks://127.0.0.1:10808"
 
 1. 有时会直接在服务端做一些文件的操作，打断点，看日志，导致 git 提交时会有冲突，可以强行拉取远端文件`git reset --hard origin/master` 当然解决冲突也是可以的
 2. 运行本地 nodejs 脚本通过接口发送更新指令到服务端，Node.js 在处理 HTTPS 请求时，会验证 SSL 证书的有效性。如果证书有问题（如自签名、过期或不被信任的发行机构），Node.js 默认会拒绝连接，并显示类似的错误。所以接口会调不通，如果在服务端运行`curl -X POST -H "Content-Type: application/json" -d '{"update": true}' http://localhost:3567/deploy`能够正常返回，而公网接口无法访问则多半是 SSL 证书校验不通过，或者是端口未开启或者占用。这里因为是本地发起,解决方案可以绕过校验，也可以将证书文件的 cert.pem 文件添加到 axios 的请求 httpsAgent 中，这里为了可以采用忽略SSL证书验证，再在服务端创建一个`secretKey`，本地发起请求时带上这个secretKey，发起请求时做校验即可(不要把真实key提交到github)。
+
+### Linux服务端部署结果
+到这里，Linux服务端的三端都已经部署完成（用户端web-ssr,服务端server,脚手架staging）
+
+<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20240124031318.png'>
 
 #### 浏览器与 Node.js 的差异
 

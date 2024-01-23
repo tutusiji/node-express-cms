@@ -286,7 +286,7 @@ module.exports = (app) => {
               .send({ message: "Error in server operations", error });
           }
         } else {
-          res.send({ message: "Fonts processed." });
+          res.send({ message: "Fonts processed: No production env." });
         }
 
         // console.log(files[0]);
