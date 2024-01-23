@@ -74,6 +74,7 @@ onServerPrefetch(async () => {
   const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
   const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
   await articleDetailStore.fetchArticleDetail(pageId);
+  setTitle(articleDetailStore.detail.title);
 });
 
 function createGitalk(pageId: string) {
@@ -101,27 +102,45 @@ function createGitalk(pageId: string) {
   }
 }
 
-watch(() => route.path, () => {
-  const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
-  const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
-  // 路由变化时重新创建 Gitalk
-  createGitalk(pageId);
-});
+watch(
+  () => route.path,
+  () => {
+    const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
+    const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
+    // 路由变化时重新创建 Gitalk
+    createGitalk(pageId);
+  }
+);
+
+// router.beforeEach((to, from, next) => {
+//   if (to.meta && to.meta.title) {
+//     setTitle(String(to.meta.title));
+//   }
+//   next();
+// });
+
+function setTitle(title: string) {
+  if (typeof window !== 'undefined') {
+    document.title = `${title}——Tuziki的个人记录`;
+  }
+}
 
 onMounted(async () => {
   // console.log('article===', articleStore.currentPage);
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
+    console.log('Detail ssr local');
+    setTitle(articleDetailStore.detail.title);
     Prism.highlightAll();
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
     const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
     createGitalk(pageId);
-    console.log('Detail ssr local');
   } else {
     console.log('Detail ssr reload');
     // 检查当前导航菜单是否为拥有id的单页面
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
     const pageId = currentMenu?.pageId ? currentMenu?.pageId : String(route.params.id);
     await articleDetailStore.fetchArticleDetail(pageId);
+    setTitle(articleDetailStore.detail.title);
     Prism.highlightAll();
     if (articleDetailStore.detail.slotStatus) {
       router.push(`/${route.params.type}/article/${pageId}/${articleDetailStore.detail.slotName}`);

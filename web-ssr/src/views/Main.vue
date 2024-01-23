@@ -109,13 +109,7 @@ const switchTabTo = async (item: itemType) => {
     articleStore.totalItems = 0;
   }
 };
-// 重新计算导航菜单样式
-router.afterEach(() => {
-  nextTick(() => {
-    getMenuStyle();
-  });
-  // console.log('after currentPage', articleStore.currentPage);
-});
+// 重置store数据
 router.beforeEach((to) => {
   // 重置列表pinia
   if (to.meta.type === 'list') {
@@ -136,9 +130,20 @@ router.beforeEach((to) => {
     };
   }
 });
+// 重新计算导航菜单样式
+router.afterEach(() => {
+  nextTick(() => {
+    getMenuStyle();
+  });
+  if (document.title) {
+    document.title = 'Tuziki的个人记录';
+  }
+  // console.log('after currentPage', articleStore.currentPage);
+});
+
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 @font-face {
   font-family: 'CustomFont';
   src: url('../assets/fonts/CustomFont.ttf') format('truetype');
@@ -185,7 +190,7 @@ nav {
     cursor: pointer;
     font-family: 'CustomFont';
     text-decoration: none;
-    &:hover{
+    &:hover {
       color: #fff;
       text-decoration: none;
     }
