@@ -114,6 +114,9 @@ router.beforeEach((to) => {
   // 重置列表pinia
   if (to.meta.type === 'list') {
     articleStore.list = [];
+    if (document.title) {
+      document.title = 'Tuziki的个人记录';
+    }
   }
   // 重置详情pinia
   if (to.meta.type === 'article') {
@@ -122,6 +125,7 @@ router.beforeEach((to) => {
       title: '',
       date: '',
       slotName: '',
+      summary: '',
       slotStatus: false,
       categories: [],
       dateDisplay: false,
@@ -135,12 +139,8 @@ router.afterEach(() => {
   nextTick(() => {
     getMenuStyle();
   });
-  if (document.title) {
-    document.title = 'Tuziki的个人记录';
-  }
   // console.log('after currentPage', articleStore.currentPage);
 });
-
 </script>
 
 <style lang="scss">
