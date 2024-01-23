@@ -54,7 +54,7 @@ export async function render(url, manifest) {
     const teleports = renderTeleports(ctx.teleports);
     const state = JSON.stringify(store.state.value);
     if (store.state.value && store.state.value.menuer.menuCurrentName) {
-      appTitle = `Tuziki的个人记录 - ${store.state.value.menuer.menuCurrentName}`;
+      appTitle = `${store.state.value.menuer.menuCurrentName} - Tuziki的个人记录`;
       appDescription = `<meta name="description" content="${appTitle}" />`;
     }
     if (store.state.value && store.state.value.articleDetail.detail.title) {

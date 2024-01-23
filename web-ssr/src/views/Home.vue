@@ -73,7 +73,7 @@ onMounted(() => {
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
     if (currentMenu) {
       menuStore.menuCurrentName = currentMenu.name;
-      document.title = `Tuziki的个人记录 - ${currentMenu.name}`;
+      document.title = `${currentMenu.name} - Tuziki的个人记录`;
       articleStore.currentPage = Number(route.params.page);
       articleStore.fetchArticles(currentMenu.name, currentPage, 10);
     }
