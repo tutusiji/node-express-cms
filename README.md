@@ -530,7 +530,7 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 11. 
 
 
-<img style="width:60px" src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/Snipaste_2024-01-24_05-28-56.png'>
+<img width='60px' src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/Snipaste_2024-01-24_05-28-56.png'>
 
 
 111
