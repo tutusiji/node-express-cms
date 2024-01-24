@@ -527,10 +527,4 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 8. web-ssr 端页面组件的数据缓存隔离优化
 9. 写一份详细的项目开发文档、使用规范、部署流程
 10. 文章列表添加标签分类功能
-11. 
-
-
-<img width='60px' src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/Snipaste_2024-01-24_05-28-56.png'>
-
-
-111
+11. 开发仿win10日历的组件，包含动态hover效果
