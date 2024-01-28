@@ -1,6 +1,6 @@
 <template>
   <div class="homepage">
-    <div class="articleList" v-loading="articleStore.loading">
+    <div v-loading="articleStore.loading" class="articleList">
       <div v-if="route.query.search" class="searchTitle">
         搜索 “{{ route.query.search }}” 结果：
       </div>
@@ -15,17 +15,14 @@
                   class="title"
                   :href="`./article/${item._id}`"
                   @click.prevent="router.push(`./article/${item._id}`)"
-                  ><span class="num">No.{{ item.serialNumber }}</span> {{ item.title }}</a
-                >
+                ><span class="num">No.{{ item.serialNumber }}</span> {{ item.title }}</a>
               </div>
               <div v-show="item.summary" class="summary">
-                {{ item.summary
-                }}<a
+                {{ item.summary}}<a
                   class="desc"
                   :href="`./article/${item._id}`"
                   @click.prevent="router.push(`./article/${item._id}`)"
-                  >... 阅读全文 〉</a
-                >
+                >... 阅读全文 〉</a>
               </div>
             </div>
             <div class="date">
@@ -304,6 +301,7 @@ const goTop = () => {
         flex: 1;
         display: flex;
         flex-direction: column;
+        width: 100%;
 
         .title {
           cursor: pointer;
