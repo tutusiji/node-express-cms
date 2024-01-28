@@ -79,6 +79,11 @@ export default {
       res = await this.$http.get("rest/categories");
       const cates = res.data.map((item) => item.name).join("");
       this.words += cates;
+      // http://localhost:3000/admin/api/rest/ads/65822a1d8e37fce318f113a4
+      res = await this.$http.get(`rest/ads/65822a1d8e37fce318f113a4`);
+      const adsList = res.data.items.map((item) => item.title).join("");
+      console.log('adsList',adsList);
+      this.words += adsList;
       this.fetchArticle();
     },
     removeDuplicateCharacters(str) {

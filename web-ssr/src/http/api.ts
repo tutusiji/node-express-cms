@@ -5,6 +5,7 @@ import { AxiosResponse } from 'axios';
 interface BlogListParams {
   parentName: string;
   categoryName: string;
+  searchText: string;
   page: number;
   limit: number;
 }
@@ -20,7 +21,11 @@ interface ArticleApiResponse {
   prevArticle: { _id: string; title: string };
   nextArticle: { _id: string; title: string };
 }
-
+// interface AdsResponse {
+//   title: string;
+//   image: string;
+//   url: string;
+// }
 interface fontsType {
   words: string;
   fontOriginName: string;
@@ -60,11 +65,19 @@ export function getArticleDetail(data: string): Promise<AxiosResponse<ArticleApi
   });
 }
 
-// 获取用户信息
+// 生成字体
 export function createFonts(data: fontsType) {
   return request({
     url: '/createFonts',
     method: 'post',
     data
+  });
+}
+
+// 获取用户信息
+export function getAds() {
+  return request({
+    url: '/adsList',
+    method: 'get'
   });
 }

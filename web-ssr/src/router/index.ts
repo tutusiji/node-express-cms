@@ -41,6 +41,14 @@ const routes = [
           type: 'list'
         }
       },
+      // {
+      //   path: '/search/:page',
+      //   name: 'search',
+      //   component: () => import('../views/Home.vue'),
+      //   meta: {
+      //     type: 'list'
+      //   }
+      // },
       {
         path: '/:type/article/:id',
         name: 'article',

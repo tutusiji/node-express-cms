@@ -33,7 +33,7 @@
       <div class="container">
         <!-- v-if="$route.path === '/'" -->
         <div class="welcome">{{ siteStore.info.welcome }}</div>
-        <router-view :key="route.path" />
+        <router-view :key="route.fullPath" />
       </div>
     </div>
     <footer class="flex p-[20px]">
@@ -115,6 +115,7 @@ const switchTabTo = async (item: itemType) => {
 router.beforeEach((to) => {
   // 重置列表pinia
   if (to.meta.type === 'list') {
+    console.log('重置list');
     articleStore.list = [];
     let descriptionMeta = document.querySelector('meta[name="description"]');
     if (descriptionMeta) {
@@ -304,7 +305,7 @@ footer {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1024px) {
   .wrap {
     nav .content,
     .container {
@@ -362,6 +363,17 @@ footer {
       }
     }
   }
+}
+@media screen and (max-width: 800px) {
+  .main {
+  .homepage {
+    flex-direction: column-reverse;
+    .sidebar{
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+}
 }
 
 .next {

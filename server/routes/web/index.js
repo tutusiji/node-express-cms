@@ -6,7 +6,7 @@ module.exports = (app) => {
   const Article = mongoose.model("Article");
   const Site = mongoose.model("Site");
   const Hero = mongoose.model("Hero");
-  const dayjs = require("dayjs");
+  const Ad = mongoose.model("Ad");
 
   // router.get("/blog/menu", async (req, res) => {
   //   const parent = await Category.findOne({
@@ -16,6 +16,7 @@ module.exports = (app) => {
   //   const cats = await Category.aggregate([{ $match: { parent: parent._id } }]);
   //   res.send(cats);
   // });
+  // 导航菜单
   router.post("/blog/menu", async (req, res) => {
     try {
       const { parentName } = req.body;
@@ -45,15 +46,11 @@ module.exports = (app) => {
     }
   });
 
+  // 文章列表
   router.post("/blog/list", async (req, res) => {
     try {
-      // 从请求中获取分类名称和分页参数
-      // const parentName = req.query.parent;
-      // const categoryName = req.query.category;
-      // const page = parseInt(req.query.page, 10) || 1;
-      // const limit = parseInt(req.query.limit, 10) || 10;
-      // 从请求体中获取分类名称和分页参数
-      const { parentName, categoryName, page, limit } = req.body;
+      // 从请求体中获取参数
+      const { parentName, categoryName, page, limit, searchText } = req.body;
 
       // 验证分类名称参数是否存在
       if (!parentName || !categoryName) {
@@ -63,18 +60,118 @@ module.exports = (app) => {
       // 转换分页参数为整数，并提供默认值
       const pageNumber = parseInt(page, 10) || 1;
       const limitNumber = parseInt(limit, 10) || 10;
+      // 计算跳过的文档数量
+      const skip = (pageNumber - 1) * limit;
 
       // 查找父分类
-      const parent = await Category.findOne({
-        name: parentName,
-      });
-
+      const parent = await Category.findOne({ name: parentName });
       if (!parent) {
         return res.status(404).send("Parent category not found");
       }
 
+      // 构建模糊搜索查询条件
+      let matchQuery = {
+        "list.status": { $ne: false },
+        parent: parent._id,
+        name: categoryName,
+      }; // 过滤掉 status 为 false 的文档
+      if (searchText) {
+        matchQuery.$or = [
+          { "list.title": { $regex: searchText, $options: "i" } },
+          { "list.content": { $regex: searchText, $options: "i" } },
+        ];
+      }
+
+      // 聚合查询指定的子分类并实现分页
+      const aggregationPipeline = [
+        { $match: { parent: parent._id, name: categoryName } },
+        {
+          $lookup: {
+            from: "articles",
+            localField: "_id",
+            foreignField: "categories",
+            as: "list",
+          },
+        },
+        { $unwind: "$list" },
+        { $match: matchQuery },
+        { $sort: { "list.date": -1 } },
+        {
+          $group: {
+            _id: "$_id",
+            totalItems: { $sum: 1 },
+            list: { $push: "$list" },
+          },
+        },
+        {
+          $project: {
+            totalItems: 1,
+            list: { $slice: ["$list", skip, limitNumber] },
+          },
+        },
+      ];
+      const result = await Category.aggregate(aggregationPipeline);
+      // 计算 总条数 总页数;
+      const totalItems = result.length > 0 ? result[0].totalItems : 0;
+      const totalPages = Math.ceil(totalItems / limitNumber);
+
+      // 添加倒序序列号 倒序
+      if (result.length > 0 && result[0].list) {
+        const startSerial = totalItems - skip;
+        result[0].list.forEach((item, index) => {
+          item.serialNumber = startSerial - index;
+        });
+      }
+
+      const response = {
+        list: result.length > 0 && result[0].list ? result[0].list : [],
+        currentPage: pageNumber,
+        limit: limitNumber,
+        totalItems: totalItems,
+        category: parent._id,
+        totalPages: totalPages,
+      };
+
+      res.send(response);
+    } catch (error) {
+      res.status(500).send({ error: error.message });
+    }
+  });
+
+  // 搜索接口 （暂时不用）
+  router.post("/blog/search", async (req, res) => {
+    try {
+      // 从请求体中获取分类名称和分页参数
+      const { parentName, categoryName, page, limit, searchText } = req.body;
+
+      // 验证分类名称参数是否存在
+      if (!parentName || !categoryName) {
+        return res.status(400).send("Missing required query parameters");
+      }
+
+      // 转换分页参数为整数，并提供默认值
+      const pageNumber = parseInt(page, 10) || 1;
+      const limitNumber = parseInt(limit, 10) || 10;
       // 计算跳过的文档数量
       const skip = (pageNumber - 1) * limit;
+
+      // 查找父分类
+      const parent = await Category.findOne({ name: parentName });
+      if (!parent) {
+        return res.status(404).send("Parent category not found");
+      }
+
+      // 构建模糊搜索查询条件
+      let matchQuery = { "list.status": { $ne: false } }; // 过滤掉 status 为 false 的文档
+      if (searchText) {
+        matchQuery = {
+          ...matchQuery,
+          $or: [
+            { "list.title": { $regex: searchText, $options: "i" } },
+            { "list.content": { $regex: searchText, $options: "i" } },
+          ],
+        };
+      }
 
       // 聚合查询指定的子分类并实现分页
       const result = await Category.aggregate([
@@ -88,7 +185,7 @@ module.exports = (app) => {
           },
         },
         { $unwind: "$list" },
-        { $match: { "list.status": { $ne: false } } }, // 过滤掉 status 为 false 的文档
+        { $match: matchQuery }, // 使用模糊搜索查询条件
         {
           $sort: { "list.date": -1 }, // 添加排序步骤，按照文章的创建日期降序排列
         },
@@ -120,14 +217,10 @@ module.exports = (app) => {
         status: { $ne: false }, // 过滤掉 status 为 false 的文档
       });
 
-      // 添加序列号 正序
-      // if (result.length > 0 && result[0].list) {
-      //   for (let i = 0; i < result[0].list.length; i++) {
-      //     result[0].list[i].serialNumber = skip + i + 1;
-      //   }
-      // }
       // 计算当前页面的第一个元素在整个列表中的位置（倒序开始的位置）
       const startSerial = totalCount - (pageNumber - 1) * limitNumber;
+      // 计算总页数
+      const totalPages = Math.ceil(totalCount / limitNumber);
 
       // 添加倒序序列号 倒序
       if (result.length > 0 && result[0].list) {
@@ -148,7 +241,7 @@ module.exports = (app) => {
         limit: limitNumber,
         totalItems: totalCount,
         category: parent._id,
-        totalPages: Math.ceil(totalCount / limitNumber),
+        totalPages: totalPages,
       };
       res.send(response);
     } catch (error) {
@@ -170,6 +263,21 @@ module.exports = (app) => {
       res
         .status(500)
         .send({ message: "Error retrieving site information", error });
+    }
+  });
+
+  // 广告列表接口
+  router.get("/adsList", async (req, res) => {
+    try {
+      const adList = await Ad.find({}); // 获取所有广告
+      if (!adList || adList.length === 0) {
+        // 如果没有找到广告，返回404错误
+        return res.status(404).send({ message: "没有找到广告信息." });
+      }
+      res.send(adList);
+    } catch (error) {
+      // 错误处理
+      res.status(500).send({ message: "Error retrieving ads", error });
     }
   });
 
@@ -358,7 +466,7 @@ module.exports = (app) => {
   router.post("/createFonts", async (req, res) => {
     const words = req.body.words;
     const fontName = req.body.fontOriginName.split(".")[0];
-    console.log(words, fontName);
+    // console.log(words, fontName);
     try {
       const fontmin = new Fontmin()
         .src(path.join(__dirname, "..", "..", `uploads/fonts/${fontName}.ttf`))

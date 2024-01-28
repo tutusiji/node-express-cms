@@ -34,14 +34,15 @@ export const useArticleStore = defineStore('articler', {
     setTotalItems(newTotal: number) {
       this.totalItems = newTotal;
     },
-    async fetchArticles(categoryName: string, page: number, limit: number) {
+    async fetchArticles(categoryName: string, page: number, limit: number, searchText: string) {
       try {
         this.loading = true;
         const res = (await blogList({
           parentName: '博客文章', // TODO 站点根请求可配置
           categoryName,
           page,
-          limit
+          limit,
+          searchText
         })) as unknown as {
           list: ArrListType[];
           currentPage: number;

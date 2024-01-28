@@ -26,10 +26,14 @@
             <el-form-item label="跳转链接URL">
               <el-input v-model="item.url"></el-input>
             </el-form-item>
+            <el-form-item label="打开新窗口">
+              <el-switch v-model="item.target"></el-switch>
+            </el-form-item>
             <el-form-item label="图片">
               <el-upload
                 class="avatar-uploader"
-                :action="$http.defaults.baseURL + '/upload'"
+                :action="uploadUrl"
+                :headers="getAuthHeaders()"
                 :show-file-list="false"
                 :on-success="(res) => $set(item, 'image', res.url)"
               >
@@ -42,7 +46,7 @@
         </el-col>
       </el-row>
       <el-form-item>
-         <el-button type="ghost" @click="model.items.push({})"
+        <el-button type="ghost" @click="model.items.push({})"
           ><i class="el-icon-plus"></i> 添加广告</el-button
         >
         <el-button type="primary" native-type="submit">保存</el-button>
