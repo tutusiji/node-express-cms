@@ -269,10 +269,10 @@ ul.articleList {
       border-bottom: none;
     }
 
-    .num {
-      font-family: 'CustomFont';
-      margin-right: 1.3rem;
-    }
+    // .num {
+    //   font-family: 'CustomFont';
+    //   margin-right: 1.3rem;
+    // }
 
     .info {
       flex: 1;
@@ -293,7 +293,8 @@ ul.articleList {
           color: #0d6fa1; // 34538b
           font-family: 'CustomFont';
           .num {
-           color: #000;
+            color: #333;
+            font-size: 1rem;
             margin-right: 0.5rem;
           }
         }
