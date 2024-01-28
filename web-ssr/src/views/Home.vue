@@ -333,7 +333,7 @@ const goTop = () => {
       }
 
       .date {
-        width: 2.5rem;
+        width: 3rem;
         margin-left: 2rem;
         font-size: 0.8rem;
         color: #c5c5c5;
