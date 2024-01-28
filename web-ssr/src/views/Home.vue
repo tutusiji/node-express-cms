@@ -11,7 +11,7 @@
                 class="title"
                 :href="`./article/${item._id}`"
                 @click.prevent="router.push(`./article/${item._id}`)"
-                >{{ item.title }}</a
+                ><span class="num">No.{{ item.serialNumber }}</span> {{ item.title }}</a
               >
             </div>
             <div v-show="item.summary" class="summary">
@@ -292,6 +292,10 @@ ul.articleList {
           word-break: break-all;
           color: #0d6fa1; // 34538b
           font-family: 'CustomFont';
+          .num {
+           color: #000;
+            margin-right: 0.5rem;
+          }
         }
 
         .summary {
