@@ -1,38 +1,43 @@
 <template>
   <div class="homepage">
-    <ul v-loading="articleStore.loading" class="articleList">
-      <li v-for="item of articleStore.list" :key="item._id">
-        <!-- @click="$router.push(`./article/${item._id}`)" -->
-        <!-- <span class="num">No.{{ item.serialNumber }}</span> -->
-        <div class="info">
-          <div class="content">
-            <div>
-              <a
-                class="title"
-                :href="`./article/${item._id}`"
-                @click.prevent="router.push(`./article/${item._id}`)"
-                ><span class="num">No.{{ item.serialNumber }}</span> {{ item.title }}</a
-              >
+    <div class="articleList" v-loading="articleStore.loading">
+      <div v-if="route.query.search" class="searchTitle">
+        搜索 “{{ route.query.search }}” 结果：
+      </div>
+      <ul>
+        <li v-for="item of articleStore.list" :key="item._id">
+          <!-- @click="$router.push(`./article/${item._id}`)" -->
+          <!-- <span class="num">No.{{ item.serialNumber }}</span> -->
+          <div class="info">
+            <div class="content">
+              <div>
+                <a
+                  class="title"
+                  :href="`./article/${item._id}`"
+                  @click.prevent="router.push(`./article/${item._id}`)"
+                  ><span class="num">No.{{ item.serialNumber }}</span> {{ item.title }}</a
+                >
+              </div>
+              <div v-show="item.summary" class="summary">
+                {{ item.summary
+                }}<a
+                  class="desc"
+                  :href="`./article/${item._id}`"
+                  @click.prevent="router.push(`./article/${item._id}`)"
+                  >... 阅读全文 〉</a
+                >
+              </div>
             </div>
-            <div v-show="item.summary" class="summary">
-              {{ item.summary
-              }}<a
-                class="desc"
-                :href="`./article/${item._id}`"
-                @click.prevent="router.push(`./article/${item._id}`)"
-                >... 阅读全文 〉</a
-              >
+            <div class="date">
+              <!-- YYYY-MM-DD HH:mm:ss -->
+              <em>{{ item.date && dayjs(item.date).format('MM-DD') }}</em>
+              <b>{{ item.date && dayjs(item.date).format('YYYY') }}</b>
+              <!-- <div class="auther">Tutu</div> -->
             </div>
           </div>
-          <div class="date">
-            <!-- YYYY-MM-DD HH:mm:ss -->
-            <em>{{ item.date && dayjs(item.date).format('MM-DD') }}</em>
-            <b>{{ item.date && dayjs(item.date).format('YYYY') }}</b>
-            <!-- <div class="auther">Tutu</div> -->
-          </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
     <div v-if="clientShow" class="sidebar">
       <div class="mb-4">
         <el-input v-model="searchVal" placeholder="搜索" class="h-[40px]" clearable>
@@ -81,7 +86,7 @@
         background
         layout="prev, pager, next"
         :total="articleStore.totalItems"
-        @current-change="(val) => router.push(`/${String(route.name)}/${val}`)"
+        @current-change="(val) => changePage(val)"
       />
     </div>
   </div>
@@ -162,6 +167,15 @@ const handleTouchEnd = () => {
   }
 };
 
+const changePage = (val: any) => {
+  const searchValue = String(route.query.search || '');
+  if (searchValue) {
+    router.push(`/${String(route.name)}/${val}?search=${searchVal.value}`);
+  } else {
+    router.push(`/${String(route.name)}/${val}`);
+  }
+};
+
 // 搜索查询
 const handleSearch = async () => {
   console.log('handleSearch', searchVal.value);
@@ -207,6 +221,13 @@ const goTop = () => {
 }
 </style>
 <style lang="scss">
+.searchTitle {
+  font-size: 20px;
+  font-weight: 600;
+  font-style: italic !important;
+  color: #333;
+  margin-bottom: 10px;
+}
 .homepage {
   display: flex;
   .sidebar {
@@ -246,7 +267,7 @@ const goTop = () => {
     }
   }
 }
-ul.articleList {
+.articleList {
   flex: 1;
   min-height: 200px;
   // background-color: #fafafa;
