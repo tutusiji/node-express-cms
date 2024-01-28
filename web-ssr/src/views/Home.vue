@@ -15,10 +15,12 @@
                   class="title"
                   :href="`./article/${item._id}`"
                   @click.prevent="router.push(`./article/${item._id}`)"
-                ><span class="num">No.{{ item.serialNumber }}</span> {{ item.title }}</a>
+                ><span class="num">No.{{ item.serialNumber }}</span>
+                  <span class="tit">{{ item.title }}</span></a>
               </div>
               <div v-show="item.summary" class="summary">
-                {{ item.summary}}<a
+                {{ item.summary
+                }}<a
                   class="desc"
                   :href="`./article/${item._id}`"
                   @click.prevent="router.push(`./article/${item._id}`)"
@@ -311,6 +313,15 @@ const goTop = () => {
           word-break: break-all;
           color: #0d6fa1; // 34538b
           font-family: 'CustomFont';
+          &:hover{
+            text-decoration: none;
+          }
+          &:hover .num {
+            text-decoration: none;
+          }
+          &:hover .tit {
+            text-decoration: underline;
+          }
           .num {
             color: #333;
             font-size: 1rem;
@@ -338,7 +349,7 @@ const goTop = () => {
         font-size: 0.8rem;
         color: #c5c5c5;
         font-family: 'CustomFont';
-          text-align: right;
+        text-align: right;
 
         b {
           display: block;
