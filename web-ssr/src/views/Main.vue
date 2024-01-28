@@ -328,7 +328,7 @@ footer {
       padding: 0.7rem;
     }
 
-    ul.articleList {
+    .articleList {
       li {
         padding: 10px 0;
         align-items: baseline;
