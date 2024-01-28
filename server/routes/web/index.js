@@ -75,11 +75,11 @@ module.exports = (app) => {
         parent: parent._id,
         name: categoryName,
       };
-      
+
       if (searchText) {
         matchQuery.$or = [
           { "list.title": { $regex: searchText, $options: "i" } },
-          { "list.content": { $regex: searchText, $options: "i" } },
+          { "list.body": { $regex: searchText, $options: "i" } },
         ];
       }
 
