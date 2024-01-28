@@ -333,29 +333,25 @@ footer {
         padding: 10px 0;
         align-items: baseline;
 
-        .num {
-          margin-right: 0.8rem;
-        }
-
         .info {
-          display: block;
+          // display: block;
+          flex-direction: column;
 
           .date {
-            width: auto;
-            margin-top: 8px;
+            width: 100%;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+            margin-top: 16px;
             margin-left: 0;
-
             b {
               display: inline;
-              float: left;
-              text-indent: 0;
-              margin-right: 10px;
               font-size: 0.9rem;
+              margin-right: 0.3rem;
             }
 
             em {
               display: inline;
-              color: #c5c5c5;
               font-size: 0.9rem;
             }
           }
@@ -366,14 +362,14 @@ footer {
 }
 @media screen and (max-width: 800px) {
   .main {
-  .homepage {
-    flex-direction: column-reverse;
-    .sidebar{
-      width: 100%;
-      margin-left: 0;
+    .homepage {
+      flex-direction: column-reverse;
+      .sidebar {
+        width: 100%;
+        margin-left: 0;
+      }
     }
   }
-}
 }
 
 .next {

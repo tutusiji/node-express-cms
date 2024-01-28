@@ -335,15 +335,15 @@ const goTop = () => {
       }
 
       .date {
-        width: 3rem;
+        width: 2.5rem;
         margin-left: 2rem;
         font-size: 0.8rem;
         color: #c5c5c5;
         font-family: 'CustomFont';
+          text-align: right;
 
         b {
           display: block;
-          text-align: right;
         }
 
         em {
