@@ -71,10 +71,11 @@ module.exports = (app) => {
 
       // 构建模糊搜索查询条件
       let matchQuery = {
-        "list.status": { $ne: false },
+        "list.status": { $ne: false }, // 过滤掉 status 为 false 的文档
         parent: parent._id,
         name: categoryName,
-      }; // 过滤掉 status 为 false 的文档
+      };
+      
       if (searchText) {
         matchQuery.$or = [
           { "list.title": { $regex: searchText, $options: "i" } },

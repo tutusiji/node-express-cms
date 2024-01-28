@@ -3,7 +3,7 @@
     <ul v-loading="articleStore.loading" class="articleList">
       <li v-for="item of articleStore.list" :key="item._id">
         <!-- @click="$router.push(`./article/${item._id}`)" -->
-        <span class="num">No.{{ item.serialNumber }}</span>
+        <!-- <span class="num">No.{{ item.serialNumber }}</span> -->
         <div class="info">
           <div class="content">
             <div>

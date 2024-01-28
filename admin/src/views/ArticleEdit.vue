@@ -73,7 +73,25 @@
           标准提示语——将以下内容精简成文本，字数不超过
         </div>
       </el-form-item>
-
+      <el-form-item label="文章标签">
+        <el-select
+          v-model="model.tags"
+          multiple
+          filterable
+          style="width: 70%;"
+          allow-create
+          default-first-option
+          placeholder="请选择文章标签"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存文章</el-button>
       </el-form-item>
@@ -115,7 +133,22 @@ export default {
         summary: "",
         words: 400,
         prompt: "将以下内容精简成文本，字数不超过",
+        tags: [],
       },
+      options: [
+        {
+          value: "HTML",
+          label: "HTML",
+        },
+        {
+          value: "CSS",
+          label: "CSS",
+        },
+        {
+          value: "JavaScript",
+          label: "JavaScript",
+        },
+      ],
       categories: [],
       gptStatus: false,
     };
