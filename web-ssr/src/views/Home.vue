@@ -35,11 +35,7 @@
                   v-for="tag in item.tags"
                   :key="tag._id"
                   :href="`/${String(route.name)}/1?tag=${tag.name}`"
-                  @click.prevent="
-                    router.push(
-                      `/${String(route.name)}/1?tag=${tag.name}`
-                    )
-                  "
+                  @click.prevent="router.push(`/${String(route.name)}/1?tag=${tag.name}`)"
                 >
                   {{ tag.name }}
                 </a>
@@ -94,9 +90,7 @@
           :key="tag._id"
           class="tagItem"
           :href="`/${String(route.name)}/1?tag=${tag.name}`"
-          @click.prevent="
-            router.push(`/${String(route.name)}/1?tag=${tag.name}`)
-          "
+          @click.prevent="router.push(`/${String(route.name)}/1?tag=${tag.name}`)"
         >
           {{ tag.name }}
         </a>
@@ -123,9 +117,7 @@
       :key="tag._id"
       class="tagItem"
       :href="`/${String(route.name)}/1?tag=${tag.name}`"
-      @click.prevent="
-        router.push(`/${String(route.name)}/1?tag=${tag.name}`)
-      "
+      @click.prevent="router.push(`/${String(route.name)}/1?tag=${tag.name}`)"
     >
       {{ tag.name }}
     </a>
@@ -167,7 +159,7 @@ onServerPrefetch(async () => {
   const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
   if (currentMenu) {
     menuStore.menuCurrentName = currentMenu.name;
-    articleStore.currentPage = Number(route.params.page);
+    articleStore.currentPage = Number(route.params.page) || 1;
     let searchValue = '';
     let tagValue = '';
     if (route.query.search) {
@@ -179,7 +171,7 @@ onServerPrefetch(async () => {
     await tagStore.fetchTags();
     await articleStore.fetchArticles(
       currentMenu.name,
-      Number(route.params.page),
+      articleStore.currentPage,
       10,
       searchValue,
       tagValue
@@ -229,7 +221,7 @@ const handleSearch = async () => {
 onMounted(async () => {
   console.log('route', route);
   // console.log('currentPage---', articleStore.currentPage);
-  const currentPage = articleStore.currentPage || 1;
+  // const currentPage = articleStore.currentPage || 1;
   // 如果没有pinia数据，则正常获取ssr数据
   if (!articleStore.list.length) {
     console.log('Article list ssr reload');
@@ -237,7 +229,7 @@ onMounted(async () => {
     if (currentMenu) {
       menuStore.menuCurrentName = currentMenu.name;
       document.title = `${currentMenu.name} - Tuziki的个人记录`;
-      articleStore.currentPage = Number(route.params.page);
+      articleStore.currentPage = Number(route.params.page) || 1;
       let searchValue = '';
       let tagValue = '';
       if (route.query.search) {
@@ -247,7 +239,13 @@ onMounted(async () => {
         tagValue = String(route.query.tag);
       }
       await tagStore.fetchTags();
-      await articleStore.fetchArticles(currentMenu.name, currentPage, 10, searchValue, tagValue);
+      await articleStore.fetchArticles(
+        currentMenu.name,
+        Number(route.params.page),
+        10,
+        searchValue,
+        tagValue
+      );
     }
   }
   clientShow.value = true;
