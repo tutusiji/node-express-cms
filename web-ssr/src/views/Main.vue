@@ -40,9 +40,7 @@
       <div class="copyright">
         <!-- <p>make by node express mongodb vue3 vite tailwind</p> -->
         <p>{{ siteStore.info.coryright }}</p>
-        <span
-          ><a href="http://beian.miit.gov.cn/" target="_blank">{{ siteStore.info.beian }}</a>
-        </span>
+        <span><a href="http://beian.miit.gov.cn/" target="_blank">{{ siteStore.info.beian }}</a></span>
       </div>
     </footer>
   </section>
@@ -141,12 +139,12 @@ router.beforeEach((to) => {
     };
   }
 });
+
 // 重新计算导航菜单样式
 router.afterEach(() => {
   nextTick(() => {
     getMenuStyle();
   });
-  // console.log('after currentPage', articleStore.currentPage);
 });
 </script>
 

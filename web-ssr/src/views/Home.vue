@@ -59,7 +59,7 @@
           </template>
         </el-input>
       </div>
-      <div v-show="adsList[0]?.items.length" class="block text-center mb-4">
+      <div v-show="adStore.list[0]?.items.length" class="block text-center mb-4">
         <!-- <span class="demonstration">Switch when indicator is hovered (default)</span> -->
         <el-carousel
           ref="carousel"
@@ -70,7 +70,7 @@
           @touchmove="handleTouchMove"
           @touchend="handleTouchEnd"
         >
-          <el-carousel-item v-for="item in adsList[0]?.items" :key="item._id">
+          <el-carousel-item v-for="item in adStore.list[0]?.items" :key="item._id">
             <!-- <img :src="item.image" alt="" class="w-full" /> -->
             <a
               :href="`${item.url}`"
@@ -127,32 +127,17 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs';
 import { Search } from '@element-plus/icons-vue';
-import { getAds } from '../http/api';
 import { useMenuStore } from '../store/menuStore';
 import { useArticleStore } from '../store/artcleStore';
 import { useTagStore } from '../store/tagStore';
+import { useAdStore } from '../store/adStore';
 const menuStore = useMenuStore();
+const adStore = useAdStore();
 const articleStore = useArticleStore();
 const tagStore = useTagStore();
 const router = useRouter();
 const route = useRoute();
 const searchVal = ref('');
-const adsList = ref<Ad[]>([]);
-const clientShow = ref(false);
-
-interface Items {
-  image: string;
-  title: string;
-  url: string;
-  target: boolean;
-  _id: string;
-}
-
-interface Ad {
-  items: Items[];
-  name: string;
-  _id: string;
-}
 
 // SSR 数据预取
 onServerPrefetch(async () => {
@@ -175,14 +160,9 @@ onServerPrefetch(async () => {
       searchValue,
       tagValue
     );
+    await adStore.fetchAds();
   }
 });
-
-const fetchAds = async () => {
-  const res = (await getAds()) as unknown as Ad[];
-  // console.log(res);
-  adsList.value = res;
-};
 
 // banner滑动
 const carousel: Ref<any> = ref(null);
@@ -216,14 +196,10 @@ const changePage = (val: any) => {
 
 // 搜索查询
 const handleSearch = async () => {
-  console.log('handleSearch', searchVal.value);
   router.push(`/${String(route.name)}/1?search=${searchVal.value}`);
 };
 
 onMounted(async () => {
-  console.log('route', route);
-  // console.log('currentPage---', articleStore.currentPage);
-  // const currentPage = articleStore.currentPage || 1;
   // 如果没有pinia数据，则正常获取ssr数据
   if (!articleStore.list.length) {
     console.log('Article list ssr reload');
@@ -242,15 +218,14 @@ onMounted(async () => {
       }
       await articleStore.fetchArticles(
         currentMenu.name,
-        Number(route.params.page),
+        articleStore.currentPage,
         10,
         searchValue,
         tagValue
       );
+      await adStore.fetchAds();
     }
   }
-  clientShow.value = true;
-  fetchAds();
 });
 
 const goTop = () => {
@@ -327,14 +302,14 @@ const goTop = () => {
     display: flex;
     align-items: baseline;
     padding: 1.1rem 1rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px dashed #eee;
 
     &:hover {
-      background-color: #eee;
+      background-color: rgb(245, 247, 250);
     }
 
     &:active {
-      background-color: #eee;
+      background-color: rgb(245, 247, 250);
     }
 
     &:nth-last-child(1) {

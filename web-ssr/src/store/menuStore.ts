@@ -31,7 +31,9 @@ export const useMenuStore = defineStore('menuer', {
           parentName: '博客文章',
           categoryName: '',
           page: 0,
-          limit: 0
+          limit: 0,
+          searchText: '',
+          tagName: ''
         });
         this.menu = res as unknown as ArrMenuListType[];
       } catch (error) {
