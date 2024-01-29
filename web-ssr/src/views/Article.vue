@@ -125,13 +125,6 @@ watch(
   }
 );
 
-// router.beforeEach((to, from, next) => {
-//   if (to.meta && to.meta.title) {
-//     setTitle(String(to.meta.title));
-//   }
-//   next();
-// });
-
 function setTitle(title: string, description: string) {
   if (typeof window !== 'undefined') {
     document.title = `${title} - Tuziki的个人记录`;
@@ -143,7 +136,6 @@ function setTitle(title: string, description: string) {
 }
 
 onMounted(async () => {
-  // console.log('article===', articleStore.currentPage);
   if (articleDetailStore.detail && articleDetailStore.detail.title) {
     console.log('Detail ssr local');
     setTitle(articleDetailStore.detail.title, articleDetailStore.detail.summary);
@@ -159,20 +151,16 @@ onMounted(async () => {
     await articleDetailStore.fetchArticleDetail(pageId);
     setTitle(articleDetailStore.detail.title, articleDetailStore.detail.summary);
     Prism.highlightAll();
-    // if (articleDetailStore.detail.slotStatus) {
-    // router.push(`/${route.params.type}/article/${pageId}/${articleDetailStore.detail.slotName}?slot=true`);
-    // }
     createGitalk(pageId);
   }
 });
 
+// 使用异步组件 加载工程插件
 const currentSlotComponent = computed(() => {
   if (articleDetailStore.detail.slotStatus) {
-    // 使用异步组件 加载工程插件
     return defineAsyncComponent(() =>
       import(`./Tools/${articleDetailStore.detail.slotName}.vue`).catch((error: any) => {
         console.error(`${articleDetailStore.detail.slotName} 组件加载失败:`, error);
-        // 可以在这里实施其他错误处理策略
       })
     );
   }

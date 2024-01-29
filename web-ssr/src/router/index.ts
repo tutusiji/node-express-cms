@@ -55,14 +55,7 @@ const routes = [
         component: () => import('../views/Article.vue'),
         meta: {
           type: 'article'
-        },
-        children: [
-          {
-            path: 'createFonts',
-            name: 'createFonts',
-            component: () => import('../views/Tools/CreateFonts.vue')
-          }
-        ]
+        }
       },
       {
         path: '/about',
