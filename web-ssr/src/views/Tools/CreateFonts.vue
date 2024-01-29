@@ -17,7 +17,9 @@
     <div class="el-upload__text">拖拽文件到这里 or <em>点击上传</em></div>
     <template #tip>
       <div class="el-upload__tip">1、当前只支持ttf格式的字体文件上传，每次只能传一个字体包</div>
-      <div class="el-upload__tip">2、另外有些字体包本身是有编码格式问题，无法在这个工具使用抽取，可以更换其它字体包试试</div>
+      <div class="el-upload__tip">
+        2、另外有些字体包本身是有编码格式问题，无法在这个工具使用抽取，可以更换其它字体包试试
+      </div>
     </template>
   </el-upload>
   <div class="flex items-center justify-center my-10">
