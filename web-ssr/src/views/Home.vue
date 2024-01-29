@@ -360,7 +360,7 @@ const goTop = () => {
         .title {
           cursor: pointer;
           line-height: 28px;
-          font-size: 1.2rem;
+          font-size: 1.3rem;
           font-weight: bold;
           word-break: break-all;
           color: #0d6fa1; // 34538b
