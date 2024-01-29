@@ -211,12 +211,12 @@ const handleTouchEnd = () => {
   }
 };
 
-const changePage = (val: any) => {
+const changePage = () => {
   const searchValue = String(route.query.search || '');
   if (searchValue) {
-    router.push(`/${String(route.name)}/${val}?search=${searchVal.value}`);
+    router.push(`/${String(route.name)}/1?search=${searchVal.value}`);
   } else {
-    router.push(`/${String(route.name)}/${val}`);
+    router.push(`/${String(route.name)}/1`);
   }
 };
 
