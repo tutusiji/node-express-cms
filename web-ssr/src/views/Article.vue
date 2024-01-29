@@ -6,7 +6,8 @@
   >
     {{ dayjs(articleDetailStore.detail.date).format('YYYY-MM-DD ') }}
   </div>
-  <router-view v-if="articleDetailStore.detail.slotStatus" :key="$route.path" />
+  <!-- 异步组件，用来加载工程插件 -->
+  <component :is="currentSlotComponent" />
   <div
     v-loading="articleDetailStore.loading"
     class="articleDetails"
@@ -158,11 +159,19 @@ onMounted(async () => {
     await articleDetailStore.fetchArticleDetail(pageId);
     setTitle(articleDetailStore.detail.title, articleDetailStore.detail.summary);
     Prism.highlightAll();
-    if (articleDetailStore.detail.slotStatus) {
-      router.push(`/${route.params.type}/article/${pageId}/${articleDetailStore.detail.slotName}`);
-    }
+    // if (articleDetailStore.detail.slotStatus) {
+    // router.push(`/${route.params.type}/article/${pageId}/${articleDetailStore.detail.slotName}?slot=true`);
+    // }
     createGitalk(pageId);
   }
+});
+
+const currentSlotComponent = computed(() => {
+  if (articleDetailStore.detail.slotStatus) {
+    // 使用异步组件
+    return defineAsyncComponent(() => import(`./Tools/${articleDetailStore.detail.slotName}.vue`));
+  }
+  return null;
 });
 </script>
 
