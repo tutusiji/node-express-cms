@@ -168,7 +168,7 @@ onMounted(async () => {
 
 const currentSlotComponent = computed(() => {
   if (articleDetailStore.detail.slotStatus) {
-    // 使用异步组件
+    // 使用异步组件 加载工程插件
     return defineAsyncComponent(() =>
       import(`./Tools/${articleDetailStore.detail.slotName}.vue`).catch((error: any) => {
         console.error(`${articleDetailStore.detail.slotName} 组件加载失败:`, error);

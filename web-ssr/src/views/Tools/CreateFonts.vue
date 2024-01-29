@@ -63,7 +63,7 @@
             striped
             striped-flow
           >
-            <div class="progress mt-[-8px]">本地字体包正在加载{{ fontprogress }}%</div>
+            <div class="progress mt-[-8px]">{{ fontprogress }}% 本地字体包正在加载</div>
           </el-progress>
         </div>
         <div class="px-[4px] py-[2px]">{{ textarea }}</div>
