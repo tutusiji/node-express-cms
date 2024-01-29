@@ -12,6 +12,17 @@
     class="articleDetails"
     v-html="articleDetailStore.detail.body"
   ></div>
+  <div v-show="articleDetailStore.detail.tags?.length" class="tags">
+    <span>标签：</span>
+    <a
+      v-for="tag in articleDetailStore.detail.tags"
+      :key="tag._id"
+      :href="`/coder/1?tag=${tag.name}`"
+      @click.prevent="router.push(`/coder/1?tag=${tag.name}`)"
+    >
+      {{ tag.name }}
+    </a>
+  </div>
   <template v-if="articleDetailStore.detail.title">
     <div v-if="route.params.id" class="otherArticle">
       <p v-if="articleDetailStore.detail.prevArticle">
@@ -216,10 +227,10 @@ onMounted(async () => {
     border-radius: 0.3em;
     font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
   }
-  a{
+  a {
     text-decoration: underline;
   }
-  .ql-align-center{
+  .ql-align-center {
     text-align: center;
   }
 }

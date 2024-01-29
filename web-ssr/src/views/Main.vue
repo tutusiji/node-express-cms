@@ -52,8 +52,10 @@
 import { useMenuStore } from '../store/menuStore';
 import { useSiteStore } from '../store/siteStore';
 import { useArticleDetailStore } from '../store/articleDetailStore';
-const articleDetailStore = useArticleDetailStore();
 import { useArticleStore } from '../store/artcleStore';
+import { useTagStore } from '../store/tagStore';
+const tagStore = useTagStore();
+const articleDetailStore = useArticleDetailStore();
 const articleStore = useArticleStore();
 const menuStore = useMenuStore();
 const siteStore = useSiteStore();
@@ -81,6 +83,7 @@ onMounted(async () => {
 onServerPrefetch(async () => {
   await siteStore.fetchSiteInfo();
   await menuStore.fetchMenu();
+  await tagStore.fetchTags();
 });
 
 const switchX = ref<number>(0);

@@ -168,7 +168,6 @@ onServerPrefetch(async () => {
     } else if (route.query.tag) {
       tagValue = String(route.query.tag);
     }
-    await tagStore.fetchTags();
     await articleStore.fetchArticles(
       currentMenu.name,
       articleStore.currentPage,
@@ -241,7 +240,6 @@ onMounted(async () => {
       } else if (route.query.tag) {
         tagValue = String(route.query.tag);
       }
-      await tagStore.fetchTags();
       await articleStore.fetchArticles(
         currentMenu.name,
         Number(route.params.page),
