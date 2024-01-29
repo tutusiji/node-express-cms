@@ -34,10 +34,10 @@
                 <a
                   v-for="tag in item.tags"
                   :key="tag._id"
-                  :href="`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`"
+                  :href="`/${String(route.name)}/1?tag=${tag.name}`"
                   @click.prevent="
                     router.push(
-                      `/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`
+                      `/${String(route.name)}/1?tag=${tag.name}`
                     )
                   "
                 >
@@ -93,9 +93,9 @@
           v-for="tag in tagStore.list"
           :key="tag._id"
           class="tagItem"
-          :href="`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`"
+          :href="`/${String(route.name)}/1?tag=${tag.name}`"
           @click.prevent="
-            router.push(`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`)
+            router.push(`/${String(route.name)}/1?tag=${tag.name}`)
           "
         >
           {{ tag.name }}
@@ -122,9 +122,9 @@
       v-for="tag in tagStore.list"
       :key="tag._id"
       class="tagItem"
-      :href="`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`"
+      :href="`/${String(route.name)}/1?tag=${tag.name}`"
       @click.prevent="
-        router.push(`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`)
+        router.push(`/${String(route.name)}/1?tag=${tag.name}`)
       "
     >
       {{ tag.name }}
