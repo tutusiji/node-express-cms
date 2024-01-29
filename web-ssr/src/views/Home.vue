@@ -28,11 +28,10 @@
                 >... 阅读全文 〉</a>
               </div>
               <div v-show="item.tags?.length" class="tags">
-                标签：
+                <span>标签：</span>
                 <a
                   v-for="tag in item.tags"
                   :key="tag._id"
-                  class="desc"
                   :href="`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`"
                   @click.prevent="
                     router.push(
