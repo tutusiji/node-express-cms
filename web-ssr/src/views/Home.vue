@@ -425,7 +425,7 @@ const goTop = () => {
           margin-top: 10px;
           font-family: 'CustomFont';
           a {
-            color: #191b1f;
+            color: #666;
             margin-right: 0.5rem;
           }
         }
