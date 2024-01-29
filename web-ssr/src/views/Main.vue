@@ -307,7 +307,42 @@ footer {
     /* 文字颜色保持不变 */
   }
 }
-
+.tags {
+  font-family: 'CustomFont';
+  &.tagSider {
+    h3 {
+      margin-bottom: 10px;
+    }
+  }
+  &.tagMain {
+    margin-top: 40px;
+    h3 {
+      display: inline-block;
+    }
+  }
+  .tagItem {
+    display: inline-block;
+    padding: 0 8px;
+    height: 26px;
+    line-height: 26px;
+    font-size: 0.9rem;
+    color: #666;
+    border: 1px solid #cdcdcd;
+    margin: 0 10px 10px 0;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 4px;
+    text-decoration: none;
+    &:hover {
+      color: #0d6fa1;
+      border: 1px solid #0d6fa1;
+    }
+    &:active {
+      color: #0d6fa1;
+      background-color: #ebebeb;
+    }
+  }
+}
 @media screen and (max-width: 1024px) {
   .wrap {
     nav .content,
