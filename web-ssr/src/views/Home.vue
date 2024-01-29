@@ -16,8 +16,9 @@
                   class="title"
                   :href="`./article/${item._id}`"
                   @click.prevent="router.push(`./article/${item._id}`)"
-                ><span class="num">No.{{ item.serialNumber }}</span>
-                  <span class="tit">{{ item.title }}</span></a>
+                  ><span class="num">No.{{ item.serialNumber }}</span>
+                  <span class="tit">{{ item.title }}</span></a
+                >
               </div>
               <div v-show="item.summary" class="summary">
                 {{ item.summary
@@ -25,7 +26,8 @@
                   class="desc"
                   :href="`./article/${item._id}`"
                   @click.prevent="router.push(`./article/${item._id}`)"
-                >... 阅读全文 〉</a>
+                  >... 阅读全文 〉</a
+                >
               </div>
               <div v-show="item.tags?.length" class="tags">
                 <span>标签：</span>
@@ -423,9 +425,11 @@ const goTop = () => {
         .tags {
           margin-top: 10px;
           font-family: 'CustomFont';
+          word-break: break-all;
           a {
             color: #666;
             margin-right: 0.5rem;
+            white-space: nowrap;
           }
         }
 
