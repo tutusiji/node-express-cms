@@ -12,11 +12,12 @@
     class="articleDetails"
     v-html="articleDetailStore.detail.body"
   ></div>
-  <div v-show="articleDetailStore.detail.tags?.length" class="tags">
+  <div v-show="articleDetailStore.detail.tags?.length" class="tags mt-10">
     <span>标签：</span>
     <a
       v-for="tag in articleDetailStore.detail.tags"
       :key="tag._id"
+      class="tagItem"
       :href="`/coder/1?tag=${tag.name}`"
       @click.prevent="router.push(`/coder/1?tag=${tag.name}`)"
     >
