@@ -98,7 +98,10 @@
     </div>
   </div>
 
-  <div v-show="articleStore.list.length > 0" class="flex justify-between items-center py-10">
+  <div
+    v-show="articleStore.list.length > 0"
+    class="relative flex justify-between items-center py-10"
+  >
     <div class="gotop" @click="goTop">返回顶部↑</div>
     <div class="pageNum flex flex-1 justify-center">
       <el-pagination

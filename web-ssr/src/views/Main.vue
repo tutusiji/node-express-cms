@@ -295,6 +295,7 @@ footer {
 }
 
 .gotop {
+  position: absolute;
   cursor: pointer;
   font-family: 'CustomFont';
 
