@@ -79,6 +79,15 @@ export const useArticleStore = defineStore('articler', {
             item.tags = updatedTags;
           }
         });
+        // this.list = res.list.map((item) => ({
+        //   ...item,
+        //   tags: item.tags?.map((tagItem) => {
+        //     const foundTag = tagStore.list.find(
+        //       (tag) => tag._id === (tagItem as unknown as string)
+        //     );
+        //     return foundTag || tagItem;
+        //   })
+        // }));
         this.list = data;
         this.currentPage = res.currentPage;
         this.totalItems = res.totalItems;
