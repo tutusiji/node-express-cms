@@ -51,7 +51,7 @@
         </li>
       </ul>
     </div>
-    <div v-if="clientShow" class="sidebar">
+    <div class="sidebar">
       <div v-if="String(route.name) === 'coder'" class="mb-4">
         <el-input v-model="searchVal" placeholder="搜索" class="h-[40px]" clearable>
           <template #append>
