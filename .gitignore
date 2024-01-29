@@ -34,3 +34,4 @@ dump
 /server/routes/admin/oss.js
 TODO.md
 components.d.ts
+/web-ssr/components.d.ts
