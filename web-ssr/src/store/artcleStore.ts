@@ -63,15 +63,23 @@ export const useArticleStore = defineStore('articler', {
           currentPage: number;
           totalItems: number;
         };
-        this.list = res.list.map((item) => ({
-          ...item,
-          tags: item.tags?.map((tagItem) => {
-            const foundTag = tagStore.list.find(
-              (tag) => tag._id === (tagItem as unknown as string)
-            );
-            return foundTag || tagItem;
-          })
-        }));
+        const data = res.list;
+        data.forEach((item) => {
+          if (item.tags && tagStore.list.length > 0) {
+            // 创建一个新数组来存储更新后的标签对象
+            const updatedTags = item.tags.map((tagItem) => {
+              // 查找并返回匹配的标签对象，否则保留原始的 tagItem
+              const foundTag = tagStore.list.find(
+                (tag) => tag._id === (tagItem as unknown as string)
+              );
+              return foundTag ? foundTag : tagItem;
+            });
+
+            // 更新 item.tags 为新的数组
+            item.tags = updatedTags;
+          }
+        });
+        this.list = data;
         this.currentPage = res.currentPage;
         this.totalItems = res.totalItems;
       } catch (error) {
