@@ -118,7 +118,6 @@ const switchTabTo = async (item: itemType) => {
 router.beforeEach((to) => {
   // 重置列表pinia
   if (to.meta.type === 'list') {
-    console.log('重置list');
     articleStore.list = [];
     let descriptionMeta = document.querySelector('meta[name="description"]');
     if (descriptionMeta) {
@@ -135,6 +134,7 @@ router.beforeEach((to) => {
       summary: '',
       slotStatus: false,
       categories: [],
+      tags: [],
       dateDisplay: false,
       prevArticle: { _id: '', title: '' },
       nextArticle: { _id: '', title: '' }

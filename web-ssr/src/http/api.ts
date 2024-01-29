@@ -10,6 +10,11 @@ interface BlogListParams {
   page: number;
   limit: number;
 }
+
+type TagListType = {
+  _id: string;
+  name: string;
+};
 interface ArticleApiResponse {
   body: string;
   title: string;
@@ -18,6 +23,7 @@ interface ArticleApiResponse {
   summary: string;
   slotStatus: boolean;
   categories: string[];
+  tags: TagListType[];
   dateDisplay: boolean;
   prevArticle: { _id: string; title: string };
   nextArticle: { _id: string; title: string };

@@ -169,7 +169,12 @@ onMounted(async () => {
 const currentSlotComponent = computed(() => {
   if (articleDetailStore.detail.slotStatus) {
     // 使用异步组件
-    return defineAsyncComponent(() => import(`./Tools/${articleDetailStore.detail.slotName}.vue`));
+    return defineAsyncComponent(() =>
+      import(`./Tools/${articleDetailStore.detail.slotName}.vue`).catch((error: any) => {
+        console.error(`${articleDetailStore.detail.slotName} 组件加载失败:`, error);
+        // 可以在这里实施其他错误处理策略
+      })
+    );
   }
   return null;
 });
