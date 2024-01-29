@@ -37,7 +37,8 @@
       </el-form-item>
       <el-form-item label="补充文字">
         <el-input
-          :rows="10"
+         type="textarea"
+          :rows="5"
           placeholder="请输入所需要提取的文字"
           style="width: 60%;"
           v-model="addwords"
@@ -65,7 +66,7 @@ export default {
       tranStatus: false,
       fileList: [],
       current: 1,
-      addwords: "0123456789.阅读全文 〈〉><《》Nno-返回顶部↑",
+      addwords: "0123456789.阅读全文 〈〉><《》Nno-返回顶部↑文章标签：",
     };
   },
   created() {},
@@ -82,8 +83,12 @@ export default {
       // http://localhost:3000/admin/api/rest/ads/65822a1d8e37fce318f113a4
       res = await this.$http.get(`rest/ads/65822a1d8e37fce318f113a4`);
       const adsList = res.data.items.map((item) => item.title).join("");
-      console.log('adsList',adsList);
       this.words += adsList;
+      res = await this.$http.get("rest/tags");
+      console.log('res',res);
+      const tagsList = res.data.map((item) => item.name).join("");
+      console.log('tagsList',tagsList);
+      this.words += tagsList;
       this.fetchArticle();
     },
     removeDuplicateCharacters(str) {

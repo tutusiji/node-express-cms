@@ -4,6 +4,7 @@
       <div v-if="route.query.search" class="searchTitle">
         搜索 “{{ route.query.search }}” 结果：
       </div>
+      <div v-if="route.query.tag" class="searchTitle">标签为 “{{ route.query.tag }}” 的文章：</div>
       <ul>
         <li v-for="item of articleStore.list" :key="item._id">
           <!-- @click="$router.push(`./article/${item._id}`)" -->
@@ -26,6 +27,22 @@
                   @click.prevent="router.push(`./article/${item._id}`)"
                 >... 阅读全文 〉</a>
               </div>
+              <div v-show="item.tags?.length" class="tags">
+                标签：
+                <a
+                  v-for="tag in item.tags"
+                  :key="tag._id"
+                  class="desc"
+                  :href="`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`"
+                  @click.prevent="
+                    router.push(
+                      `/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`
+                    )
+                  "
+                >
+                  {{ tag.name }}
+                </a>
+              </div>
             </div>
             <div class="date">
               <!-- YYYY-MM-DD HH:mm:ss -->
@@ -38,7 +55,7 @@
       </ul>
     </div>
     <div v-if="clientShow" class="sidebar">
-      <div class="mb-4">
+      <div v-if="String(route.name) === 'coder'" class="mb-4">
         <el-input v-model="searchVal" placeholder="搜索" class="h-[40px]" clearable>
           <template #append>
             <el-button :icon="Search" @click="handleSearch" />
@@ -69,10 +86,19 @@
           </el-carousel-item>
         </el-carousel>
       </div>
-      <div v-if="false" class="tags">
-        <el-tag v-for="item in items" :key="item.label" class="mx-1" :type="item.type">
-          {{ item.label }}
-        </el-tag>
+      <div v-if="tagStore.list.length && String(route.name) === 'coder'" class="tags tagSider">
+        <h3>文章标签：</h3>
+        <a
+          v-for="tag in tagStore.list"
+          :key="tag._id"
+          class="tagItem"
+          :href="`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`"
+          @click.prevent="
+            router.push(`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`)
+          "
+        >
+          {{ tag.name }}
+        </a>
       </div>
     </div>
   </div>
@@ -89,6 +115,20 @@
       />
     </div>
   </div>
+  <div v-if="tagStore.list.length && String(route.name) === 'coder'" class="tags tagMain">
+    <h3>文章标签：</h3>
+    <a
+      v-for="tag in tagStore.list"
+      :key="tag._id"
+      class="tagItem"
+      :href="`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`"
+      @click.prevent="
+        router.push(`/${String(route.name)}/${articleStore.currentPage}?tag=${tag.name}`)
+      "
+    >
+      {{ tag.name }}
+    </a>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -97,25 +137,15 @@ import { Search } from '@element-plus/icons-vue';
 import { getAds } from '../http/api';
 import { useMenuStore } from '../store/menuStore';
 import { useArticleStore } from '../store/artcleStore';
+import { useTagStore } from '../store/tagStore';
 const menuStore = useMenuStore();
 const articleStore = useArticleStore();
+const tagStore = useTagStore();
 const router = useRouter();
 const route = useRoute();
 const searchVal = ref('');
 const adsList = ref<Ad[]>([]);
 const clientShow = ref(false);
-
-import type { TagProps } from 'element-plus';
-
-type Item = { type: TagProps['type']; label: string };
-
-const items = ref<Array<Item>>([
-  { type: '', label: 'Tag 1' },
-  { type: '', label: 'Tag 2' },
-  { type: '', label: 'Tag 3' },
-  { type: '', label: 'Tag 4' },
-  { type: 'warning', label: 'Tag 5' }
-]);
 
 interface Items {
   image: string;
@@ -137,8 +167,22 @@ onServerPrefetch(async () => {
   if (currentMenu) {
     menuStore.menuCurrentName = currentMenu.name;
     articleStore.currentPage = Number(route.params.page);
-    const searchValue = String(route.query.search || '');
-    await articleStore.fetchArticles(currentMenu.name, Number(route.params.page), 10, searchValue);
+    let searchValue = '';
+    let tagValue = '';
+    if (route.query.search) {
+      searchValue = String(route.query.search);
+      searchVal.value = searchValue;
+    } else if (route.query.tag) {
+      tagValue = String(route.query.tag);
+    }
+    await tagStore.fetchTags();
+    await articleStore.fetchArticles(
+      currentMenu.name,
+      Number(route.params.page),
+      10,
+      searchValue,
+      tagValue
+    );
   }
 });
 
@@ -181,7 +225,7 @@ const handleSearch = async () => {
   router.push(`/${String(route.name)}/1?search=${searchVal.value}`);
 };
 
-onMounted(() => {
+onMounted(async () => {
   console.log('route', route);
   // console.log('currentPage---', articleStore.currentPage);
   const currentPage = articleStore.currentPage || 1;
@@ -193,9 +237,16 @@ onMounted(() => {
       menuStore.menuCurrentName = currentMenu.name;
       document.title = `${currentMenu.name} - Tuziki的个人记录`;
       articleStore.currentPage = Number(route.params.page);
-      const searchValue = String(route.query.search || '');
-      searchVal.value = searchValue;
-      articleStore.fetchArticles(currentMenu.name, currentPage, 10, searchValue);
+      let searchValue = '';
+      let tagValue = '';
+      if (route.query.search) {
+        searchValue = String(route.query.search);
+        searchVal.value = searchValue;
+      } else if (route.query.tag) {
+        tagValue = String(route.query.tag);
+      }
+      await tagStore.fetchTags();
+      await articleStore.fetchArticles(currentMenu.name, currentPage, 10, searchValue, tagValue);
     }
   }
   clientShow.value = true;
@@ -266,6 +317,42 @@ const goTop = () => {
     }
   }
 }
+.tags {
+  font-family: 'CustomFont';
+  &.tagSider {
+    h3 {
+      margin-bottom: 10px;
+    }
+  }
+  &.tagMain {
+    margin-top: 40px;
+    h3 {
+      display: inline-block;
+    }
+  }
+  .tagItem {
+    display: inline-block;
+    padding: 0 8px;
+    height: 26px;
+    line-height: 26px;
+    font-size: 0.9rem;
+    color: #666;
+    border: 1px solid #cdcdcd;
+    margin: 0 10px 10px 0;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 4px;
+    text-decoration: none;
+    &:hover {
+      color: #0d6fa1;
+      border: 1px solid #0d6fa1;
+    }
+    &:active {
+      color: #0d6fa1;
+      background-color: #ebebeb;
+    }
+  }
+}
 .articleList {
   flex: 1;
   min-height: 200px;
@@ -313,7 +400,7 @@ const goTop = () => {
           word-break: break-all;
           color: #0d6fa1; // 34538b
           font-family: 'CustomFont';
-          &:hover{
+          &:hover {
             text-decoration: none;
           }
           &:hover .num {
@@ -333,6 +420,14 @@ const goTop = () => {
           font-size: 0.9rem;
           word-break: break-all;
           padding-top: 6px;
+        }
+        .tags {
+          margin-top: 10px;
+          font-family: 'CustomFont';
+          a {
+            color: #191b1f;
+            margin-right: 0.5rem;
+          }
         }
 
         .desc {

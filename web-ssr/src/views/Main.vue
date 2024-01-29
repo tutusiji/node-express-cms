@@ -336,7 +336,9 @@ footer {
         .info {
           // display: block;
           flex-direction: column;
-
+          .tags {
+            margin-bottom: -10px;
+          }
           .date {
             width: 100%;
             display: flex;
@@ -360,6 +362,9 @@ footer {
     }
   }
 }
+.tagMain {
+  display: none;
+}
 @media screen and (max-width: 800px) {
   .main {
     .homepage {
@@ -369,6 +374,12 @@ footer {
         margin-left: 0;
       }
     }
+  }
+  .tagSider {
+    display: none;
+  }
+  .tagMain {
+    display: block;
   }
 }
 

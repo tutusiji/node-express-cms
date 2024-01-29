@@ -6,6 +6,7 @@ interface BlogListParams {
   parentName: string;
   categoryName: string;
   searchText: string;
+  tagName: string;
   page: number;
   limit: number;
 }
@@ -31,7 +32,7 @@ interface fontsType {
   fontOriginName: string;
 }
 
-// 用户登录
+// 文章列表
 export async function blogList(data: BlogListParams) {
   return request({
     url: '/blog/list',
@@ -40,7 +41,7 @@ export async function blogList(data: BlogListParams) {
   });
 }
 
-// 获取用户信息
+// 获取导航信息
 export function blogMenu(data: BlogListParams) {
   return request({
     url: '/blog/menu',
@@ -49,7 +50,7 @@ export function blogMenu(data: BlogListParams) {
   });
 }
 
-// 获取用户信息
+// 获取站点信息
 export function siteInfo() {
   return request({
     url: '/site/webInfo',
@@ -74,10 +75,19 @@ export function createFonts(data: fontsType) {
   });
 }
 
-// 获取用户信息
+// 获取banner
 export function getAds() {
   return request({
     url: '/adsList',
     method: 'get'
   });
 }
+
+// 获取tags
+export function getTags() {
+  return request({
+    url: '/tagsList',
+    method: 'get'
+  });
+}
+

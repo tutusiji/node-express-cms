@@ -7,6 +7,7 @@ module.exports = (app) => {
   const Site = mongoose.model("Site");
   const Hero = mongoose.model("Hero");
   const Ad = mongoose.model("Ad");
+  const Tag = mongoose.model("Tag");
 
   // router.get("/blog/menu", async (req, res) => {
   //   const parent = await Category.findOne({
@@ -50,11 +51,30 @@ module.exports = (app) => {
   router.post("/blog/list", async (req, res) => {
     try {
       // 从请求体中获取参数
-      const { parentName, categoryName, page, limit, searchText } = req.body;
+      const {
+        parentName,
+        categoryName,
+        page,
+        limit,
+        searchText,
+        tagName,
+        tagId,
+      } = req.body;
 
       // 验证分类名称参数是否存在
       if (!parentName || !categoryName) {
         return res.status(400).send("Missing required query parameters");
+      }
+
+      // 如果提供了 tagName 或 tagId，则需要先查找对应的标签
+      let tagFilter = {};
+      if (tagId) {
+        tagFilter = { "list.tags": mongoose.Types.ObjectId(tagId) };
+      } else if (tagName) {
+        const tag = await Tag.findOne({ name: tagName });
+        if (tag) {
+          tagFilter = { "list.tags": tag._id };
+        }
       }
 
       // 转换分页参数为整数，并提供默认值
@@ -95,7 +115,7 @@ module.exports = (app) => {
           },
         },
         { $unwind: "$list" },
-        { $match: matchQuery },
+        { $match: { ...matchQuery, ...tagFilter } },
         { $sort: { "list.date": -1 } },
         {
           $group: {
@@ -136,6 +156,16 @@ module.exports = (app) => {
       res.send(response);
     } catch (error) {
       res.status(500).send({ error: error.message });
+    }
+  });
+
+  // 查询所有标签
+  router.get("/tagsList", async (req, res) => {
+    try {
+      const tags = await Tag.find().select("name");
+      res.send(tags);
+    } catch (error) {
+      res.status(500).send({ message: "Error retrieving tags", error });
     }
   });
 

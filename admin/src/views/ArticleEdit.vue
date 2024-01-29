@@ -41,7 +41,7 @@
       <el-form-item label="摘要">
         <el-input
           type="textarea"
-          style="width: 40%; margin-right: 20px;"
+          style="width: 72%; margin-right: 20px;"
           :rows="6"
           placeholder="请输入内容"
           :maxlength="model.words"
@@ -78,19 +78,29 @@
           v-model="model.tags"
           multiple
           filterable
-          style="width: 70%;"
+          style="width: 72%;"
           allow-create
           default-first-option
           placeholder="请选择文章标签"
+          @change="handleTagsChange"
         >
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in tagsList"
+            :key="item._id"
+            :value="item._id"
+            :label="item.name"
           >
+            <span style="float: left">{{ item.name }}</span>
+            <i
+              class="el-icon-delete"
+              style="float: right; margin:10px 40px 0 0;"
+              @click.stop="() => delTag(item._id)"
+            ></i>
           </el-option>
         </el-select>
+        <!-- <el-button type="primary" plain style="margin-left: 20px;"
+          >创建</el-button
+        > -->
       </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存文章</el-button>
@@ -135,20 +145,7 @@ export default {
         prompt: "将以下内容精简成文本，字数不超过",
         tags: [],
       },
-      options: [
-        {
-          value: "HTML",
-          label: "HTML",
-        },
-        {
-          value: "CSS",
-          label: "CSS",
-        },
-        {
-          value: "JavaScript",
-          label: "JavaScript",
-        },
-      ],
+      tagsList: [],
       categories: [],
       gptStatus: false,
     };
@@ -156,17 +153,54 @@ export default {
   created() {
     this.fetchCategories();
     this.id && this.fetch();
+    this.getTags();
   },
   // watch: {
   //   model: {
   //     handler(newValue, oldValue) {
-  //       console.log(newValue.words, oldValue.words);
-  //       this.model.prompt = `将以下内容精简成小于${newValue.words}字的文本——`;
+  //       console.log(newValue, oldValue);
+  //       // this.model.prompt = `将以下内容精简成小于${newValue.words}字的文本——`;
   //     },
   //     deep: true,
   //   },
   // },
   methods: {
+    async delTag(e) {
+      console.log(e);
+      const tagItem = this.tagsList.find((item) => item._id === e);
+      const res = await this.$http.delete(`rest/tags/${e}`);
+      this.$message({
+        type: "success",
+        message: `${tagItem.name}删除成功`,
+      });
+      this.getTags();
+    },
+    async handleTagsChange(e) {
+      console.log("handleTagsChange", e);
+      const tagsArr = new Set(this.tagsList.map((item) => item._id));
+      const newTagsName = e.filter((tag) => !tagsArr.has(tag));
+      console.log("TagsChange", newTagsName[0]);
+      if (newTagsName[0]) {
+        const { data } = await this.$http.post("rest/tags", {
+          name: newTagsName[0],
+        });
+        console.log("createTags", data);
+        this.tagsList.push(data);
+        this.model.tags.map((item) => {
+          if (item === data.name) {
+            // aaa.splice(aaa.indexOf(item), 1, data._id);
+            this.$set(this.model.tags, this.model.tags.indexOf(item), data._id);
+            this.$forceUpdate();
+          }
+        });
+        console.log("last=====================", this.model.tags);
+      }
+    },
+    async getTags() {
+      const { data } = await this.$http.get("rest/tags");
+      console.log("getTags", data);
+      this.tagsList = data;
+    },
     async save() {
       this.model.body = this.processRichText(this.model.body);
       let res;

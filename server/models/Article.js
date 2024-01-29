@@ -13,6 +13,7 @@ const schema = new mongoose.Schema(
     dateDisplay: { type: Boolean },
     categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],
     body: { type: String },
+    tags: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Tag" }],
   },
   {
     timestamps: true,

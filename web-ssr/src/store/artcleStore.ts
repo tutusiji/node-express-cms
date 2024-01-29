@@ -1,5 +1,12 @@
 import { defineStore } from 'pinia';
 import { blogList } from '../http/api';
+import { useTagStore } from './tagStore';
+const tagStore = useTagStore();
+
+type TagListType = {
+  _id: string;
+  name: string;
+};
 
 type ArrListType = {
   _id: string;
@@ -7,6 +14,7 @@ type ArrListType = {
   date: string;
   summary: string;
   serialNumber: number;
+  tags: TagListType[];
 };
 
 export const useArticleStore = defineStore('articler', {
@@ -34,7 +42,13 @@ export const useArticleStore = defineStore('articler', {
     setTotalItems(newTotal: number) {
       this.totalItems = newTotal;
     },
-    async fetchArticles(categoryName: string, page: number, limit: number, searchText: string) {
+    async fetchArticles(
+      categoryName: string,
+      page: number,
+      limit: number,
+      searchText: string,
+      tagName: string
+    ) {
       try {
         this.loading = true;
         const res = (await blogList({
@@ -42,13 +56,22 @@ export const useArticleStore = defineStore('articler', {
           categoryName,
           page,
           limit,
-          searchText
+          searchText,
+          tagName
         })) as unknown as {
           list: ArrListType[];
           currentPage: number;
           totalItems: number;
         };
-        this.list = res.list;
+        this.list = res.list.map((item) => ({
+          ...item,
+          tags: item.tags?.map((tagItem) => {
+            const foundTag = tagStore.list.find(
+              (tag) => tag._id === (tagItem as unknown as string)
+            );
+            return foundTag || tagItem;
+          })
+        }));
         this.currentPage = res.currentPage;
         this.totalItems = res.totalItems;
       } catch (error) {

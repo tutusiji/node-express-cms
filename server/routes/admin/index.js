@@ -27,6 +27,7 @@ module.exports = (app) => {
 
   // 编辑更新 分类
   router.put("/:id", async (req, res) => {
+    // console.log('req', req.body);
     // findByIdAndUpdate; 查找相关id
     const model = await req.Model.findByIdAndUpdate(req.params.id, req.body);
     res.send(model);
@@ -49,6 +50,7 @@ module.exports = (app) => {
     const items = await req.Model.find().setOptions(queryOptions).limit(100);
     res.send(items);
   });
+  
 
   // 站点信息 创建或更新
   router.post("/webInfo", async (req, res) => {
@@ -81,6 +83,45 @@ module.exports = (app) => {
       res
         .status(500)
         .send({ message: "Error retrieving site information", error });
+    }
+  });
+
+  // 创建标签
+  router.post("/tags", async (req, res) => {
+    try {
+      const { name } = req.body;
+
+      // 可以添加逻辑来确保标签名称是唯一的
+      // 检查标签是否已存在
+      let tag = await Tag.findOne({ name });
+      if (!tag) {
+        // 创建新标签
+        tag = new Tag({ name });
+        await tag.save();
+      }
+      res.status(200).send(tag);
+    } catch (error) {
+      res.status(500).send({ message: "Error creating tag", error });
+    }
+  });
+
+  // 查询所有标签
+  router.get("/tags", async (req, res) => {
+    try {
+      const tags = await Tag.find().select("name");
+      res.send(tags);
+    } catch (error) {
+      res.status(500).send({ message: "Error retrieving tags", error });
+    }
+  });
+
+  // 删除标签
+  router.delete("/tags/:id", async (req, res) => {
+    try {
+      const tag = await Tag.findByIdAndDelete(req.params.id);
+      res.send(tag);
+    } catch (error) {
+      res.status(500).send({ message: "Error deleting tag", error });
     }
   });
 
