@@ -3,10 +3,10 @@ import { getArticleDetail } from '../http/api';
 import { useTagStore } from './tagStore';
 const tagStore = useTagStore();
 
-// type TagListType = {
-//   _id: string;
-//   name: string;
-// };
+type TagListType = {
+  _id: string;
+  name: string;
+};
 
 interface ArticleApiResponse {
   body: string;
@@ -17,7 +17,7 @@ interface ArticleApiResponse {
   description: string;
   slotStatus: boolean;
   categories: string[];
-  tags: string[];
+  tags: TagListType[];
   dateDisplay: boolean;
   prevArticle: { _id: string; title: string };
   nextArticle: { _id: string; title: string };
@@ -34,7 +34,7 @@ export const useArticleDetailStore = defineStore('articleDetail', {
       summary: '',
       slotStatus: false,
       categories: [] as string[],
-      tags: [] as string[],
+      tags: [] as TagListType[],
       dateDisplay: false,
       prevArticle: { _id: '', title: '' },
       nextArticle: { _id: '', title: '' }
@@ -47,13 +47,12 @@ export const useArticleDetailStore = defineStore('articleDetail', {
       this.loading = true;
       try {
         const articleData = (await getArticleDetail(id)) as unknown as ArticleApiResponse;
-        this.detail = articleData;
         this.detail = {
           ...articleData,
           tags: articleData.tags?.map((tagItem) => {
             const foundTag = tagStore.list.find(
               (tag) => tag._id === (tagItem as unknown as string)
-            ) as unknown as string;
+            );
             return foundTag || tagItem;
           })
         };

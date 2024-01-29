@@ -108,7 +108,7 @@ const fontprogress = ref(0);
 const baseURL = import.meta.env.VITE_BASE_URL;
 const baseHost = import.meta.env.VITE_BASE_HOST;
 
-function loadFont(fontName, fontUrl) {
+function loadFont(fontName: string, fontUrl: string) {
   loadfontStatus.value = true;
   const newStyle = document.createElement('style');
   newStyle.appendChild(
@@ -129,7 +129,7 @@ function loadFont(fontName, fontUrl) {
     .then(() => {
       loadfontStatus.value = false;
     })
-    .catch((error) => {
+    .catch((error: any) => {
       console.error('Font loading failed', error);
       loadfontStatus.value = false;
     });
@@ -164,7 +164,7 @@ const onUploadfonts = async () => {
   loading.value = false;
 };
 
-function downloadFile(url, filename) {
+function downloadFile(url: string, filename: string) {
   const a = document.createElement('a');
   a.href = url;
   a.download = filename || 'download';
@@ -176,8 +176,12 @@ function downloadFile(url, filename) {
 const totalBytes = 6.99 * 1024 * 1024; // 6.99 MB
 const blobUrl = ref<string>('');
 
-function fetchFontProgress(url, onProgress, totalBytes) {
-  return new Promise((resolve, reject) => {
+function fetchFontProgress(
+  url: RequestInfo | URL,
+  onProgress: { (progress: number): void; (arg0: number): void },
+  totalBytes: number
+) {
+  return new Promise<void>((resolve, reject) => {
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -186,12 +190,12 @@ function fetchFontProgress(url, onProgress, totalBytes) {
 
         const contentLength = response.headers.get('Content-Length') || totalBytes;
         let receivedBytes = 0;
-        let chunks = []; // 用于存储接收到的数据块
+        let chunks: BlobPart[] | undefined = []; // 用于存储接收到的数据块
 
-        const reader = response.body.getReader();
+        const reader = response.body?.getReader();
 
         function read() {
-          reader.read().then(({ done, value }) => {
+          reader?.read().then(({ done, value }) => {
             if (done) {
               // 所有数据块已接收，合并它们并创建一个 Blob
               let blob = new Blob(chunks, { type: 'font/ttf' }); // 确保指定正确的MIME类型
@@ -203,8 +207,8 @@ function fetchFontProgress(url, onProgress, totalBytes) {
 
             // 更新进度并存储数据块
             receivedBytes += value.length;
-            chunks.push(value);
-            const progress = (receivedBytes / contentLength) * 100;
+            chunks?.push(value);
+            const progress = (receivedBytes / Number(contentLength)) * 100;
             onProgress(progress);
 
             // 继续读取下一部分
@@ -275,7 +279,7 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
   return true;
 };
 
-const afterUpload = (res) => {
+const afterUpload = (res: { filename: string; url: any }) => {
   console.log('afterUpload', res);
   loadFont(res.filename.split('.')[0], `${res.url}?v=${new Date().getTime()}`);
   fontOriginName.value = res.filename;
@@ -285,7 +289,7 @@ onMounted(() => {
   Prism.highlightAll();
   fetchFontProgress(
     `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
-    (progress) => {
+    (progress: number) => {
       const num = Number(progress.toFixed(0));
       fontprogress.value = num;
       // console.log(`Progress: ${num}%`);
