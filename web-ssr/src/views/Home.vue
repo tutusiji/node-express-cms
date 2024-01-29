@@ -205,8 +205,11 @@ const handleTouchEnd = () => {
 
 const changePage = (val: any) => {
   const searchValue = String(route.query.search || '');
+  const tagValue = String(route.query.tag || '');
   if (searchValue) {
-    router.push(`/${String(route.name)}/1?search=${searchVal.value}`);
+    router.push(`/${String(route.name)}/${val}?search=${searchValue}`);
+  } else if (tagValue) {
+    router.push(`/${String(route.name)}/${val}?tag=${tagValue}`);
   } else {
     router.push(`/${String(route.name)}/${val}`);
   }
