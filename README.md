@@ -369,11 +369,17 @@ windows 用户可以使用 MongoDB 的客户端程序，一键导出即可
 mongo
 show dbs
 use 数据库名
-db.articles.updateMany(
-  {},
-  { $set: { dateDisplay: true } }
-);
+--  批量插入数据
+db.articles.updateMany({},{ $set: { dateDisplay: true } });
+-- 批量删除数据
+db.categories.updateMany({}, { $unset: { typeUrl: "" } })
+
 exit
+-- updateMany 中第一个参数是查询条件，它决定了哪些文档会被更新。如果要更新所有文档，可以传入一个空对象 {}。
+-- updateMany 第二个参数是要更新的字段和值，使用$set操作符指定。例如，如果要将dateDisplay字段的值替换为false，可以使用$set: { dateDisplay: false }。
+-- 删除/修改指定的某一条数据：db.categories.update({ _id: 123456 }, { $unset: { typeUrl: 1 } })
+-- 示例：将categories表中_id为123456的那条数据修改typeUrl的值为222，并新增一个值name为333,： db.categories.update({ _id: 123 }, { $set: { typeUrl: 222, name: "3333" } })
+
 ```
 
 ### nginx 配置
