@@ -291,18 +291,6 @@ function fetchFontProgress(
 onMounted(() => {
   Prism.highlightAll();
   // console.log('AnyFonts', isFontLoaded('AnyFonts'));
-  // 检测字体是否加载完成
-  const font = new FontFaceObserver('AnyFonts');
-  font
-    .load(null, 60000) // 等待60秒
-    .then(() => {
-      fontprogress.value = 100;
-      console.log('AnyFonts-done');
-    })
-    .catch((error: any) => {
-      console.error('Font loading failed', error);
-      fontprogress.value = 100;
-    });
 
   // 加载字体的函数
   fetchFontProgress(
@@ -331,6 +319,18 @@ onMounted(() => {
     })
     .catch((error) => {
       console.error('Error loading font:', error);
+    });
+  // 检测字体是否加载完成
+  const font = new FontFaceObserver('AnyFonts');
+  font
+    .load(null, 60000) // 等待60秒
+    .then(() => {
+      fontprogress.value = 100;
+      console.log('AnyFonts-done');
+    })
+    .catch((error: any) => {
+      console.error('Font loading failed', error);
+      fontprogress.value = 100;
     });
 });
 </script>
