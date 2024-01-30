@@ -72,12 +72,21 @@
     </div>
 
     <div class="sidebar">
-      <img
-        src="https://hkroom.oss-cn-shenzhen.aliyuncs.com/Snipaste_2024-01-24_05-28-56.png"
-        width="60px"
-      />
       <div class="mb-4">
-        <el-input v-model="searchVal" placeholder="搜索" class="h-[40px]" clearable>
+        <div
+          class="cospa w-[40px] ml-[-18px] relative"
+          :style="`transform:translateX(${searchVal.length * 5}px)`"
+        >
+          <img
+            class="tuziki pointer-events-none block mb-[-26px]"
+            src="https://hkroom.oss-cn-shenzhen.aliyuncs.com/Snipaste_2024-01-24_05-28-56.png"
+            width="40px"
+          />
+          <div :class="['tips', tipsVal && 'show']">
+            <span class="txt">{{ tipsTxt }}</span>
+          </div>
+        </div>
+        <el-input v-model="searchVal" maxlength="30" placeholder="搜索" class="h-[40px]" clearable>
           <template #append>
             <el-button :icon="Search" @click="handleSearch" />
           </template>
@@ -137,7 +146,7 @@
       />
     </div>
   </div>
-  <div v-if="tagStore.list.length && String(route.name) === 'coder'" class="tags tagMain">
+  <div v-if="tagStore.list.length" class="tags tagMain">
     <h3>文章标签：</h3>
     <a
       v-for="tag in tagStore.list"
@@ -165,6 +174,8 @@ const tagStore = useTagStore();
 const router = useRouter();
 const route = useRoute();
 const searchVal = ref('');
+const tipsVal = ref(false);
+const tipsTxt = ref('');
 
 // SSR 数据预取
 onServerPrefetch(async () => {
@@ -220,9 +231,38 @@ const changePage = (val: any) => {
   }
 };
 
+watch(
+  () => searchVal.value,
+  (val, old) => {
+    // console.log('watch', val, old?.length);
+    if (val.length === 30) {
+      tipsVal.value = true;
+      tipsTxt.value = 'enough!';
+      setTimeout(() => {
+        tipsVal.value = false;
+      }, 2000);
+    }
+    if (val.length === 0 && old?.trim().length !== 0) {
+      tipsTxt.value = '';
+    }
+  },
+  { immediate: true }
+);
+
 // 搜索查询
-const handleSearch = async () => {
-  router.push(`/${String(route.name)}/1?search=${searchVal.value}`);
+const handleSearch = () => {
+  // router.push(`/${String(route.name)}/1?search=${searchVal.value.replace(/\s+/g, '')}`);
+  console.log('handleSearch', !searchVal.value.trim().length, !route.query.search);
+  if (!searchVal.value.trim().length && !route.query.search) {
+    searchVal.value = '';
+    tipsVal.value = true;
+    tipsTxt.value = 'nothing!';
+    setTimeout(() => {
+      tipsVal.value = false;
+    }, 2000);
+    return;
+  }
+  router.push(`/${String(route.name)}/1?search=${searchVal.value.trim()}`);
 };
 
 onMounted(async () => {
@@ -283,7 +323,29 @@ const goTop = () => {
   .sidebar {
     margin-left: 2rem;
     width: 220px;
-    // background-color: #eee;
+    .cospa {
+      .tips {
+        position: absolute;
+        top: 2px;
+        left: 35px;
+        font-size: 10px;
+        color: #666;
+        width: 0px;
+        height: 20px;
+        overflow: hidden;
+        transform: rotate(-12deg);
+        transition: width 0.2s ease-in-out;
+        &.show {
+          width: 45px;
+        }
+        .txt {
+          display: block;
+          width: 45px;
+          height: 20px;
+          white-space: nowrap;
+        }
+      }
+    }
     .el-carousel__indicators {
       width: 100%;
     }

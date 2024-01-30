@@ -414,6 +414,12 @@ footer {
       .sidebar {
         width: 100%;
         margin-left: 0;
+        .cospa{
+          margin-left: 4px;
+          // .tips{
+          //   left: 35px;
+          // }
+        }
       }
     }
   }
