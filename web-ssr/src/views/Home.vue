@@ -22,6 +22,7 @@
                   <span class="tit">{{ item.title }}</span></a
                 >
               </div>
+              {{ `/${item.categories[0].path}/article/${item._id}` }}
               <div v-show="item.summary" class="summary">
                 {{ item.summary
                 }}<a
