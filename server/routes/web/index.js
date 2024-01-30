@@ -122,7 +122,6 @@ module.exports = (app) => {
         // }
         if (tagName) {
           const tag = await Tag.findOne({ name: tagName });
-          console.log("found ta======", tag);
           // 如果标签不存在，则返回空数据集
           if (!tag) {
             return res.send({
