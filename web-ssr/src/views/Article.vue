@@ -7,7 +7,7 @@
     {{ dayjs(articleDetailStore.detail.date).format('YYYY-MM-DD ') }}
   </div>
   <!-- 异步组件，用来加载工程插件 -->
-  <component v-if="shouldRenderAsyncComponent" :is="currentSlotComponent" />
+  <component :is="currentSlotComponent" v-if="shouldRenderAsyncComponent" />
   <div
     v-loading="articleDetailStore.loading"
     class="articleDetails"
