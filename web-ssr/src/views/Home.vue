@@ -18,11 +18,10 @@
                   @click.prevent="
                     router.push(`/${item.categories[0].pageName}/article/${item._id}`)
                   "
-                  ><span class="num">No.{{ item.serialNumber }}</span>
-                  <span class="tit">{{ item.title }}</span></a
-                >
+                ><span class="num">No.{{ item.serialNumber }}</span>
+                  <span class="tit">{{ item.title }}</span></a>
               </div>
-              {{ `/${item.categories[0].pageName}/article/${item._id}` }}
+              <!-- {{ `/${item.categories[0].pageName}/article/${item._id}` }} -->
               <div v-show="item.summary" class="summary">
                 {{ item.summary
                 }}<a
@@ -31,8 +30,7 @@
                   @click.prevent="
                     router.push(`/${item.categories[0].pageName}/article/${item._id}`)
                   "
-                  >... 阅读全文 〉</a
-                >
+                >... 阅读全文 〉</a>
               </div>
               <div v-show="item.tags?.length" class="tags">
                 <span>标签：</span>
