@@ -2,7 +2,7 @@
   <div class="homepage">
     <div v-loading="articleStore.loading" class="articleList">
       <div v-if="route.query.search" class="searchTitle">
-        搜索 “{{ route.query.search }}” 结果：
+        关于搜索有 “{{ route.query.search }}” 内容的文章：
       </div>
       <div v-if="route.query.tag" class="searchTitle">标签为 “{{ route.query.tag }}” 的文章：</div>
       <ul>
@@ -14,8 +14,8 @@
               <div>
                 <a
                   class="title"
-                  :href="`./article/${item._id}`"
-                  @click.prevent="router.push(`./article/${item._id}`)"
+                  :href="`../${item.categories[0].path}/article/${item._id}`"
+                  @click.prevent="router.push(`../${item.categories[0].path}/article/${item._id}`)"
                   ><span class="num">No.{{ item.serialNumber }}</span>
                   <span class="tit">{{ item.title }}</span></a
                 >
@@ -24,8 +24,8 @@
                 {{ item.summary
                 }}<a
                   class="desc"
-                  :href="`./article/${item._id}`"
-                  @click.prevent="router.push(`./article/${item._id}`)"
+                  :href="`../${item.categories[0].path}/article/${item._id}`"
+                  @click.prevent="router.push(`../${item.categories[0].path}/article/${item._id}`)"
                   >... 阅读全文 〉</a
                 >
               </div>
@@ -40,6 +40,20 @@
                   {{ tag.name }}
                 </a>
               </div>
+              <div
+                v-show="item.categories?.length && (route.query.search || route.query.tag)"
+                class="tags"
+              >
+                <span>发布于：</span>
+                <a
+                  v-for="cate in item.categories"
+                  :key="cate._id"
+                  :href="`/${String(cate.path)}/1`"
+                  @click.prevent="router.push(`/${String(route.name)}/1?tag=${cate.name}`)"
+                >
+                  {{ cate.name }}
+                </a>
+              </div>
             </div>
             <div class="date">
               <!-- YYYY-MM-DD HH:mm:ss -->
@@ -52,7 +66,7 @@
       </ul>
     </div>
     <div class="sidebar">
-      <div v-if="String(route.name) === 'coder'" class="mb-4">
+      <div class="mb-4">
         <el-input v-model="searchVal" placeholder="搜索" class="h-[40px]" clearable>
           <template #append>
             <el-button :icon="Search" @click="handleSearch" />
@@ -83,8 +97,8 @@
           </el-carousel-item>
         </el-carousel>
       </div>
-      <div v-if="tagStore.list.length && String(route.name) === 'coder'" class="tags tagSider">
-        <h3>文章标签：</h3>
+      <div v-if="tagStore.list.length" class="tags tagSider">
+        <h3>标签集合：</h3>
         <a
           v-for="tag in tagStore.list"
           :key="tag._id"
@@ -365,9 +379,12 @@ const goTop = () => {
           padding-top: 6px;
         }
         .tags {
-          margin-top: 10px;
-          font-family: 'CustomFont';
+          margin-top: 8px;
           word-break: break-all;
+          font-size: 13px;
+          span {
+            font-family: 'CustomFont';
+          }
           a {
             color: #666;
             margin-right: 0.5rem;

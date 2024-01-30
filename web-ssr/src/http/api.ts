@@ -15,6 +15,13 @@ type TagListType = {
   _id: string;
   name: string;
 };
+interface ArrMenuListType {
+  _id: string;
+  name: string;
+  pageName: string;
+  pageId: string;
+  path: string;
+}
 interface ArticleApiResponse {
   body: string;
   title: string;
@@ -22,7 +29,7 @@ interface ArticleApiResponse {
   slotName: string;
   summary: string;
   slotStatus: boolean;
-  categories: string[];
+  categories: ArrMenuListType[];
   tags: TagListType[];
   dateDisplay: boolean;
   prevArticle: { _id: string; title: string };

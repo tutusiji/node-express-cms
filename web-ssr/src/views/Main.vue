@@ -307,13 +307,15 @@ footer {
   }
 }
 .tags {
-  font-family: 'CustomFont';
+   font-family: 'CustomFont';
   &.tagSider {
+    font-family: 'CustomFont';
     h3 {
       margin-bottom: 10px;
     }
   }
   &.tagMain {
+    font-family: 'CustomFont';
     margin-top: 40px;
     h3 {
       display: inline-block;

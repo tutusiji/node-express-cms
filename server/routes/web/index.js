@@ -50,110 +50,114 @@ module.exports = (app) => {
   // 文章列表
   router.post("/blog/list", async (req, res) => {
     try {
-      // 从请求体中获取参数
       const {
-        parentName,
         categoryName,
-        page,
-        limit,
+        page = 1,
+        limit = 10,
         searchText,
         tagName,
         tagId,
       } = req.body;
 
-      // 验证分类名称参数是否存在
-      if (!parentName || !categoryName) {
-        return res.status(400).send("Missing required query parameters");
-      }
+      const skip = (page - 1) * limit;
+      let articles = [];
+      let totalItems = 0;
 
-      // 如果提供了 tagName 或 tagId，则需要先查找对应的标签
-      let tagFilter = {};
-      if (tagId) {
-        tagFilter = { "list.tags": mongoose.Types.ObjectId(tagId) };
-      } else if (tagName) {
-        const tag = await Tag.findOne({ name: tagName });
-        if (tag) {
-          tagFilter = { "list.tags": tag._id };
+      if (categoryName && !tagName && !tagId && !searchText) {
+        // 使用聚合管道查询特定分类的文章
+        const category = await Category.findOne({ name: categoryName });
+        if (!category) {
+          return res.status(404).send("Category not found");
         }
-      }
 
-      // 转换分页参数为整数，并提供默认值
-      const pageNumber = parseInt(page, 10) || 1;
-      const limitNumber = parseInt(limit, 10) || 10;
-      // 计算跳过的文档数量
-      const skip = (pageNumber - 1) * limit;
-
-      // 查找父分类
-      const parent = await Category.findOne({ name: parentName });
-      if (!parent) {
-        return res.status(404).send("Parent category not found");
-      }
-
-      // 构建模糊搜索查询条件
-      let matchQuery = {
-        "list.status": { $ne: false }, // 过滤掉 status 为 false 的文档
-        parent: parent._id,
-        name: categoryName,
-      };
-
-      if (searchText) {
-        matchQuery.$or = [
-          { "list.title": { $regex: searchText, $options: "i" } },
-          { "list.body": { $regex: searchText, $options: "i" } },
+        const aggregationPipeline = [
+          { $match: { _id: category._id } },
+          {
+            $lookup: {
+              from: "articles",
+              localField: "_id",
+              foreignField: "categories",
+              as: "relatedArticles",
+            },
+          },
+          { $unwind: "$relatedArticles" },
+          { $replaceRoot: { newRoot: "$relatedArticles" } },
+          { $sort: { date: -1 } },
+          { $skip: skip },
+          { $limit: limit },
+          // { $project: { title: 1, body: 1, date: 1, tags: 1, categories: 1 } }, // 排除文档中的字段
         ];
+
+        articles = await Category.aggregate(aggregationPipeline);
+        totalItems = await Article.countDocuments({ categories: category._id });
+        // 添加 serialNumber
+        articles = articles.map((article, index) => ({
+          ...article,
+          serialNumber: totalItems - skip - index,
+        }));
+      } else {
+        // 对于 searchText 或 tagName/tagId 的查询
+        let query = {};
+        if (searchText) {
+          query.$or = [
+            { title: { $regex: searchText, $options: "i" } },
+            { body: { $regex: searchText, $options: "i" } },
+          ];
+        }
+        // if (tagName) {
+        //   const tag = await Tag.findOne({ name: tagName });
+        //   if (tag) {
+        //     query.tags = tag._id;
+        //   } else {
+        //     return res.send({
+        //       list: articles,
+        //       currentPage: page,
+        //       limit,
+        //       totalItems,
+        //       totalPages: Math.ceil(totalItems / limit),
+        //     });
+        //   }
+        // } else if (tagId) {
+        //   query.tags = mongoose.Types.ObjectId(tagId);
+        // }
+        if (tagName) {
+          const tag = await Tag.findOne({ name: tagName });
+          console.log("found ta======", tag);
+          // 如果标签不存在，则返回空数据集
+          if (!tag) {
+            return res.send({
+              list: articles,
+              currentPage: page,
+              limit,
+              totalItems,
+              totalPages: Math.ceil(totalItems / limit),
+            });
+          } else {
+            query.tags = tag._id;
+          }
+        }
+
+        articles = await Article.find(query)
+          .skip(skip)
+          .limit(limit)
+          .sort({ date: -1 });
+        totalItems = await Article.countDocuments(query);
+        // 添加 serialNumber
+        articles = articles.map((article, index) => ({
+          ...article.toObject(),
+          serialNumber: totalItems - skip - index,
+        }));
       }
 
-      // 聚合查询指定的子分类并实现分页
-      const aggregationPipeline = [
-        { $match: { parent: parent._id, name: categoryName } },
-        {
-          $lookup: {
-            from: "articles",
-            localField: "_id",
-            foreignField: "categories",
-            as: "list",
-          },
-        },
-        { $unwind: "$list" },
-        { $match: { ...matchQuery, ...tagFilter } },
-        { $sort: { "list.date": -1 } },
-        {
-          $group: {
-            _id: "$_id",
-            totalItems: { $sum: 1 },
-            list: { $push: "$list" },
-          },
-        },
-        {
-          $project: {
-            totalItems: 1,
-            list: { $slice: ["$list", skip, limitNumber] },
-          },
-        },
-      ];
-      const result = await Category.aggregate(aggregationPipeline);
-      // 计算 总条数 总页数;
-      const totalItems = result.length > 0 ? result[0].totalItems : 0;
-      const totalPages = Math.ceil(totalItems / limitNumber);
+      const totalPages = Math.ceil(totalItems / limit);
 
-      // 添加倒序序列号 倒序
-      if (result.length > 0 && result[0].list) {
-        const startSerial = totalItems - skip;
-        result[0].list.forEach((item, index) => {
-          item.serialNumber = startSerial - index;
-        });
-      }
-
-      const response = {
-        list: result.length > 0 && result[0].list ? result[0].list : [],
-        currentPage: pageNumber,
-        limit: limitNumber,
-        totalItems: totalItems,
-        category: parent._id,
-        totalPages: totalPages,
-      };
-
-      res.send(response);
+      res.send({
+        list: articles,
+        currentPage: page,
+        limit,
+        totalItems,
+        totalPages,
+      });
     } catch (error) {
       res.status(500).send({ error: error.message });
     }
