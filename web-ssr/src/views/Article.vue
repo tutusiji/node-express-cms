@@ -7,7 +7,7 @@
     {{ dayjs(articleDetailStore.detail.date).format('YYYY-MM-DD ') }}
   </div>
   <!-- 异步组件，用来加载工程插件 -->
-  <component :is="currentSlotComponent" />
+  <component v-if="shouldRenderAsyncComponent" :is="currentSlotComponent" />
   <div
     v-loading="articleDetailStore.loading"
     class="articleDetails"
@@ -80,6 +80,7 @@ const articleStore = useArticleStore();
 const menuStore = useMenuStore();
 const route = useRoute();
 const router = useRouter();
+const shouldRenderAsyncComponent = ref(true);
 
 // SSR 数据预取
 onServerPrefetch(async () => {
@@ -165,6 +166,10 @@ const currentSlotComponent = computed(() => {
     );
   }
   return null;
+});
+
+onUnmounted(() => {
+  shouldRenderAsyncComponent.value = false;
 });
 </script>
 
