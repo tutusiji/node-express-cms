@@ -180,7 +180,6 @@ onServerPrefetch(async () => {
       searchValue,
       tagValue
     );
-    await adStore.fetchAds();
   }
 });
 
@@ -243,7 +242,6 @@ onMounted(async () => {
         searchValue,
         tagValue
       );
-      // await adStore.fetchAds();
     }
   }
 });

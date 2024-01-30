@@ -52,6 +52,8 @@ import { useSiteStore } from '../store/siteStore';
 import { useArticleDetailStore } from '../store/articleDetailStore';
 import { useArticleStore } from '../store/artcleStore';
 import { useTagStore } from '../store/tagStore';
+import { useAdStore } from '../store/adStore';
+const adStore = useAdStore();
 const tagStore = useTagStore();
 const articleDetailStore = useArticleDetailStore();
 const articleStore = useArticleStore();
@@ -81,6 +83,7 @@ onMounted(async () => {
 onServerPrefetch(async () => {
   await siteStore.fetchSiteInfo();
   await menuStore.fetchMenu();
+  await adStore.fetchAds();
   await tagStore.fetchTags();
 });
 
