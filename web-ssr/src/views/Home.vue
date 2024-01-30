@@ -163,7 +163,6 @@ const searchVal = ref('');
 
 // SSR 数据预取
 onServerPrefetch(async () => {
-  await menuStore.fetchMenu();
   const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
   if (currentMenu) {
     menuStore.menuCurrentName = currentMenu.name;
@@ -226,7 +225,6 @@ onMounted(async () => {
   // 如果没有pinia数据，则正常获取ssr数据
   if (!articleStore.list.length) {
     console.log('Article list ssr reload');
-    await menuStore.fetchMenu();
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
     if (currentMenu) {
       menuStore.menuCurrentName = currentMenu.name;
@@ -247,7 +245,7 @@ onMounted(async () => {
         searchValue,
         tagValue
       );
-      await adStore.fetchAds();
+      // await adStore.fetchAds();
     }
   }
 });
