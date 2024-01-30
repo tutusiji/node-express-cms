@@ -86,7 +86,15 @@
             <span class="txt">{{ tipsTxt }}</span>
           </div>
         </div>
-        <el-input v-model="searchVal" maxlength="30" placeholder="搜索" class="h-[40px]" clearable>
+        <el-input
+          v-model="searchVal"
+          type="text"
+          maxlength="30"
+          placeholder="搜索"
+          class="h-[40px]"
+          clearable
+        >
+          <!-- show-word-limit -->
           <template #append>
             <el-button :icon="Search" @click="handleSearch" />
           </template>
@@ -234,7 +242,8 @@ const changePage = (val: any) => {
 watch(
   () => searchVal.value,
   (val, old) => {
-    // console.log('watch', val, old?.length);
+    // console.log('watch1', val.length);
+    // console.log('watch2', old?.trim().length);
     if (val.length === 30) {
       tipsVal.value = true;
       tipsTxt.value = 'enough!';
@@ -242,7 +251,8 @@ watch(
         tipsVal.value = false;
       }, 2000);
     }
-    if (val.length === 0 && old?.trim().length !== 0) {
+    if (val.length === 0 && old?.length === 30) {
+      // console.log(1111);
       tipsTxt.value = '';
     }
   },
