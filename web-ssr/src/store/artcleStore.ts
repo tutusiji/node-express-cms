@@ -76,7 +76,7 @@ export const useArticleStore = defineStore('articler', {
             const category = menuStore.menu.find(
               (cate) => cate._id === (categoryItem as unknown as string)
             );
-            return category || categoryItem;
+            return category as ArrMenuListType;
           }),
           tags: item.tags?.map((tagItem) => {
             const foundTag = tagStore.list.find(
@@ -87,6 +87,7 @@ export const useArticleStore = defineStore('articler', {
         }));
         this.currentPage = res.currentPage;
         this.totalItems = res.totalItems;
+        console.log('=====', this.list);
       } catch (error) {
         console.error((error as Error).message);
       } finally {
