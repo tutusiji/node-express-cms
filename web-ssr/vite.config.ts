@@ -11,6 +11,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import { prismjsPlugin } from 'vite-plugin-prismjs';
 
 export default defineConfig({
+  base: '/',
   plugins: [
     vuePlugin(),
     prismjsPlugin({
