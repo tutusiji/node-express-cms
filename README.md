@@ -489,8 +489,6 @@ pm2 delete all         # 杀死全部进程
 }
 ```
 
-<img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/f19f382fe517009f8c45c81f1a7f59a7.png'>
-
 英文字母、常用字符集合：``
 ！!-<>》？?&%#@~*()+,，。.=_——`·1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM{}【】[]<>/|\$^、〉〈"'“”；:``
 

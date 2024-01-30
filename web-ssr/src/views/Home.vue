@@ -18,8 +18,9 @@
                   @click.prevent="
                     router.push(`/${item.categories[0].pageName}/article/${item._id}`)
                   "
-                ><span class="num">No.{{ item.serialNumber }}</span>
-                  <span class="tit">{{ item.title }}</span></a>
+                  ><span class="num">No.{{ item.serialNumber }}</span>
+                  <span class="tit">{{ item.title }}</span></a
+                >
               </div>
               <!-- {{ `/${item.categories[0].pageName}/article/${item._id}` }} -->
               <div v-show="item.summary" class="summary">
@@ -30,7 +31,8 @@
                   @click.prevent="
                     router.push(`/${item.categories[0].pageName}/article/${item._id}`)
                   "
-                >... 阅读全文 〉</a>
+                  >... 阅读全文 〉</a
+                >
               </div>
               <div v-show="item.tags?.length" class="tags">
                 <span>标签：</span>
@@ -68,7 +70,12 @@
         </li>
       </ul>
     </div>
+
     <div class="sidebar">
+      <img
+        src="https://hkroom.oss-cn-shenzhen.aliyuncs.com/Snipaste_2024-01-24_05-28-56.png"
+        width="60px"
+      />
       <div class="mb-4">
         <el-input v-model="searchVal" placeholder="搜索" class="h-[40px]" clearable>
           <template #append>

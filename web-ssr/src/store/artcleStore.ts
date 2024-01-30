@@ -87,7 +87,6 @@ export const useArticleStore = defineStore('articler', {
         }));
         this.currentPage = res.currentPage;
         this.totalItems = res.totalItems;
-        console.log('=====', this.list);
       } catch (error) {
         console.error((error as Error).message);
       } finally {
