@@ -106,7 +106,7 @@ const loadfontStatus = ref(false);
 const fontprogress = ref(0);
 
 const baseURL = import.meta.env.VITE_BASE_URL;
-// const baseHost = import.meta.env.VITE_BASE_HOST;
+const baseHost = import.meta.env.VITE_BASE_HOST;
 
 function loadFont(fontName, fontUrl) {
   loadfontStatus.value = true;
@@ -129,7 +129,7 @@ function loadFont(fontName, fontUrl) {
     .then(() => {
       loadfontStatus.value = false;
     })
-    .catch((error) => {
+    .catch((error: any) => {
       console.error('Font loading failed', error);
       loadfontStatus.value = false;
     });
@@ -289,7 +289,7 @@ onMounted(() => {
   Prism.highlightAll();
   fetchFontProgress(
     // https://hkroom.oss-cn-shenzhen.aliyuncs.com/文鼎大颜楷.ttf
-    `https://hkroom.oss-cn-shenzhen.aliyuncs.com/文鼎大颜楷.ttf`,
+    `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
     (progress) => {
       const num = Number(progress.toFixed(0));
       fontprogress.value = num;
