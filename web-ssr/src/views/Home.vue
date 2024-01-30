@@ -14,22 +14,22 @@
               <div>
                 <a
                   class="title"
-                  :href="`/${item.categories[0].path}/article/${item._id}`"
+                  :href="`/${item.categories[0].pageName}/article/${item._id}`"
                   @click.prevent="
-                    router.push({ path: `/${item.categories[0].path}/article/${item._id}` })
+                    router.push(`/${item.categories[0].pageName}/article/${item._id}`)
                   "
                   ><span class="num">No.{{ item.serialNumber }}</span>
                   <span class="tit">{{ item.title }}</span></a
                 >
               </div>
-              {{ `/${item.categories[0].path}/article/${item._id}` }}
+              {{ `/${item.categories[0].pageName}/article/${item._id}` }}
               <div v-show="item.summary" class="summary">
                 {{ item.summary
                 }}<a
                   class="desc"
-                  :href="`/${item.categories[0].path}/article/${item._id}`"
+                  :href="`/${item.categories[0].pageName}/article/${item._id}`"
                   @click.prevent="
-                    router.push({ path: `/${item.categories[0].path}/article/${item._id}` })
+                    router.push(`/${item.categories[0].pageName}/article/${item._id}`)
                   "
                   >... 阅读全文 〉</a
                 >
@@ -53,8 +53,8 @@
                 <a
                   v-for="cate in item.categories"
                   :key="cate._id"
-                  :href="`/${String(cate.path)}/1`"
-                  @click.prevent="router.push(`/${String(route.name)}/1?tag=${cate.name}`)"
+                  :href="`/${String(cate.pageName)}/1`"
+                  @click.prevent="router.push(`/${String(cate.pageName)}/1`)"
                 >
                   {{ cate.name }}
                 </a>
