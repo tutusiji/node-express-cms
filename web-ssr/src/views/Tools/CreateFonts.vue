@@ -292,21 +292,31 @@ onMounted(() => {
   Prism.highlightAll();
   // console.log('AnyFonts', isFontLoaded('AnyFonts'));
 
-  // 加载字体的函数
-  fetchFontProgress(
-    `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
-    (progress) => {
-      const num = Number(progress.toFixed(0));
-      fontprogress.value = num;
-      // console.log(`Progress: ${num}%`);
-    },
-    totalBytes
-  )
+  // 检测字体是否加载完成
+  const AnyFonts = new FontFaceObserver('AnyFonts');
+  AnyFonts.load(null, 5000) // 等待60秒
     .then(() => {
-      // const fontBlobUrl = URL.createObjectURL(blob);
-      const newStyle = document.createElement('style');
-      newStyle.appendChild(
-        document.createTextNode(`
+      fontprogress.value = 100;
+      console.log('AnyFonts-done');
+    })
+    .catch((error: any) => {
+      console.error('Font loading failed====AnyFonts-no', error);
+      console.log('AnyFonts-no');
+      // 加载字体的函数
+      fetchFontProgress(
+        `${baseHost}uploads/fonts/文鼎大颜楷.ttf`,
+        (progress) => {
+          const num = Number(progress.toFixed(0));
+          fontprogress.value = num;
+          // console.log(`Progress: ${num}%`);
+        },
+        totalBytes
+      )
+        .then(() => {
+          // const fontBlobUrl = URL.createObjectURL(blob);
+          const newStyle = document.createElement('style');
+          newStyle.appendChild(
+            document.createTextNode(`
       @font-face {
         font-family: 'AnyFonts';
         src: url('${blobUrl.value}') format('truetype');
@@ -314,23 +324,12 @@ onMounted(() => {
         font-weight: normal;
       }
     `)
-      );
-      document.head.appendChild(newStyle);
-    })
-    .catch((error) => {
-      console.error('Error loading font:', error);
-    });
-  // 检测字体是否加载完成
-  const font = new FontFaceObserver('AnyFonts');
-  font
-    .load(null, 60000) // 等待60秒
-    .then(() => {
-      fontprogress.value = 100;
-      console.log('AnyFonts-done');
-    })
-    .catch((error: any) => {
-      console.error('Font loading failed', error);
-      fontprogress.value = 100;
+          );
+          document.head.appendChild(newStyle);
+        })
+        .catch((error) => {
+          console.error('Error loading font:', error);
+        });
     });
 });
 </script>
