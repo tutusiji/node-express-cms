@@ -125,7 +125,7 @@ function loadFont(fontName: string, fontUrl: string) {
   // 检测字体是否加载完成
   const font = new FontFaceObserver(fontName);
   font
-    .load(null, 60000) // 等待60秒
+    .load(null, 30000) // 等待30秒
     .then(() => {
       loadfontStatus.value = false;
     })
@@ -294,7 +294,7 @@ onMounted(() => {
 
   // 检测字体是否加载完成
   const AnyFonts = new FontFaceObserver('AnyFonts');
-  AnyFonts.load(null, 5000) // 等待60秒
+  AnyFonts.load() // 等待60秒 null, 5000
     .then(() => {
       fontprogress.value = 100;
       console.log('AnyFonts-done');
