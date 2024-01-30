@@ -81,6 +81,7 @@ module.exports = (app) => {
             },
           },
           { $unwind: "$relatedArticles" },
+          { $match: { "relatedArticles.status": { $ne: false } } }, // 使用模糊搜索查询条件
           { $replaceRoot: { newRoot: "$relatedArticles" } },
           { $sort: { date: -1 } },
           { $skip: skip },
@@ -135,6 +136,8 @@ module.exports = (app) => {
             query.tags = tag._id;
           }
         }
+        // 添加过滤掉 status 为 false 的文档的条件
+        query.status = { $ne: false };
 
         articles = await Article.find(query)
           .skip(skip)

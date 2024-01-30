@@ -381,7 +381,6 @@ exit
 -- 示例：将categories表中_id为123456的那条数据修改typeUrl的值为222，并新增一个值name为333,： db.categories.update({ _id: 123 }, { $set: { typeUrl: 222, name: "3333" } })
 
 ```
-
 ### nginx 配置
 
 测试：`nginx -t`
