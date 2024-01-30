@@ -14,8 +14,8 @@
               <div>
                 <a
                   class="title"
-                  :href="`../${item.categories[0].path}/article/${item._id}`"
-                  @click.prevent="router.push(`../${item.categories[0].path}/article/${item._id}`)"
+                  :href="`/${item.categories[0].path}/article/${item._id}`"
+                  @click.prevent="router.push(`/${item.categories[0].path}/article/${item._id}`)"
                   ><span class="num">No.{{ item.serialNumber }}</span>
                   <span class="tit">{{ item.title }}</span></a
                 >
@@ -24,8 +24,8 @@
                 {{ item.summary
                 }}<a
                   class="desc"
-                  :href="`../${item.categories[0].path}/article/${item._id}`"
-                  @click.prevent="router.push(`../${item.categories[0].path}/article/${item._id}`)"
+                  :href="`/${item.categories[0].path}/article/${item._id}`"
+                  @click.prevent="router.push(`/${item.categories[0].path}/article/${item._id}`)"
                   >... 阅读全文 〉</a
                 >
               </div>
