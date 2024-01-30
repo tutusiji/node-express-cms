@@ -2,7 +2,7 @@
   <div class="homepage">
     <div v-loading="articleStore.loading" class="articleList">
       <div v-if="route.query.search" class="searchTitle">
-        关于搜索有 “{{ route.query.search }}” 内容的文章：
+        搜索关于 “{{ route.query.search }}” 内容的文章：
       </div>
       <div v-if="route.query.tag" class="searchTitle">标签为 “{{ route.query.tag }}” 的文章：</div>
       <ul>
