@@ -40,7 +40,9 @@
       <div class="copyright">
         <!-- <p>make by node express mongodb vue3 vite tailwind</p> -->
         <p>{{ siteStore.info.coryright }}</p>
-        <span><a href="http://beian.miit.gov.cn/" target="_blank">{{ siteStore.info.beian }}</a></span>
+        <span
+          ><a href="http://beian.miit.gov.cn/" target="_blank">{{ siteStore.info.beian }}</a></span
+        >
       </div>
     </footer>
   </section>
@@ -62,24 +64,6 @@ const siteStore = useSiteStore();
 const route = useRoute();
 const router = useRouter();
 
-onMounted(async () => {
-  watch(
-    () => menuStore.menu,
-    async (newMenu) => {
-      if (newMenu.length > 0) {
-        await nextTick();
-        getMenuStyle();
-      }
-    },
-    { immediate: true }
-  );
-  const faviconLink = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
-
-  if (faviconLink && siteStore.info.icon) {
-    faviconLink.href = siteStore.info.icon;
-  }
-});
-
 onServerPrefetch(async () => {
   await siteStore.fetchSiteInfo();
   await menuStore.fetchMenu();
@@ -98,7 +82,47 @@ const getMenuStyle = () => {
   lineWidth.value = itemRect.getBoundingClientRect().width;
   switchX.value = itemRect.getBoundingClientRect().left - parentRect.getBoundingClientRect().left;
   // console.log(lineWidth.value, switchX.value);
+  // console.log('窗口大小改变了！');
 };
+
+function debounce(func: any, wait: number) {
+  let timeout: any;
+
+  return function executedFunction(...args: any[]) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+const getMenuStyleDebounced = debounce(() => getMenuStyle(), 200);
+
+watch(
+  () => menuStore.menu,
+  async (newMenu) => {
+    if (newMenu.length > 0) {
+      await nextTick();
+      getMenuStyle();
+    }
+  },
+  { immediate: true }
+);
+
+onMounted(async () => {
+  const faviconLink = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
+  if (faviconLink && siteStore.info.icon) {
+    faviconLink.href = siteStore.info.icon;
+  }
+  window.addEventListener('resize', getMenuStyleDebounced);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', getMenuStyleDebounced);
+});
 
 type itemType = {
   pageName: string;
@@ -310,7 +334,7 @@ footer {
   }
 }
 .tags {
-   font-family: 'CustomFont';
+  font-family: 'CustomFont';
   &.tagSider {
     font-family: 'CustomFont';
     h3 {
@@ -414,7 +438,7 @@ footer {
       .sidebar {
         width: 100%;
         margin-left: 0;
-        .cospa{
+        .cospa {
           margin-left: 4px;
           // .tips{
           //   left: 35px;
