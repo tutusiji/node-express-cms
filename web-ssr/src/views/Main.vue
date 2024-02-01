@@ -215,18 +215,22 @@ nav {
   }
 
   .logo {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #fff;
     font-weight: 500;
     cursor: pointer;
     font-family: 'CustomFont';
     text-decoration: none;
     text-shadow: 0 1px 1px rgba($color: #000, $alpha: 0.8);
-    // background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-    // color: transparent;
-    // -webkit-background-clip: text;
-    // background-clip: text;
-    // -webkit-text-fill-color: transparent;
+
+    // &::selection {
+    //   text-shadow: 0 1px 1px rgba($color: #fff, $alpha: 0.8);
+    //   background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+    //   color: transparent;
+    //   -webkit-background-clip: text;
+    //   background-clip: text;
+    //   -webkit-text-fill-color: transparent;
+    // }
     &:hover {
       color: #fff;
       text-decoration: none;
