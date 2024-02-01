@@ -441,6 +441,9 @@ footer {
   display: none;
 }
 @media screen and (max-width: 800px) {
+  .articleTitle {
+    font-size: 1.4rem;
+  }
   .main {
     .homepage {
       flex-direction: column-reverse;
