@@ -1,6 +1,6 @@
 <template>
   <section class="wrap flex">
-    <nav>
+    <nav class="nav">
       <div class="content">
         <a class="logo" href="https://www.tuziki.com">{{ siteStore.info.title }}</a>
         <ul class="menu">
@@ -197,7 +197,7 @@ router.afterEach(() => {
   }
 }
 
-nav {
+.nav {
   z-index: 1;
   position: absolute;
   top: 0;
@@ -215,7 +215,7 @@ nav {
   }
 
   .logo {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: #fff;
     font-weight: 500;
     cursor: pointer;
@@ -441,7 +441,7 @@ footer {
   display: none;
 }
 @media screen and (max-width: 800px) {
-  .articleTitle {
+  .nav .logo {
     font-size: 1.4rem;
   }
   .main {
