@@ -45,7 +45,7 @@ export async function render(url, manifest) {
     await router.push(url);
     await router.isReady();
     const ctx = {};
-    let appTitle = 'Tuziki的个人记录';
+    let appTitle = `Tuziki's Planet`;
     let appDescription = `<meta name="description" content="${appTitle}" />`;
     const appHtml = await renderToString(app, ctx);
 
@@ -54,11 +54,11 @@ export async function render(url, manifest) {
     const teleports = renderTeleports(ctx.teleports);
     const state = JSON.stringify(store.state.value);
     if (store.state.value && store.state.value.menuer.menuCurrentName) {
-      appTitle = `${store.state.value.menuer.menuCurrentName} - Tuziki的个人记录`;
+      appTitle = `${store.state.value.menuer.menuCurrentName} - Tuziki's Planet`;
       appDescription = `<meta name="description" content="${appTitle}" />`;
     }
     if (store.state.value && store.state.value.articleDetail.detail.title) {
-      appTitle = `${store.state.value.articleDetail.detail.title} - Tuziki的个人记录`;
+      appTitle = `${store.state.value.articleDetail.detail.title} - Tuziki's Planet`;
       appDescription = `<meta name="description" content="${
         store.state.value.articleDetail.detail.summary || appTitle
       }" />`;

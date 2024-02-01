@@ -175,6 +175,8 @@ import { useMenuStore } from '../store/menuStore';
 import { useArticleStore } from '../store/artcleStore';
 import { useTagStore } from '../store/tagStore';
 import { useAdStore } from '../store/adStore';
+import { useSiteStore } from '../store/siteStore';
+const siteStore = useSiteStore();
 const menuStore = useMenuStore();
 const adStore = useAdStore();
 const articleStore = useArticleStore();
@@ -282,7 +284,7 @@ onMounted(async () => {
     const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
     if (currentMenu) {
       menuStore.menuCurrentName = currentMenu.name;
-      document.title = `${currentMenu.name} - Tuziki的个人记录`;
+      document.title = `${currentMenu.name} - ${siteStore.info.title}`;
       articleStore.currentPage = Number(route.params.page) || 1;
       let searchValue = '';
       let tagValue = '';

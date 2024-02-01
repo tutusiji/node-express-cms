@@ -76,6 +76,8 @@ import { useArticleDetailStore } from '../store/articleDetailStore';
 const articleDetailStore = useArticleDetailStore();
 import { useMenuStore } from '../store/menuStore';
 import { useArticleStore } from '../store/artcleStore';
+import { useSiteStore } from '../store/siteStore';
+const siteStore = useSiteStore();
 const articleStore = useArticleStore();
 const menuStore = useMenuStore();
 const route = useRoute();
@@ -128,10 +130,10 @@ watch(
 
 function setTitle(title: string, description: string) {
   if (typeof window !== 'undefined') {
-    document.title = `${title} - Tuziki的个人记录`;
+    document.title = `${title} - ${siteStore.info.title}`;
     let descriptionMeta = document.querySelector('meta[name="description"]');
     if (descriptionMeta) {
-      descriptionMeta.setAttribute('content', description || `${title} - Tuziki的个人记录`);
+      descriptionMeta.setAttribute('content', description || `${title} - ${siteStore.info.title}`);
     }
   }
 }
