@@ -215,7 +215,7 @@ nav {
   }
 
   .logo {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     color: #fff;
     text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
     font-weight: 500;
