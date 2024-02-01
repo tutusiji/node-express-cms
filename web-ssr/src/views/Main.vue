@@ -99,8 +99,6 @@ function debounce(func: any, wait: number) {
   };
 }
 
-const getMenuStyleDebounced = debounce(() => getMenuStyle(), 200);
-
 watch(
   () => menuStore.menu,
   async (newMenu) => {
@@ -111,6 +109,8 @@ watch(
   },
   { immediate: true }
 );
+
+const getMenuStyleDebounced = debounce(() => getMenuStyle(), 200);
 
 onMounted(async () => {
   const faviconLink = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
