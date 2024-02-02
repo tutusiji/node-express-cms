@@ -35,3 +35,4 @@ dump
 TODO.md
 components.d.ts
 /web-ssr/components.d.ts
+mongodb.pem
