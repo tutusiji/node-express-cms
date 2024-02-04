@@ -294,7 +294,7 @@ onMounted(() => {
 
   // 检测字体是否加载完成
   const AnyFonts = new FontFaceObserver('AnyFonts');
-  AnyFonts.load() // 等待60秒 null, 5000
+  AnyFonts.load(null, 2000) // 等待60秒
     .then(() => {
       fontprogress.value = 100;
       console.log('AnyFonts-done');
