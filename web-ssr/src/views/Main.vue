@@ -213,10 +213,7 @@ router.afterEach(() => {
   width: 100%;
   &.isFixed {
     position: fixed;
-    background-color: rgba(2, 28, 41, 0.58);
-    .linebg {
-      bottom: -3px;
-    }
+    background-color: rgba(2, 28, 41, 0.75);
   }
 
   .content {
@@ -277,7 +274,7 @@ router.afterEach(() => {
     left: 0;
     width: 92px;
     height: 1px;
-    bottom: 2px;
+    bottom: 4px;
     background: rgba($color: #000000, $alpha: 0.8);
     transition: all 200ms ease-in;
     // border-radius: 100%;
@@ -397,9 +394,14 @@ footer {
 }
 @media screen and (max-width: 1024px) {
   .wrap {
-    nav .content,
+    .nav .content,
     .container {
       padding: 0 10px;
+    }
+    .nav.isFixed {
+      .linebg {
+        bottom: -1px;
+      }
     }
 
     .header .content {
