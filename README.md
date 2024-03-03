@@ -478,6 +478,76 @@ pm2 delete all         # 杀死全部进程
 当用户在 admin 端创建新的文章内容之后，点击【字体管理】栏目，上传自己喜欢的字体包文件，任何命名都可但必须是 ttf 格式的。
 
 之后，点击【全站文本提取】按钮，全站提取目前只提取导航菜单、文章标题、logo 文字、slogan、welcome 的文字内容。不必在意重复的字符，生成的字体包文件会自动去重。
+```js
+// 字体包 生成
+  const Fontmin = require("fontmin");
+  const localTTFPath = path.join(
+    __dirname,
+    "..",
+    "..",
+    "uploads/fonts/CustomFont.ttf"
+  );
+  const destPath = path.join(
+    __dirname,
+    "..",
+    "..",
+    "..",
+    "web-ssr/src/assets/fonts"
+  );
+  router.post("/webFonts", async (req, res) => {
+    const words = req.body.words;
+    // console.log(words);
+    try {
+      const fontmin = new Fontmin()
+        .src(localTTFPath)
+        .dest(destPath)
+        // .use(Fontmin.ttf2svg()) // 转换为 WOFF 格式
+        .use(
+          Fontmin.glyph({
+            text: words,
+            hinting: true, // keep ttf hint info (fpgm, prep, cvt). default = true
+          })
+        );
+      fontmin.run(async function (err, files) {
+        if (err) {
+          console.error(err);
+          return res
+            .status(500)
+            .send({ message: "Error 字体包生成错误", error: err });
+        }
+        // 当为服务端环境时，才去重新编译部署
+        if (process.env.NODE_ENV === "production") {
+          try {
+            // 执行 SSR 编译
+            await execShellCommand(
+              "npm run build",
+              "/var/www/node-express-blog/web-ssr"
+            );
+            // 重启 SSR PM2 服务
+            await execShellCommand(
+              "pm2 restart sys.config.cjs",
+              "/var/www/node-express-blog/web-ssr"
+            );
+
+            res.send({ message: "Fonts processed and ssr server restarted." });
+          } catch (error) {
+            res
+              .status(500)
+              .send({ message: "Error in server operations", error });
+          }
+        } else {
+          res.send({ message: "Fonts processed: No production env." });
+        }
+
+        // console.log(files[0]);
+        // => { contents: <Buffer 00 01 00 ...> }
+      });
+    } catch (error) {
+      // 错误处理
+      res.status(500).send({ message: "Error 字体包生成", error });
+    }
+  });
+```
 
 提取完成之后再点击【生成并部署字体包】按钮，会调用字体包的抽取工具流程。会将生成的字体包最终打包放在指定的 web 端 assets/fonts/目录下的 `CustomFont.ttf` 文件，web 端页面组件默认会调用这个字体，此时这个定制的字体包只有几十 kb，相比原先的 10MB 已经小了很多了！
 
