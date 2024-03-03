@@ -213,7 +213,7 @@ router.afterEach(() => {
   width: 100%;
   &.isFixed {
     position: fixed;
-    background-color: rgba(2, 28, 41, 0.5);
+    background: linear-gradient(to bottom, rgba(2, 28, 41, 0.7), transparent);
     backdrop-filter: blur(5px);
     .linebg {
       bottom: 4px;
