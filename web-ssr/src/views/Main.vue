@@ -215,6 +215,9 @@ router.afterEach(() => {
     position: fixed;
     background-color: rgba(2, 28, 41, 0.5);
     backdrop-filter: blur(5px);
+    .linebg {
+      bottom: 4px;
+    }
   }
 
   .content {
@@ -275,7 +278,7 @@ router.afterEach(() => {
     left: 0;
     width: 92px;
     height: 1px;
-    bottom: 4px;
+    bottom: 0;
     background: rgba($color: #000000, $alpha: 0.8);
     transition: all 200ms ease-in;
     // border-radius: 100%;
