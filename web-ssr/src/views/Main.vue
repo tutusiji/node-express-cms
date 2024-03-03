@@ -211,9 +211,12 @@ router.afterEach(() => {
   top: 0;
   left: 0;
   width: 100%;
-  &.isFixed{
+  &.isFixed {
     position: fixed;
-    background-color: rgba(5, 3, 3, 0.4);
+    background-color: rgba(2, 28, 41, 0.58);
+    .linebg {
+      bottom: -3px;
+    }
   }
 
   .content {
