@@ -1,6 +1,6 @@
 <template>
   <section class="wrap flex">
-    <nav class="nav">
+    <nav :class="['nav', isFixed && 'isFixed']">
       <div class="content">
         <a class="logo" href="https://www.tuziki.com">{{ siteStore.info.title }}</a>
         <ul class="menu">
@@ -112,16 +112,24 @@ watch(
 
 const getMenuStyleDebounced = debounce(() => getMenuStyle(), 200);
 
+const isFixed = ref(false);
+
+const handleScroll = () => {
+  isFixed.value = window.scrollY > 240;
+};
+
 onMounted(async () => {
   const faviconLink = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
   if (faviconLink && siteStore.info.icon) {
     faviconLink.href = siteStore.info.icon;
   }
   window.addEventListener('resize', getMenuStyleDebounced);
+  window.addEventListener('scroll', handleScroll);
 });
 
 onUnmounted(() => {
   window.removeEventListener('resize', getMenuStyleDebounced);
+  window.removeEventListener('scroll', handleScroll);
 });
 
 type itemType = {
@@ -203,6 +211,10 @@ router.afterEach(() => {
   top: 0;
   left: 0;
   width: 100%;
+  &.isFixed{
+    position: fixed;
+    background-color: rgba(5, 3, 3, 0.4);
+  }
 
   .content {
     margin: 0 auto;
@@ -262,7 +274,7 @@ router.afterEach(() => {
     left: 0;
     width: 92px;
     height: 1px;
-    bottom: 0;
+    bottom: 2px;
     background: rgba($color: #000000, $alpha: 0.8);
     transition: all 200ms ease-in;
     // border-radius: 100%;
