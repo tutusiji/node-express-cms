@@ -213,7 +213,8 @@ router.afterEach(() => {
   width: 100%;
   &.isFixed {
     position: fixed;
-    background-color: rgba(2, 28, 41, 0.75);
+    background-color: rgba(2, 28, 41, 0.5);
+    backdrop-filter: blur(5px);
   }
 
   .content {
