@@ -400,7 +400,7 @@ footer {
     }
     .nav.isFixed {
       .linebg {
-        bottom: -1px;
+        bottom: -2px;
       }
     }
 
