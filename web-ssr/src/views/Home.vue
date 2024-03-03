@@ -439,6 +439,13 @@ const goTop = () => {
           word-break: break-all;
           color: #0d6fa1; // 34538b
           font-family: 'CustomFont';
+          .tit {
+            background-image: linear-gradient(#0d6fa1, #0d6fa1);
+            background-position: 0 100%;
+            background-repeat: no-repeat;
+            background-size: 0 2px;
+            transition: background-size 0.5s;
+          }
           &:hover {
             text-decoration: none;
           }
@@ -446,7 +453,8 @@ const goTop = () => {
             text-decoration: none;
           }
           &:hover .tit {
-            text-decoration: underline;
+            // text-decoration: underline;
+            background-size: 100% 2px;
           }
           .num {
             color: #333;

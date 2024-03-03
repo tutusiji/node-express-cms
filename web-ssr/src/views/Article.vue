@@ -128,6 +128,7 @@ watch(
   }
 );
 
+// 设置文章标题
 function setTitle(title: string, description: string) {
   if (typeof window !== 'undefined') {
     document.title = `${title} - ${siteStore.info.title}`;
