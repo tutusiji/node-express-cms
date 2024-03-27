@@ -34,6 +34,7 @@
         <!-- v-if="$route.path === '/'" -->
         <div class="welcome">{{ siteStore.info.welcome }}</div>
         <router-view :key="route.fullPath" />
+        <div class="gotop" @click="goTop">返回顶部←</div>
       </div>
     </div>
     <footer class="flex p-[20px]">
@@ -181,6 +182,13 @@ router.afterEach(() => {
     getMenuStyle();
   });
 });
+
+const goTop = () => {
+  window.scrollTo({
+    top: 0, // 滚动到页面的顶部
+    behavior: 'smooth' // 平滑滚动
+  });
+};
 </script>
 
 <style lang="scss">
@@ -347,7 +355,11 @@ footer {
 }
 
 .gotop {
-  position: absolute;
+  position: fixed;
+  right: 30px;
+  // transform: translate(570px, 0);
+  bottom: 50px;
+  writing-mode: vertical-rl;
   cursor: pointer;
   font-family: 'CustomFont';
 
@@ -394,6 +406,12 @@ footer {
       color: #0d6fa1;
       background-color: #ebebeb;
     }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .gotop {
+    display: none;
   }
 }
 @media screen and (max-width: 1024px) {

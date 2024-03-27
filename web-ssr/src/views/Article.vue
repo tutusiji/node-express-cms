@@ -159,7 +159,7 @@ onMounted(async () => {
   }
 });
 
-// 使用异步组件 加载工程插件
+// 使用异步组件 加载功能插件
 const currentSlotComponent = computed(() => {
   if (articleDetailStore.detail.slotStatus) {
     return defineAsyncComponent(() =>

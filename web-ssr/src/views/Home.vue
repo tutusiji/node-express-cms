@@ -143,7 +143,6 @@
     v-show="articleStore.list.length > 0"
     class="relative flex justify-between items-center py-10"
   >
-    <div class="gotop" @click="goTop">返回顶部↑</div>
     <div class="pageNum flex flex-1 justify-center">
       <el-pagination
         v-model:current-page="articleStore.currentPage"
@@ -304,13 +303,6 @@ onMounted(async () => {
     }
   }
 });
-
-const goTop = () => {
-  window.scrollTo({
-    top: 0, // 滚动到页面的顶部
-    behavior: 'smooth' // 平滑滚动
-  });
-};
 </script>
 
 <style scoped>
