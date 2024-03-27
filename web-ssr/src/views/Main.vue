@@ -34,7 +34,7 @@
         <!-- v-if="$route.path === '/'" -->
         <div class="welcome">{{ siteStore.info.welcome }}</div>
         <router-view :key="route.fullPath" />
-        <div class="gotop" @click="goTop">返回顶部←</div>
+        <div :class="['gotop', isFixed && 'isFixed']" @click="goTop">返回顶部←</div>
       </div>
     </div>
     <footer class="flex p-[20px]">
@@ -362,7 +362,12 @@ footer {
   writing-mode: vertical-rl;
   cursor: pointer;
   font-family: 'CustomFont';
-
+  opacity: 0;
+  transition: all 0.3s ease-in;
+  &.isFixed {
+    opacity: 1;
+    transform: translate(0, -20px);
+  }
   &::selection {
     background-color: transparent;
     /* 背景色透明 */
