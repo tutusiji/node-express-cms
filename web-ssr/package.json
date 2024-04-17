@@ -1,8 +1,8 @@
 {
   "name": "vue3-ts-vite-ssr",
-  "version": "3.0.0",
+  "version": "2.1.1",
   "description": "Use vue3 vite typescript eslint SSR vuex vue-router element-plus scss",
-  "author": "vok123",
+  "author": "tutusiji",
   "type": "module",
   "scripts": {
     "dev": "node server-ssr",
