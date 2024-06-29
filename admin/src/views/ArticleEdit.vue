@@ -29,6 +29,9 @@
       <el-form-item label="立即发布">
         <el-switch v-model="model.status"></el-switch>
       </el-form-item>
+      <el-form-item label="是否单页">
+        <el-switch v-model="model.single"></el-switch>
+      </el-form-item>
       <el-form-item label="功能性插件">
         <el-input
           v-model="model.slotName"

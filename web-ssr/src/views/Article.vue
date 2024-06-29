@@ -13,7 +13,7 @@
     class="articleDetails"
     v-html="articleDetailStore.detail.body"
   ></div>
-  <div v-show="articleDetailStore.detail.tags?.length" class="tags mt-10">
+  <div v-if="articleDetailStore.detail.tags?.length" class="tags mt-10">
     <span>标签：</span>
     <a
       v-for="tag in articleDetailStore.detail.tags"
@@ -25,7 +25,7 @@
       {{ tag.name }}
     </a>
   </div>
-  <template v-if="articleDetailStore.detail.title">
+  <template v-if="articleDetailStore.detail.title && !articleDetailStore.detail.single">
     <div v-if="route.params.id" class="otherArticle">
       <p v-if="articleDetailStore.detail.prevArticle">
         上一篇：

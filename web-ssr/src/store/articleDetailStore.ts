@@ -16,6 +16,7 @@ interface ArticleApiResponse {
   summary: string;
   description: string;
   slotStatus: boolean;
+  single: boolean;
   categories: string[];
   tags: TagListType[];
   dateDisplay: boolean;
@@ -33,6 +34,7 @@ export const useArticleDetailStore = defineStore('articleDetail', {
       slotName: '',
       summary: '',
       slotStatus: false,
+      single: false,
       categories: [] as string[],
       tags: [] as TagListType[],
       dateDisplay: false,
