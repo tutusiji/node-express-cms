@@ -331,10 +331,10 @@ const goTop = () => {
     color: #fff;
     text-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.8);
     font-family: 'CustomFont';
-    border-bottom: 2px solid rgb(255 255 255 / 80%);
-    width: 230px;
-    margin: 0 auto;
-    padding-bottom: 10px;
+    // border-bottom: 2px solid rgb(255 255 255 / 80%);
+    // width: 230px;
+    // margin: 0 auto;
+    // padding-bottom: 10px;
   }
 }
 
