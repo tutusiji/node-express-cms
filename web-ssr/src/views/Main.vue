@@ -213,6 +213,8 @@ const goTop = () => {
   }
 }
 
+$screenW: 1200px;
+
 .nav {
   z-index: 1;
   position: absolute;
@@ -230,7 +232,7 @@ const goTop = () => {
 
   .content {
     margin: 0 auto;
-    max-width: 1064px;
+    max-width: $screenW;
     padding: 0 20px;
     height: 50px;
     display: flex;
@@ -317,7 +319,7 @@ const goTop = () => {
 
   .content {
     margin: 0 auto;
-    max-width: 1064px;
+    max-width: $screenW;
     padding: 100px 0;
   }
 
@@ -340,7 +342,7 @@ const goTop = () => {
 
 .container {
   margin: 0 auto;
-  max-width: 1064px;
+  max-width: $screenW;
   padding: 0 20px;
 }
 
