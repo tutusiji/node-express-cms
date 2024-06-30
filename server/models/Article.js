@@ -13,6 +13,7 @@ const schema = new mongoose.Schema(
     slotStatus: { type: Boolean },
     dateDisplay: { type: Boolean },
     categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],
+    coverImage: { type: String },
     body: { type: String },
     tags: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Tag" }],
   },

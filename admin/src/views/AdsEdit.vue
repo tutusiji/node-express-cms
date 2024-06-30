@@ -47,7 +47,7 @@
       </el-row>
       <el-form-item>
         <el-button type="ghost" @click="model.items.push({})"
-          ><i class="el-icon-plus"></i> 添加广告</el-button
+          ><i class="el-icon-plus"></i> 新增一条</el-button
         >
         <el-button type="primary" native-type="submit">保存</el-button>
       </el-form-item>

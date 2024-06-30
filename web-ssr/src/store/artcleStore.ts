@@ -23,6 +23,7 @@ type ArrListType = {
   title: string;
   date: string;
   summary: string;
+  coverImage: string;
   categories: ArrMenuListType[];
   serialNumber: number;
   tags: TagListType[];

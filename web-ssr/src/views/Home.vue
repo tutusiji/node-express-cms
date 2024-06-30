@@ -24,8 +24,18 @@
               </div>
               <!-- {{ `/${item.categories[0].pageName}/article/${item._id}` }} -->
               <div v-show="item.summary" class="summary">
-                {{ item.summary
-                }}<a
+                <a
+                  v-if="item.coverImage"
+                  :href="`/${item.categories[0].pageName}/article/${item._id}`"
+                  class="coverImage w-[160px] h-[120px]"
+                  :style="`background-image: url(${item.coverImage});`"
+                  @click.prevent="
+                    router.push(`/${item.categories[0].pageName}/article/${item._id}`)
+                  "
+                >
+                </a>
+                <p class="texts">{{ item.summary }}</p>
+                <a
                   class="desc"
                   :href="`/${item.categories[0].pageName}/article/${item._id}`"
                   @click.prevent="
@@ -459,6 +469,16 @@ onMounted(async () => {
           font-size: 0.9rem;
           word-break: break-all;
           padding-top: 6px;
+        }
+        .coverImage {
+          float: right;
+          margin-left: 10px;
+          margin-bottom: 15px;
+          display: block;
+          position: relative;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
         }
         .tags {
           margin-top: 8px;

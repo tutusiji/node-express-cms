@@ -105,10 +105,23 @@
           >创建</el-button
         > -->
       </el-form-item>
+      <el-form-item label="封面图片">
+        <el-upload
+          class="avatar-uploader"
+          :action="uploadUrl"
+          :headers="getAuthHeaders()"
+          :show-file-list="false"
+          :on-success="(res) => $set(model, 'coverImage', res.url)"
+        >
+          <!-- :before-upload="beforeAvatarUpload" -->
+          <img v-if="model.coverImage" :src="model.coverImage" class="avatar" />
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存文章</el-button>
       </el-form-item>
-      <el-form-item label="文章">
+      <el-form-item label="文章内容">
         <vue-editor
           v-model="model.body"
           useCustomImageHandler
@@ -144,6 +157,7 @@ export default {
         slotName: "",
         slotStatus: false,
         summary: "",
+        coverImage: "",
         words: 400,
         prompt: "将以下内容精简成文本，字数不超过",
         tags: [],

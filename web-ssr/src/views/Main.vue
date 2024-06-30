@@ -459,8 +459,16 @@ footer {
         .info {
           // display: block;
           flex-direction: column;
-          .tags {
-            margin-bottom: -10px;
+          .content {
+            .tags {
+              margin-bottom: -10px;
+            }
+            .coverImage {
+              float: none;
+              margin-left: 0;
+              width: 100%;
+              height: 168px;
+            }
           }
           .date {
             width: 100%;
