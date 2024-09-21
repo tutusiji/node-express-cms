@@ -481,6 +481,7 @@ onMounted(async () => {
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
         .tags {
           margin-top: 8px;
