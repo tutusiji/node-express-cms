@@ -341,6 +341,10 @@ onMounted(() => {
 //   font-style: normal;
 //   font-weight: normal;
 // }
+.upload-demo {
+  width: 61.8%;
+  margin: 0 auto;
+}
 
 .previewfonts {
   height: 220px;
