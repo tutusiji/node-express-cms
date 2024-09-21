@@ -63,8 +63,21 @@ export async function render(url, manifest) {
         store.state.value.articleDetail.detail.summary || appTitle
       }" />`;
     }
+
+    // 清理上下文和状态
+    ctx.modules = null;
+    ctx.teleports = null;
+    store.state.value = null;
+
     return [appHtml, appTitle, appDescription, state, preloadLinks, teleports];
   } catch (error) {
     console.log(error);
+  } finally {
+    // 确保在每次请求后清理资源
+    app.unmount();
   }
 }
+
+// 检查是否有内存泄漏的代码
+// 例如，是否有全局变量或闭包持有了大量数据？
+// 是否有未正确清理的事件监听器或定时器？
