@@ -14,7 +14,7 @@
 
 ### Web 用户端
 
-技术栈：``vue3 + typescript + vite + pinia + tailwind + sass + SSR``
+技术栈：`vue3 + typescript + vite + pinia + tailwind + sass + SSR`
 
 spa 方案在 web 目录下，ssr 方案在 web-ssr 目录下。
 
@@ -28,7 +28,7 @@ spa 方案在 web 目录下，ssr 方案在 web-ssr 目录下。
 > 6.  采用服务端渲染 SSR，有利于 SEO 优化
 
 因为 web 打包之后的目录在 web 根目录之外（会移动到 server 中），这里的 vite 配置在 build 时的 outDir 没法清空之前已经移动过去的文件，需要单独做处理
-引入`import { rmSync } from "fs" ` 用 node 的 ``rmSync`` 文件操作来删除之前构建的文件
+引入`import { rmSync } from "fs" ` 用 node 的 `rmSync` 文件操作来删除之前构建的文件
 
 ```js
 if (command === "build") {
@@ -39,16 +39,16 @@ if (command === "build") {
 ```
 
 ### 服务端渲染 SSR
-在web-ssr中的文件采用vue的内置ssr方案，很适合做基于现有web spa项目的ssr改造,也可以构建时生成静态的html页面(SSG):
+
+在 web-ssr 中的文件采用 vue 的内置 ssr 方案，很适合做基于现有 web spa 项目的 ssr 改造,也可以构建时生成静态的 html 页面(SSG):
 
 服务端入口文件`entry-server.js`
 
 客户端入口文件`entry-client.ts`
 
-服务端SSR `server-ssr.js`
+服务端 SSR `server-ssr.js`
 
-本地SSG `prerender.js`
-
+本地 SSG `prerender.js`
 
 ssr 相关操作：
 
@@ -60,7 +60,7 @@ npm run build  打包生产环境
 npm run serve  运行生产环境
 ```
 
-服务端web-ssr需要配置 pm2 运行时环境：``sys.config.cjs``，执行 `pm2 restart sys.config.cjs`
+服务端 web-ssr 需要配置 pm2 运行时环境：`sys.config.cjs`，执行 `pm2 restart sys.config.cjs`
 
 ```js
 module.exports = {
@@ -109,8 +109,7 @@ module.exports = {
 > 5.  根据内容文本按需动态打包出个性化精简字体包
 > 6.  web 用户端和 admin 管理端打包之后的文件会自动到 server 端里面，当启动 server 服务时，会由 express 定义 web 端和 admin 端的入口路由，SSR 用户端的页面由 SSR 的 server 管理
 
-Server服务端在linux上运行，需要配置 pm2 运行时的生产环境：`sys.config.cjs`，在server目录执行 `pm2 restart sys.config.cjs` 会标记server的运行时环境env为`production`
-
+Server 服务端在 linux 上运行，需要配置 pm2 运行时的生产环境：`sys.config.cjs`，在 server 目录执行 `pm2 restart sys.config.cjs` 会标记 server 的运行时环境 env 为`production`
 
 ### CI/CD——服务端自动化部署
 
@@ -136,10 +135,11 @@ git config --global https.proxy "socks://127.0.0.1:10808"
 这里，需要注意两点：
 
 1. 有时会直接在服务端做一些文件的操作，打断点，看日志，导致 git 提交时会有冲突，可以强行拉取远端文件`git reset --hard origin/master` 当然解决冲突也是可以的
-2. 运行本地 nodejs 脚本通过接口发送更新指令到服务端，Node.js 在处理 HTTPS 请求时，会验证 SSL 证书的有效性。如果证书有问题（如自签名、过期或不被信任的发行机构），Node.js 默认会拒绝连接，并显示类似的错误。所以接口会调不通，如果在服务端运行`curl -X POST -H "Content-Type: application/json" -d '{"update": true}' http://localhost:3567/deploy`能够正常返回，而公网接口无法访问则多半是 SSL 证书校验不通过，或者是端口未开启或者占用。这里因为是本地发起,解决方案可以绕过校验，也可以将证书文件的 cert.pem 文件添加到 axios 的请求 httpsAgent 中，这里为了可以采用忽略SSL证书验证，再在服务端创建一个`secretKey`，本地发起请求时带上这个secretKey，发起请求时做校验即可(不要把真实key提交到github)。
+2. 运行本地 nodejs 脚本通过接口发送更新指令到服务端，Node.js 在处理 HTTPS 请求时，会验证 SSL 证书的有效性。如果证书有问题（如自签名、过期或不被信任的发行机构），Node.js 默认会拒绝连接，并显示类似的错误。所以接口会调不通，如果在服务端运行`curl -X POST -H "Content-Type: application/json" -d '{"update": true}' http://localhost:3567/deploy`能够正常返回，而公网接口无法访问则多半是 SSL 证书校验不通过，或者是端口未开启或者占用。这里因为是本地发起,解决方案可以绕过校验，也可以将证书文件的 cert.pem 文件添加到 axios 的请求 httpsAgent 中，这里为了可以采用忽略 SSL 证书验证，再在服务端创建一个`secretKey`，本地发起请求时带上这个 secretKey，发起请求时做校验即可(不要把真实 key 提交到 github)。
 
-### Linux服务器部署结果
-到这里，Linux服务器的三端都已经部署完成（用户端web-ssr,服务端server,自动化部署staging）
+### Linux 服务器部署结果
+
+到这里，Linux 服务器的三端都已经部署完成（用户端 web-ssr,服务端 server,自动化部署 staging）
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20240124031318.png'>
 
@@ -240,7 +240,7 @@ npm run deploy -- ssr  // 发布SSR的文件
 
 #### 方案一：增量备份
 
-只备份自上次备份以来发生变化的文件。这可以通过各种备份工具来实现，如 ``rsync``，它支持增量备份。
+只备份自上次备份以来发生变化的文件。这可以通过各种备份工具来实现，如 `rsync`，它支持增量备份。
 
 ```js
 const backupCmd = `rsync -av --delete /var/www/node-express-blog/ /var/www/backup/node-express-blog/`;
@@ -373,14 +373,22 @@ use 数据库名
 db.articles.updateMany({},{ $set: { dateDisplay: true } });
 -- 批量删除数据
 db.categories.updateMany({}, { $unset: { typeUrl: "" } })
+-- 查看集合数据
+db.articles.find()
+-- 查看集合数据并格式化
+db.articles.find().pretty()
+-- 批量修改数据
+db.articles.updateMany({}, { $set: { dateDisplay: false } });
 
-exit
+exit -- 退出
+
 -- updateMany 中第一个参数是查询条件，它决定了哪些文档会被更新。如果要更新所有文档，可以传入一个空对象 {}。
 -- updateMany 第二个参数是要更新的字段和值，使用$set操作符指定。例如，如果要将dateDisplay字段的值替换为false，可以使用$set: { dateDisplay: false }。
 -- 删除/修改指定的某一条数据：db.categories.update({ _id: 123456 }, { $unset: { typeUrl: 1 } })
 -- 示例：将categories表中_id为123456的那条数据修改typeUrl的值为222，并新增一个值name为333,： db.categories.update({ _id: 123 }, { $set: { typeUrl: 222, name: "3333" } })
 
 ```
+
 ### nginx 配置
 
 测试：`nginx -t`
@@ -478,75 +486,76 @@ pm2 delete all         # 杀死全部进程
 当用户在 admin 端创建新的文章内容之后，点击【字体管理】栏目，上传自己喜欢的字体包文件，任何命名都可但必须是 ttf 格式的。
 
 之后，点击【全站文本提取】按钮，全站提取目前只提取导航菜单、文章标题、logo 文字、slogan、welcome 的文字内容。不必在意重复的字符，生成的字体包文件会自动去重。
+
 ```js
 // 字体包 生成
-  const Fontmin = require("fontmin");
-  const localTTFPath = path.join(
-    __dirname,
-    "..",
-    "..",
-    "uploads/fonts/CustomFont.ttf"
-  );
-  const destPath = path.join(
-    __dirname,
-    "..",
-    "..",
-    "..",
-    "web-ssr/src/assets/fonts"
-  );
-  router.post("/webFonts", async (req, res) => {
-    const words = req.body.words;
-    // console.log(words);
-    try {
-      const fontmin = new Fontmin()
-        .src(localTTFPath)
-        .dest(destPath)
-        // .use(Fontmin.ttf2svg()) // 转换为 WOFF 格式
-        .use(
-          Fontmin.glyph({
-            text: words,
-            hinting: true, // keep ttf hint info (fpgm, prep, cvt). default = true
-          })
-        );
-      fontmin.run(async function (err, files) {
-        if (err) {
-          console.error(err);
-          return res
+const Fontmin = require("fontmin");
+const localTTFPath = path.join(
+  __dirname,
+  "..",
+  "..",
+  "uploads/fonts/CustomFont.ttf"
+);
+const destPath = path.join(
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "web-ssr/src/assets/fonts"
+);
+router.post("/webFonts", async (req, res) => {
+  const words = req.body.words;
+  // console.log(words);
+  try {
+    const fontmin = new Fontmin()
+      .src(localTTFPath)
+      .dest(destPath)
+      // .use(Fontmin.ttf2svg()) // 转换为 WOFF 格式
+      .use(
+        Fontmin.glyph({
+          text: words,
+          hinting: true, // keep ttf hint info (fpgm, prep, cvt). default = true
+        })
+      );
+    fontmin.run(async function (err, files) {
+      if (err) {
+        console.error(err);
+        return res
+          .status(500)
+          .send({ message: "Error 字体包生成错误", error: err });
+      }
+      // 当为服务端环境时，才去重新编译部署
+      if (process.env.NODE_ENV === "production") {
+        try {
+          // 执行 SSR 编译
+          await execShellCommand(
+            "npm run build",
+            "/var/www/node-express-blog/web-ssr"
+          );
+          // 重启 SSR PM2 服务
+          await execShellCommand(
+            "pm2 restart sys.config.cjs",
+            "/var/www/node-express-blog/web-ssr"
+          );
+
+          res.send({ message: "Fonts processed and ssr server restarted." });
+        } catch (error) {
+          res
             .status(500)
-            .send({ message: "Error 字体包生成错误", error: err });
+            .send({ message: "Error in server operations", error });
         }
-        // 当为服务端环境时，才去重新编译部署
-        if (process.env.NODE_ENV === "production") {
-          try {
-            // 执行 SSR 编译
-            await execShellCommand(
-              "npm run build",
-              "/var/www/node-express-blog/web-ssr"
-            );
-            // 重启 SSR PM2 服务
-            await execShellCommand(
-              "pm2 restart sys.config.cjs",
-              "/var/www/node-express-blog/web-ssr"
-            );
+      } else {
+        res.send({ message: "Fonts processed: No production env." });
+      }
 
-            res.send({ message: "Fonts processed and ssr server restarted." });
-          } catch (error) {
-            res
-              .status(500)
-              .send({ message: "Error in server operations", error });
-          }
-        } else {
-          res.send({ message: "Fonts processed: No production env." });
-        }
-
-        // console.log(files[0]);
-        // => { contents: <Buffer 00 01 00 ...> }
-      });
-    } catch (error) {
-      // 错误处理
-      res.status(500).send({ message: "Error 字体包生成", error });
-    }
-  });
+      // console.log(files[0]);
+      // => { contents: <Buffer 00 01 00 ...> }
+    });
+  } catch (error) {
+    // 错误处理
+    res.status(500).send({ message: "Error 字体包生成", error });
+  }
+});
 ```
 
 提取完成之后再点击【生成并部署字体包】按钮，会调用字体包的抽取工具流程。会将生成的字体包最终打包放在指定的 web 端 assets/fonts/目录下的 `CustomFont.ttf` 文件，web 端页面组件默认会调用这个字体，此时这个定制的字体包只有几十 kb，相比原先的 10MB 已经小了很多了！
@@ -600,4 +609,4 @@ $env:NODE_OPTIONS = "--openssl-legacy-provider"
 8. web-ssr 端页面组件的数据缓存隔离优化
 9. 写一份详细的项目开发文档、使用规范、部署流程
 10. 文章列表添加标签分类功能
-11. 开发仿win10日历的组件，包含动态hover效果
+11. 开发仿 win10 日历的组件，包含动态 hover 效果

@@ -48,7 +48,9 @@ async function deploy() {
       console.log(chalk.magenta(`正在添加文件...`));
       await execShellCommand("git add .");
       console.log(chalk.cyan(`正在提交更改`));
-      await execShellCommand('git commit -m "文件更新"');
+      const commitMessage =
+        args.length > 1 ? args.slice(1).join(" ") : "文件更新";
+      await execShellCommand(`git commit -m "${commitMessage}"`);
     }
 
     // 执行Git推送
