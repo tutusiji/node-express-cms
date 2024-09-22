@@ -12,7 +12,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="标题">
+      <el-form-item label="标题" style="width: 73%">
         <el-input v-model="model.title"></el-input>
       </el-form-item>
       <el-form-item label="创建时间">
@@ -22,9 +22,12 @@
           placeholder="选择日期"
         >
         </el-date-picker>
-        <el-switch style="margin-left: 20px;" v-model="model.dateDisplay">
+        <el-switch style="margin-left: 20px" v-model="model.dateDisplay">
         </el-switch>
         是否显示时间
+      </el-form-item>
+      <el-form-item label="作者" style="width: 340px">
+        <el-input v-model="model.author"></el-input>
       </el-form-item>
       <el-form-item label="立即发布">
         <el-switch v-model="model.status"></el-switch>
@@ -35,16 +38,16 @@
       <el-form-item label="功能性插件">
         <el-input
           v-model="model.slotName"
-          style="width:200px; margin-right: 20px;"
+          style="width: 220px; margin-right: 20px"
         ></el-input>
-        <el-switch style="margin-left: 20px;" v-model="model.slotStatus">
+        <el-switch style="margin-left: 20px" v-model="model.slotStatus">
         </el-switch>
         是否开启
       </el-form-item>
       <el-form-item label="摘要">
         <el-input
           type="textarea"
-          style="width: 72%; margin-right: 20px;"
+          style="width: 72%; margin-right: 20px"
           :rows="6"
           placeholder="请输入内容"
           :maxlength="model.words"
@@ -56,7 +59,7 @@
       <el-form-item>
         <el-input
           type="textarea"
-          style="width: 40%; margin-right: 20px;"
+          style="width: 40%; margin-right: 20px"
           :rows="2"
           placeholder="提示语"
           v-model="model.prompt"
@@ -65,14 +68,14 @@
         字数：
         <el-input
           type="text"
-          style="width: 68px; margin-right: 20px;"
+          style="width: 68px; margin-right: 20px"
           v-model="model.words"
         >
         </el-input>
         <el-button @click="getGPT" :loading="gptStatus" type="primary" plain
           >ChatGPT</el-button
         >
-        <div style="color: #999;">
+        <div style="color: #999">
           标准提示语——将以下内容精简成文本，字数不超过
         </div>
       </el-form-item>
@@ -81,7 +84,7 @@
           v-model="model.tags"
           multiple
           filterable
-          style="width: 72%;"
+          style="width: 72%"
           allow-create
           default-first-option
           placeholder="请选择文章标签"
@@ -96,7 +99,7 @@
             <span style="float: left">{{ item.name }}</span>
             <i
               class="el-icon-delete"
-              style="float: right; margin:10px 40px 0 0;"
+              style="float: right; margin: 10px 40px 0 0"
               @click.stop="() => delTag(item._id)"
             ></i>
           </el-option>
@@ -154,6 +157,7 @@ export default {
         status: true,
         date: new Date(),
         dateDisplay: true,
+        author: "",
         slotName: "",
         slotStatus: false,
         summary: "",

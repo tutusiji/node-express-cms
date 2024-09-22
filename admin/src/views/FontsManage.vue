@@ -2,7 +2,7 @@
   <div class="about">
     <h1 class="mainTitle">Web全站字体包管理</h1>
     <el-form label-width="120px">
-      <el-form-item label="字体包文件" style="width:500px">
+      <el-form-item label="字体包文件" style="width: 500px">
         <el-upload
           class="upload-demo"
           drag
@@ -27,20 +27,20 @@
           type="textarea"
           :rows="10"
           placeholder="请输入所需要提取的文字"
-          style="width: 60%;"
+          style="width: 60%"
           v-model="words"
         >
         </el-input>
-        <div style="color: #999;">
+        <div style="color: #999">
           全站提取目前只提取导航菜单、文章标题、logo文字、slogan、welcome
         </div>
       </el-form-item>
       <el-form-item label="补充文字">
         <el-input
-         type="textarea"
+          type="textarea"
           :rows="5"
           placeholder="请输入所需要提取的文字"
-          style="width: 60%;"
+          style="width: 60%"
           v-model="addwords"
         >
         </el-input>
@@ -66,7 +66,8 @@ export default {
       tranStatus: false,
       fileList: [],
       current: 1,
-      addwords: "0123456789.阅读全文 〈〉><《》Nno-返回顶部↑←文章标签集合发布于：",
+      addwords:
+        "0123456789.阅读全文 〈〉><《》Nno-返回顶部↑←文章标签集合发布于日期作者：",
     };
   },
   created() {},
@@ -85,9 +86,9 @@ export default {
       const adsList = res.data.items.map((item) => item.title).join("");
       this.words += adsList;
       res = await this.$http.get("rest/tags");
-      console.log('res',res);
+      console.log("res", res);
       const tagsList = res.data.map((item) => item.name).join("");
-      console.log('tagsList',tagsList);
+      console.log("tagsList", tagsList);
       this.words += tagsList;
       this.fetchArticle();
     },

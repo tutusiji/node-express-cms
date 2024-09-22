@@ -1,10 +1,15 @@
 <template>
   <h1 class="articleTitle" v-html="articleDetailStore.detail.title"></h1>
-  <div
-    v-if="articleDetailStore.detail.dateDisplay"
-    class="articleDate pb-4 text-[#999] text-center text-[15px] italic"
-  >
-    {{ dayjs(articleDetailStore.detail.date).format('YYYY-MM-DD ') }}
+  <!-- <div v-if="articleDetailStore.detail?.summary" class="text-[#666]">
+    {{ articleDetailStore.detail?.summary }}
+  </div> -->
+  <div class="flex items-center justify-center pb-4 text-[14px] text-[#999] articleDate">
+    <span v-if="articleDetailStore.detail?.author" class="mr-4">
+      作者：{{ articleDetailStore.detail?.author }}
+    </span>
+    <span v-if="articleDetailStore.detail.dateDisplay">
+      日期：{{ dayjs(articleDetailStore.detail.date).format('YYYY-MM-DD ') }}
+    </span>
   </div>
   <!-- 异步组件，用来加载工程插件 -->
   <component :is="currentSlotComponent" v-if="shouldRenderAsyncComponent" />

@@ -10,6 +10,7 @@ const schema = new mongoose.Schema(
     status: { type: Boolean },
     single: { type: Boolean },
     slotName: { type: String },
+    author: { type: String },
     slotStatus: { type: Boolean },
     dateDisplay: { type: Boolean },
     categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],
