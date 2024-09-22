@@ -49,7 +49,9 @@ async function deploy() {
       await execShellCommand("git add .");
       console.log(chalk.cyan(`正在提交更改`));
       const commitMessage =
-        args.length > 1 ? args.slice(1).join(" ") : "文件更新";
+        args.length > 0
+          ? args.filter((arg) => arg !== "ssr").join(" ")
+          : "文件更新";
       await execShellCommand(`git commit -m "${commitMessage}"`);
     }
 
@@ -58,7 +60,7 @@ async function deploy() {
     await execShellCommand("git push");
 
     // 发送更新通知的POST请求
-    console.log(chalk.magentaBright(`已通知服务端正在拼命操作...`));
+    console.log(chalk.magenta(`已通知服务端正在拼命操作...`));
     const notifData = { updateWeb: true };
     if (isSSR) {
       notifData.updateSSR = true;
