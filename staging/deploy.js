@@ -60,7 +60,7 @@ async function deploy() {
     await execShellCommand("git push");
 
     // 发送更新通知的POST请求
-    console.log(chalk.white(`已通知服务端正在拼命操作...`));
+    console.log(chalk.white(`已通知服务端，它正在拼命操作...`));
     const notifData = { updateWeb: true };
     if (isSSR) {
       notifData.updateSSR = true;
