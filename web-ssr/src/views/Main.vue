@@ -247,7 +247,7 @@ $screenW: 1200px;
     cursor: pointer;
     font-family: 'CustomFont';
     text-decoration: none;
-    text-shadow: 0 1px 3px rgba($color: #000, $alpha: 0.8);
+    text-shadow: 0 1px 2px rgba($color: #000, $alpha: 0.8);
 
     // &::selection {
     //   text-shadow: 0 1px 1px rgba($color: #fff, $alpha: 0.8);
