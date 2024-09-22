@@ -8,6 +8,19 @@
 
 项目介绍：WebFlex CMS 内容发布引擎——一个创新的内容管理系统，致力于简化网站、信息门户、独立站点的创建、管理和发布。它提供直观的用户界面、灵活的内容组织工具，服务端渲染以及 SEO 优化，以及高效的自动化部署功能。旨在为内容创作者和开发者提供流畅、高效的网站构建体验。后续将持续完成低代码搭建，可配置化的数据上报等功能。
 
+## 项目结构
+
+```
+├── server  // 服务端
+├── web     // web 用户端
+├── web-ssr // web 用户端 ssr
+├── admin   // admin 管理端
+├── server-gpt    // chatgpt工程
+├── staging    // 脚手架工程
+├── README.md
+└── package.json
+```
+
 ## Web 用户端
 
 <img src='https://hkroom.oss-cn-shenzhen.aliyuncs.com/dd825e09374ee989c56c1f1a30c3583f.png'>
