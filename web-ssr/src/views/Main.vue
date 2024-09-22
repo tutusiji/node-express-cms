@@ -1,5 +1,5 @@
 <template>
-  <section class="wrap flex">
+  <section class="wrap min-h-[100vh] flex flex-col">
     <nav :class="['nav', isFixed && 'isFixed']">
       <div class="content">
         <a class="logo" href="https://www.tuziki.com">{{ siteStore.info.title }}</a>
@@ -24,12 +24,15 @@
         </ul>
       </div>
     </nav>
-    <header class="header" :style="`background-image:url(${siteStore.info.banner});`">
+    <header
+      class="header relative mb-4 bg-scroll"
+      :style="`background-image:url(${siteStore.info.banner});background-position: 50% 68%;background-color: #868e96;background-size: cover;background-repeat: no-repeat;`"
+    >
       <div class="content">
         <div class="slogan">{{ siteStore.info.slogan }}</div>
       </div>
     </header>
-    <div class="main">
+    <div class="main flex-1">
       <div class="container">
         <!-- v-if="$route.path === '/'" -->
         <div class="welcome">{{ siteStore.info.welcome }}</div>
@@ -298,14 +301,14 @@ $screenW: 1200px;
 }
 
 .header {
-  position: relative;
-  margin-bottom: 16px;
-  background-position: 50% 68%;
-  background-color: #868e96;
-  background-attachment: scroll;
-  background-size: cover;
-  // background-image: url('//hkroom.oss-cn-shenzhen.aliyuncs.com/bg.jpg');
-  background-repeat: no-repeat;
+  // position: relative;
+  // margin-bottom: 16px;
+  // background-position: 50% 68%;
+  // background-color: #868e96;
+  // background-attachment: scroll;
+  // background-size: cover;
+  // // background-image: url('//hkroom.oss-cn-shenzhen.aliyuncs.com/bg.jpg');
+  // background-repeat: no-repeat;
 
   &::before {
     content: '';
