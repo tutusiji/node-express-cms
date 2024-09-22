@@ -309,6 +309,7 @@ $screenW: 1200px;
   // background-size: cover;
   // // background-image: url('//hkroom.oss-cn-shenzhen.aliyuncs.com/bg.jpg');
   // background-repeat: no-repeat;
+  mask-image: linear-gradient(to bottom, rgb(0 0 0) 52%, rgba(0, 0, 0, 0) 100%);
 
   &::before {
     content: '';
@@ -317,7 +318,7 @@ $screenW: 1200px;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: #31373d;
+    background-color: #686868;
     opacity: 0.5;
     // filter: blur(10px);
   }
