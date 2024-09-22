@@ -3,8 +3,8 @@
   <!-- <div v-if="articleDetailStore.detail?.summary" class="text-[#666]">
     {{ articleDetailStore.detail?.summary }}
   </div> -->
-  <div class="flex items-center justify-center pb-4 text-[14px] text-[#999] articleDate">
-    <span v-if="articleDetailStore.detail?.author" class="mr-4">
+  <div class="flex items-center justify-center pb-14 text-[14px] text-[#999] articleDate">
+    <span v-if="articleDetailStore.detail?.author" class="mr-8">
       作者：{{ articleDetailStore.detail?.author }}
     </span>
     <span v-if="articleDetailStore.detail.dateDisplay">
