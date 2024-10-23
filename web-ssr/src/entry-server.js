@@ -2,6 +2,7 @@ import 'uno.css';
 import { renderToString } from 'vue/server-renderer';
 import { createApp } from './main';
 
+// 生成预加载链接（preload links），用于在 HTML 页面头部预加载 JS 和 CSS 文件，提升客户端加载性能
 function renderPreloadLinks(modules, manifest) {
   let links = '';
   const seen = new Set();
@@ -19,6 +20,7 @@ function renderPreloadLinks(modules, manifest) {
   return links;
 }
 
+// 根据文件的类型生成合适的 <link> 标签，用于预加载或加载特定资源
 function renderPreloadLink(file) {
   if (file.endsWith('.js')) {
     return `<link rel="modulepreload" crossorigin href="${file}">`;
@@ -29,6 +31,7 @@ function renderPreloadLink(file) {
   }
 }
 
+// 处理 Vue 的 "teleport" 功能，将组件内容渲染到指定的 DOM 位置（例如弹出层、模态框）
 function renderTeleports(teleports) {
   if (!teleports) return '';
   return Object.entries(teleports).reduce((all, [key, value]) => {
@@ -39,6 +42,7 @@ function renderTeleports(teleports) {
   }, teleports.body || '');
 }
 
+// 这是主要的渲染函数，负责处理每个请求，进行服务端渲染并生成 HTML
 export async function render(url, manifest) {
   const { app, router, store } = createApp();
   try {
@@ -64,20 +68,33 @@ export async function render(url, manifest) {
       }" />`;
     }
 
-    // 清理上下文和状态
+    // 清理上下文和状态，避免内存持续性增长造成的内存泄漏，导致服务端性能开销压力，
+    // web-ssr服务的内存开销会影响到其他服务使用，如在线服务端打包构建时会瞬间占用大量内存
     ctx.modules = null;
     ctx.teleports = null;
     store.state.value = null;
 
     return [appHtml, appTitle, appDescription, state, preloadLinks, teleports];
   } catch (error) {
-    console.log(error);
+    console.error('SSR Rendering Error:', error); // 错误日志
+    return renderErrorPage(); // 返回一个标准的错误页面
   } finally {
     // 确保在每次请求后清理资源
     app.unmount();
   }
 }
 
-// 检查是否有内存泄漏的代码
-// 例如，是否有全局变量或闭包持有了大量数据？
-// 是否有未正确清理的事件监听器或定时器？
+// 内存泄漏的问题处理：闭包、创建的临时对象、模板文件使用之后要清理掉
+
+// 错误页面
+function renderErrorPage() {
+  return [
+    `<div><h1>不好意思, 出了亿点点问题.</h1><p>我正在努力修复，或者你尝试刷新页面看看.</p></div>`,
+    // eslint-disable-next-line @typescript-eslint/quotes
+    "Error - Tuziki's Planet",
+    '<meta name="description" content="Error Page" />',
+    '{}',
+    '',
+    ''
+  ];
+}
