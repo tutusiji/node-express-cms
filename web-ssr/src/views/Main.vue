@@ -319,7 +319,7 @@ $screenW: 1200px;
     width: 100%;
     height: 100%;
     background-color: #686868;
-    opacity: 0.5;
+    opacity: 0.35;
     // filter: blur(10px);
   }
 
