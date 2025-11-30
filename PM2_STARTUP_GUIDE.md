@@ -187,18 +187,57 @@ bash manage-pm2.sh save       # 保存进程列表
 
 ## 📌 开机自启设置
 
+### 方式一：使用自启脚本（推荐）
+
 ```bash
-# 1. 设置开机自启
-pm2 startup
+# 一键启动并设置开机自启
+bash setup-autostart.sh
+
+# 或使用管理脚本
+bash autostart.sh
+```
+
+### 方式二：手动设置
+
+```bash
+# 1. 启动所有服务
+pm2 start pm2-ecosystem.config.js
 
 # 2. 保存当前进程列表
 pm2 save
 
-# 3. 验证设置
+# 3. 设置开机自启
 pm2 startup
 
-# 4. 重启系统后验证
+# 4. 验证设置
 pm2 list
+
+# 5. 重启系统后验证
+pm2 list
+```
+
+### 取消开机自启
+
+```bash
+# 取消开机自启
+pm2 unstartup
+
+# 或使用管理脚本
+bash autostart.sh disable
+```
+
+### 自启管理脚本用法
+
+```bash
+# 交互式菜单
+bash autostart.sh
+
+# 或使用命令行参数
+bash autostart.sh enable   # 启动并设置自启
+bash autostart.sh check    # 检查自启状态
+bash autostart.sh disable  # 取消自启
+bash autostart.sh update   # 更新自启配置
+bash autostart.sh list     # 查看进程列表
 ```
 
 ## 🔄 更新应用
