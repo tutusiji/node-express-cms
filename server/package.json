@@ -28,7 +28,8 @@
     "nodemon": "^2.0.22",
     "openai": "^4.24.7",
     "request": "^2.88.2",
-    "require-all": "^3.0.0"
+    "require-all": "^3.0.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"
