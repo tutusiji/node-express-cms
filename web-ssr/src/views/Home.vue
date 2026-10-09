@@ -198,28 +198,44 @@ const searchVal = ref('');
 const tipsVal = ref(false);
 const tipsTxt = ref('');
 
+// 根据当前路由加载文章列表：/all 加载全部文章，其他分类页按分类过滤
+const loadList = async () => {
+  let categoryName = '';
+  let pageTitle = '';
+  if (route.name === 'all') {
+    pageTitle = '全部文章';
+  } else {
+    const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
+    if (!currentMenu) return;
+    categoryName = currentMenu.name;
+    menuStore.menuCurrentName = currentMenu.name;
+    pageTitle = currentMenu.name;
+  }
+  menuStore.menuCurrentName = pageTitle;
+  if (typeof document !== 'undefined') {
+    document.title = `${pageTitle} - ${siteStore.info.title}`;
+  }
+  articleStore.currentPage = Number(route.params.page) || 1;
+  let searchValue = '';
+  let tagValue = '';
+  if (route.query.search) {
+    searchValue = String(route.query.search);
+    searchVal.value = searchValue;
+  } else if (route.query.tag) {
+    tagValue = String(route.query.tag);
+  }
+  await articleStore.fetchArticles(
+    categoryName,
+    articleStore.currentPage,
+    10,
+    searchValue,
+    tagValue
+  );
+};
+
 // SSR 数据预取
 onServerPrefetch(async () => {
-  const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
-  if (currentMenu) {
-    menuStore.menuCurrentName = currentMenu.name;
-    articleStore.currentPage = Number(route.params.page) || 1;
-    let searchValue = '';
-    let tagValue = '';
-    if (route.query.search) {
-      searchValue = String(route.query.search);
-      searchVal.value = searchValue;
-    } else if (route.query.tag) {
-      tagValue = String(route.query.tag);
-    }
-    await articleStore.fetchArticles(
-      currentMenu.name,
-      articleStore.currentPage,
-      10,
-      searchValue,
-      tagValue
-    );
-  }
+  await loadList();
 });
 
 // banner滑动
@@ -292,27 +308,7 @@ onMounted(async () => {
   // 如果没有pinia数据，则正常获取ssr数据
   if (!articleStore.list.length) {
     console.log('Article list ssr reload');
-    const currentMenu = menuStore.menu.find((item) => item.pageName === route.name);
-    if (currentMenu) {
-      menuStore.menuCurrentName = currentMenu.name;
-      document.title = `${currentMenu.name} - ${siteStore.info.title}`;
-      articleStore.currentPage = Number(route.params.page) || 1;
-      let searchValue = '';
-      let tagValue = '';
-      if (route.query.search) {
-        searchValue = String(route.query.search);
-        searchVal.value = searchValue;
-      } else if (route.query.tag) {
-        tagValue = String(route.query.tag);
-      }
-      await articleStore.fetchArticles(
-        currentMenu.name,
-        articleStore.currentPage,
-        10,
-        searchValue,
-        tagValue
-      );
-    }
+    await loadList();
   }
 });
 </script>

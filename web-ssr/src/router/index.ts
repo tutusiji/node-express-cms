@@ -22,9 +22,18 @@ const routerHistory = import.meta.env.SSR === false ? createWebHistory() : creat
 const routes = [
   {
     path: '/',
-    redirect: '/coder/1',
+    redirect: '/all/1',
     component: () => import('../views/Main.vue'),
     children: [
+      {
+        // 全部文章(不按分类过滤)
+        path: '/all/:page',
+        name: 'all',
+        component: () => import('../views/Home.vue'),
+        meta: {
+          type: 'list'
+        }
+      },
       {
         path: '/coder/:page',
         name: 'coder',
@@ -77,7 +86,7 @@ const routes = [
       // “捕获所有”路由，重定向到首页
       {
         path: '/:catchAll(.*)',
-        redirect: '/coder/1'
+        redirect: '/all/1'
       }
     ]
   }

@@ -4,6 +4,7 @@
       <div class="content">
         <a class="logo" href="https://www.tuziki.com">{{ siteStore.info.title }}</a>
         <ul class="menu">
+          <li :class="{ current: route.name === 'all' }" @click="switchTabTo(allItem)">全部</li>
           <li
             v-for="item of menuStore.menu"
             :key="item._id"
@@ -140,6 +141,12 @@ type itemType = {
   pageName: string;
   pageId: string;
   name: string;
+};
+
+const allItem: itemType = {
+  name: '全部',
+  pageName: 'all',
+  pageId: ''
 };
 
 const switchTabTo = async (item: itemType) => {
