@@ -185,11 +185,11 @@ async function fetchFonts(page: number) {
         const filename = (entry.target as HTMLElement).dataset.font;
         if (entry.isIntersecting && filename && !loaded.value[filename]) {
           const font = fonts.value.find((f) => f.filename === filename);
-            if (font) enqueueFont(font);
+          if (font) enqueueFont(font);
         }
       });
     },
-      { rootMargin: '100px' }
+    { rootMargin: '100px' }
   );
   cardRefs.forEach((el) => observer.value?.observe(el));
 }
