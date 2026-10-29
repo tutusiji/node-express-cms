@@ -88,6 +88,31 @@ function setCardRef(el: unknown, filename: string) {
   }
 }
 
+// 服务器带宽有限（~5Mbps），并发下载大字体会挤占其他页面 API，限流为 2 个
+const MAX_CONCURRENT_LOADS = 2;
+const loadQueue: FontItem[] = [];
+const queuedSet = new Set<string>();
+let activeLoads = 0;
+
+function pumpQueue() {
+  while (activeLoads < MAX_CONCURRENT_LOADS && loadQueue.length) {
+    const font = loadQueue.shift()!;
+    queuedSet.delete(font.filename);
+    activeLoads++;
+    injectFontFace(font).finally(() => {
+      activeLoads--;
+      pumpQueue();
+    });
+  }
+}
+
+function enqueueFont(font: FontItem) {
+  if (queuedSet.has(font.filename)) return;
+  queuedSet.add(font.filename);
+  loadQueue.push(font);
+  pumpQueue();
+}
+
 function injectFontFace(font: FontItem) {
   const style = document.createElement('style');
   const fontUrl = `${baseHost}uploads/fonts/${encodeURIComponent(font.filename)}`;
@@ -103,7 +128,7 @@ function injectFontFace(font: FontItem) {
     `)
   );
   document.head.appendChild(style);
-  new FontFaceObserver(font.name)
+  return new FontFaceObserver(font.name)
     .load(null, 30000)
     .then(() => {
       loaded.value[font.filename] = true;
@@ -148,6 +173,9 @@ async function fetchFonts(page: number) {
   }
   // 翻页后重建懒加载观察器：清空旧 ref / 加载状态
   loaded.value = {};
+  loadQueue.length = 0;
+  queuedSet.clear();
+  activeLoads = 0;
   cardRefs.clear();
   observer.value?.disconnect();
   await nextTick(); // 等卡片渲染完成后再收集 ref
@@ -157,11 +185,11 @@ async function fetchFonts(page: number) {
         const filename = (entry.target as HTMLElement).dataset.font;
         if (entry.isIntersecting && filename && !loaded.value[filename]) {
           const font = fonts.value.find((f) => f.filename === filename);
-          if (font) injectFontFace(font);
+            if (font) enqueueFont(font);
         }
       });
     },
-    { rootMargin: '200px' }
+      { rootMargin: '100px' }
   );
   cardRefs.forEach((el) => observer.value?.observe(el));
 }
