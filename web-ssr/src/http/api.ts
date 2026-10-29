@@ -95,19 +95,19 @@ export interface FontItem {
   date: string;
 }
 
+interface FontsListResponse {
+  list: FontItem[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
 // 字体库列表
 export function getFontsList(params: {
   page?: number;
   limit?: number;
-}): Promise<
-  AxiosResponse<{
-    list: FontItem[];
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  }>
-> {
+}): Promise<AxiosResponse<FontsListResponse>> {
   return request({
     url: '/fontsList',
     method: 'get',
