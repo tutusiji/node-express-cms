@@ -23,4 +23,8 @@ const schema = new mongoose.Schema(
   }
 );
 
+// 列表页高频查询：按分类/标签取文章并按时间排序
+schema.index({ categories: 1, date: -1 });
+schema.index({ tags: 1, date: -1 });
+
 module.exports = mongoose.model("Article", schema);

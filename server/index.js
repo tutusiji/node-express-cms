@@ -3,6 +3,9 @@ const path = require("path");
 const cors = require("cors");
 const app = express();
 
+// 前面是本机 nginx 反代：让 req.ip 取到真实客户端 IP（限流、日志依赖）
+app.set("trust proxy", 1);
+
 // JWT 密钥从环境变量读取，禁止硬编码进仓库
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {

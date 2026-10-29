@@ -10,6 +10,9 @@ const schema = new mongoose.Schema({
   },
 });
 
+// 按 name 查找父分类（/blog/menu、/blog/list 高频）
+schema.index({ name: 1 });
+
 schema.virtual("children", {
   localField: "_id",
   foreignField: "parent",

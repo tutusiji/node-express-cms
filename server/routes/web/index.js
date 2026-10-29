@@ -469,8 +469,15 @@ module.exports = (app) => {
   });
 
   function getFileNameWithLowerCaseExtension(fileName) {
-    // 移除文件名中的所有空格
-    const sanitizedFileName = fileName.replace(/\s+/g, "");
+    // 防路径穿越：只取 basename，剔除路径分隔符与危险字符；保留中文（前端 font-family 预览依赖文件名）
+    const baseName = fileName.split(/[/\\]/).pop() || "";
+    const sanitizedFileName = baseName
+      .replace(/[\x00-\x1f\x7f]/g, "")
+      .replace(/[/\\:*?"<>|]/g, "")
+      .replace(/\s+/g, "");
+    if (!sanitizedFileName || sanitizedFileName.includes("..")) {
+      return "";
+    }
 
     const lastDotIndex = sanitizedFileName.lastIndexOf(".");
     if (lastDotIndex === -1) return sanitizedFileName; // 没有扩展名的情况
@@ -487,6 +494,23 @@ module.exports = (app) => {
   const multer = require("multer");
   const path = require("path");
   const iconv = require("iconv-lite");
+
+  // 轻量内存限流（防 Fontmin 被刷爆 CPU），无额外依赖
+  const rateLimitBuckets = new Map();
+  function rateLimit({ windowMs, max }) {
+    return function (req, res, next) {
+      const key = `${req.ip || "unknown"}:${Math.floor(Date.now() / windowMs)}`;
+      const count = (rateLimitBuckets.get(key) || 0) + 1;
+      rateLimitBuckets.set(key, count);
+      if (rateLimitBuckets.size > 10000) {
+        rateLimitBuckets.clear(); // 防内存膨胀的兜底清理
+      }
+      if (count > max) {
+        return res.status(429).send({ message: "请求过于频繁，请稍后再试" });
+      }
+      next();
+    };
+  }
   // console.log("__dirname=====", __dirname);
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -506,18 +530,34 @@ module.exports = (app) => {
       cb(null, decodedName);
     },
   });
-  const uploadFonts = multer({ storage: storage }).single("file");
+  const uploadFonts = multer({
+    storage: storage,
+    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+    fileFilter: function (req, file, cb) {
+      const ext = path
+        .extname(getFileNameWithLowerCaseExtension(file.originalname))
+        .toLowerCase();
+      if (ext !== ".ttf" && ext !== ".otf") {
+        return cb(new Error("仅支持上传 .ttf / .otf 字体文件"));
+      }
+      cb(null, true);
+    },
+  }).single("file");
 
-  router.post("/uploadFonts", uploadFonts, async (req, res) => {
-    const file = req.file;
-    console.log("file=====", file);
-    // 更新文件 URL
-    file.url = `//${req.get("host")}/uploads/fonts/${file.filename}`;
-    // file.url = `${req.protocol}://${req.get("host")}/uploads/fonts/${
-    //   file.filename
-    // }`;
-    res.send(file);
-  });
+  router.post(
+    "/uploadFonts",
+    rateLimit({ windowMs: 15 * 60 * 1000, max: 10 }),
+    uploadFonts,
+    async (req, res) => {
+      const file = req.file;
+      if (!file) {
+        return res.status(400).send({ message: "未收到字体文件" });
+      }
+      // 更新文件 URL
+      file.url = `//${req.get("host")}/uploads/fonts/${file.filename}`;
+      res.send(file);
+    }
+  );
 
   // 字体包 生成
   const Fontmin = require("fontmin");
@@ -525,6 +565,10 @@ module.exports = (app) => {
   router.post("/createFonts", async (req, res) => {
     const words = req.body.words;
     const fontName = req.body.fontOriginName.split(".")[0];
+    // 防路径穿越：文件名只允许中英文、数字、下划线、连字符
+    if (!/^[\w\u4e00-\u9fa5-]+$/.test(fontName)) {
+      return res.status(400).send({ message: "非法的字体文件名" });
+    }
     // console.log(words, fontName);
     try {
       const fontmin = new Fontmin()
@@ -545,17 +589,17 @@ module.exports = (app) => {
       //   })
       // );
       fontmin.run(async function (err, files) {
-        res.send({
-          name: `${fontName}-lite.ttf`,
-          url: `//${req.get("host")}/uploads/fonts/${fontName}-lite.ttf`,
-          message: "Fonts processed and ssr server restarted.",
-        });
         if (err) {
           console.error(err);
           return res
             .status(500)
             .send({ message: "Error 字体包生成错误1", error: err });
         }
+        res.send({
+          name: `${fontName}-lite.ttf`,
+          url: `//${req.get("host")}/uploads/fonts/${fontName}-lite.ttf`,
+          message: "Fonts processed and ssr server restarted.",
+        });
         // console.log(files[0]);
         // => { contents: <Buffer 00 01 00 ...> }
       });
