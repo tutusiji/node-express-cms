@@ -88,6 +88,21 @@ export function createFonts(data: fontsType) {
   });
 }
 
+export interface FontItem {
+  name: string;
+  filename: string;
+  size: number;
+  date: string;
+}
+
+// 字体库列表
+export function getFontsList(): Promise<AxiosResponse<FontItem[]>> {
+  return request({
+    url: '/fontsList',
+    method: 'get'
+  });
+}
+
 // 获取banner
 export function getAds() {
   return request({
