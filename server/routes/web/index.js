@@ -532,7 +532,7 @@ module.exports = (app) => {
   });
   const uploadFonts = multer({
     storage: storage,
-    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+    limits: { fileSize: 50 * 1024 * 1024 }, // 50MB：全字库中文字体可达 20MB+
     fileFilter: function (req, file, cb) {
       const ext = path
         .extname(getFileNameWithLowerCaseExtension(file.originalname))
@@ -546,7 +546,7 @@ module.exports = (app) => {
 
   router.post(
     "/uploadFonts",
-    rateLimit({ windowMs: 15 * 60 * 1000, max: 10 }),
+    rateLimit({ windowMs: 15 * 60 * 1000, max: 30 }),
     uploadFonts,
     async (req, res) => {
       const file = req.file;
