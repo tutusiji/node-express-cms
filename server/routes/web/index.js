@@ -86,7 +86,24 @@ module.exports = (app) => {
           { $sort: { date: -1 } },
           { $skip: skip },
           { $limit: limit },
-          // { $project: { title: 1, body: 1, date: 1, tags: 1, categories: 1 } }, // 排除文档中的字段
+          // 列表页只返回摘要所需字段，避免把整篇 body/prompt 塞进 SSR 状态
+          {
+            $project: {
+              title: 1,
+              date: 1,
+              summary: 1,
+              author: 1,
+              words: 1,
+              status: 1,
+              single: 1,
+              slotName: 1,
+              slotStatus: 1,
+              dateDisplay: 1,
+              categories: 1,
+              tags: 1,
+              coverImage: 1,
+            },
+          },
         ];
 
         articles = await Category.aggregate(aggregationPipeline);
@@ -140,6 +157,8 @@ module.exports = (app) => {
         query.status = { $ne: false };
 
         articles = await Article.find(query)
+          // 列表页瘦身：排除正文与内部字段（searchText 仍可匹配 body）
+          .select("-body -prompt -createdAt -updatedAt")
           .skip(skip)
           .limit(limit)
           .sort({ date: -1 });
@@ -404,7 +423,10 @@ module.exports = (app) => {
   // 文章详情，包括相同分类的前后文章
   router.get("/articles/:id", async (req, res) => {
     try {
-      const currentArticle = await Article.findById(req.params.id).lean();
+      // 详情页不需要把内部 AI 生成 prompt 泄漏到公网 state
+      const currentArticle = await Article.findById(req.params.id)
+        .select("-prompt -createdAt -updatedAt")
+        .lean();
 
       if (!currentArticle) {
         return res.status(404).send("文章未找到");

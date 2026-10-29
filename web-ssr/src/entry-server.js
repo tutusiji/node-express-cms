@@ -56,7 +56,8 @@ export async function render(url, manifest) {
     // 从组件上下文获取 articleList 的状态
     const preloadLinks = renderPreloadLinks(ctx.modules, manifest);
     const teleports = renderTeleports(ctx.teleports);
-    const state = JSON.stringify(store.state.value);
+    // 转义 "<"，防止状态中的富文本（如 "</script>"）提前闭合内联 script 标签
+    const state = JSON.stringify(store.state.value).replace(/</g, "\\u003c");
     if (store.state.value && store.state.value.menuer.menuCurrentName) {
       appTitle = `${store.state.value.menuer.menuCurrentName} - Tuziki's Planet`;
       appDescription = `<meta name="description" content="${appTitle}" />`;
