@@ -74,15 +74,6 @@ const routes = [
           type: 'article'
         }
       },
-      // 字体库预览 + 在线子集化
-      {
-        path: '/fonts',
-        name: 'fonts',
-        component: () => import('../views/Tools/FontGallery.vue'),
-        meta: {
-          type: 'tools'
-        }
-      },
       // 字体包子集在线抽取小工具
       // {
       //   path: '/:type/article/65aaf0aaeb8ff12f39e87ff1',

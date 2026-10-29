@@ -1,7 +1,6 @@
 module.exports = (app) => {
   const router = require("express").Router();
   const mongoose = require("mongoose");
-  const fs = require("fs");
   // const Article = require('../../models/Article')
   const Category = mongoose.model("Category");
   const Article = mongoose.model("Article");
@@ -192,43 +191,6 @@ module.exports = (app) => {
       res.send(tags);
     } catch (error) {
       res.status(500).send({ message: "Error retrieving tags", error });
-    }
-  });
-
-  // 字体库列表（用户上传收集的原始字体，不含生成的 -lite 子集）
-  router.get("/fontsList", async (req, res) => {
-    try {
-      const dir = path.join(__dirname, "..", "..", "uploads", "fonts");
-      const entries = await fs.promises.readdir(dir);
-      const fonts = [];
-      for (const file of entries) {
-        if (!file.toLowerCase().endsWith(".ttf") || file.endsWith("-lite.ttf")) {
-          continue;
-        }
-        const stat = await fs.promises
-          .stat(path.join(dir, file))
-          .catch(() => null);
-        if (!stat) continue;
-        fonts.push({
-          name: file.replace(/\.ttf$/i, ""),
-          filename: file,
-          size: stat.size,
-          date: stat.mtime.toISOString(),
-        });
-      }
-      fonts.sort((a, b) => (a.date < b.date ? 1 : -1));
-      const page = Math.max(1, parseInt(req.query.page, 10) || 1);
-      const limit = Math.min(100, parseInt(req.query.limit, 10) || 20);
-      const start = (page - 1) * limit;
-      res.send({
-        list: fonts.slice(start, start + limit),
-        page,
-        limit,
-        total: fonts.length,
-        totalPages: Math.ceil(fonts.length / limit),
-      });
-    } catch (error) {
-      res.status(500).send({ message: "读取字体库失败", error: error.message });
     }
   });
 
