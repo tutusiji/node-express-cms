@@ -7,7 +7,10 @@ module.exports = {
       instances: 1,
       exec_mode: 'cluster',
       env: {
-        NODE_ENV: 'production'
+        NODE_ENV: 'production',
+        // 从 shell 环境继承，密钥不落仓库：服务器上 export JWT_SECRET=... 后再 pm2 start
+        JWT_SECRET: process.env.JWT_SECRET,
+        CORS_ORIGINS: process.env.CORS_ORIGINS
       },
       error_file: './logs/server-error.log',
       out_file: './logs/server-out.log',
