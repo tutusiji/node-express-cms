@@ -42,6 +42,15 @@
           </el-button>
         </div>
       </div>
+      <div v-if="totalPages > 1" class="flex justify-center py-6">
+        <el-pagination
+          layout="prev, pager, next, total"
+          :total="total"
+          :page-size="pageSize"
+          :current-page="currentPage"
+          @current-change="onPageChange"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -58,6 +67,10 @@ const fonts = ref<(FontItem & { words: string })[]>([]);
 const loading = ref(true);
 const loaded = ref<Record<string, boolean>>({});
 const generating = ref<Record<string, boolean>>({});
+const total = ref(0);
+const totalPages = ref(0);
+const currentPage = ref(1);
+const pageSize = 20;
 
 const baseHost = import.meta.env.VITE_BASE_HOST;
 
@@ -120,33 +133,46 @@ async function generateSubset(font: FontItem & { words: string }) {
   }
 }
 
-onMounted(async () => {
+async function fetchFonts(page: number) {
+  loading.value = true;
   try {
-    const res = await getFontsList();
-    fonts.value = (res as unknown as (FontItem & { words: string })[]).map((f) => ({
+    const res = await getFontsList({ page, limit: pageSize });
+    total.value = res.total;
+    totalPages.value = res.totalPages;
+    fonts.value = (res.list as unknown as (FontItem & { words: string })[]).map((f) => ({
       ...f,
       words: '永国风流，山高水长。The quick brown fox jumps over the lazy dog. 0123456789'
     }));
-    loading.value = false;
-    await nextTick(); // 等卡片渲染完成后再收集 ref
-    observer.value = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const filename = (entry.target as HTMLElement).dataset.font;
-          if (entry.isIntersecting && filename && !loaded.value[filename]) {
-            const font = fonts.value.find((f) => f.filename === filename);
-            if (font) injectFontFace(font);
-          }
-        });
-      },
-      { rootMargin: '200px' }
-    );
-    cardRefs.forEach((el) => observer.value?.observe(el));
   } finally {
-    if (!observer.value) {
-      loading.value = false;
-    }
+    loading.value = false;
   }
+  // 翻页后重建懒加载观察器：清空旧 ref / 加载状态
+  loaded.value = {};
+  cardRefs.clear();
+  observer.value?.disconnect();
+  await nextTick(); // 等卡片渲染完成后再收集 ref
+  observer.value = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const filename = (entry.target as HTMLElement).dataset.font;
+        if (entry.isIntersecting && filename && !loaded.value[filename]) {
+          const font = fonts.value.find((f) => f.filename === filename);
+          if (font) injectFontFace(font);
+        }
+      });
+    },
+    { rootMargin: '200px' }
+  );
+  cardRefs.forEach((el) => observer.value?.observe(el));
+}
+
+function onPageChange(page: number) {
+  currentPage.value = page;
+  fetchFonts(page);
+}
+
+onMounted(() => {
+  fetchFonts(1);
 });
 
 onUnmounted(() => {

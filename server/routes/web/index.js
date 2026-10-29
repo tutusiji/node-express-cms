@@ -217,7 +217,16 @@ module.exports = (app) => {
         });
       }
       fonts.sort((a, b) => (a.date < b.date ? 1 : -1));
-      res.send(fonts);
+      const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+      const limit = Math.min(100, parseInt(req.query.limit, 10) || 20);
+      const start = (page - 1) * limit;
+      res.send({
+        list: fonts.slice(start, start + limit),
+        page,
+        limit,
+        total: fonts.length,
+        totalPages: Math.ceil(fonts.length / limit),
+      });
     } catch (error) {
       res.status(500).send({ message: "读取字体库失败", error: error.message });
     }
