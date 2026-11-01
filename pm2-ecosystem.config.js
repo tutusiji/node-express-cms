@@ -25,24 +25,6 @@ module.exports = {
       max_memory_restart: '500M'
     },
     {
-      name: 'server-gpt',
-      script: './server-gpt/chatgpt.js',
-      cwd: '/var/www/node-express-blog',
-      instances: 1,
-      exec_mode: 'fork',
-      watch: false,
-      max_restarts: 10,
-      min_uptime: '10s',
-      restart_delay: 5000,
-      env: {
-        NODE_ENV: 'production'
-      },
-      error_file: './logs/server-gpt-error.log',
-      out_file: './logs/server-gpt-out.log',
-      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
-      max_memory_restart: '300M'
-    },
-    {
       name: 'ssr-app',
       script: './web-ssr/server-ssr.js',
       cwd: '/var/www/node-express-blog',
