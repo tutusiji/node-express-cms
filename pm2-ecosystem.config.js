@@ -6,6 +6,13 @@ module.exports = {
       cwd: '/var/www/node-express-blog',
       instances: 1,
       exec_mode: 'cluster',
+      // watch 已关闭：递归监视 uploads/fonts（2000+ 文件）与 node_modules 消耗大量
+      // inotify 资源，曾引发重启循环；部署后手动 pm2 restart 即可
+      watch: false,
+      // 崩溃熔断：连续 10 次快速崩溃后停止，防止 spawn 风暴拖死整机
+      max_restarts: 10,
+      min_uptime: '10s',
+      restart_delay: 5000,
       env: {
         NODE_ENV: 'production',
         // 从 shell 环境继承，密钥不落仓库：服务器上 export JWT_SECRET=... 后再 pm2 start
@@ -25,6 +32,10 @@ module.exports = {
       cwd: '/var/www/node-express-blog',
       instances: 1,
       exec_mode: 'fork',
+      watch: false,
+      max_restarts: 10,
+      min_uptime: '10s',
+      restart_delay: 5000,
       env: {
         NODE_ENV: 'production'
       },
@@ -41,6 +52,10 @@ module.exports = {
       cwd: '/var/www/node-express-blog',
       instances: 1,
       exec_mode: 'fork',
+      watch: false,
+      max_restarts: 10,
+      min_uptime: '10s',
+      restart_delay: 5000,
       env: {
         NODE_ENV: 'production'
       },
