@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia';
 import { getArticleDetail } from '../http/api';
-import { useTagStore } from './tagStore';
-const tagStore = useTagStore();
 
 type TagListType = {
   _id: string;
@@ -50,6 +48,8 @@ export const useArticleDetailStore = defineStore('articleDetail', {
     async fetchArticleDetail(id: string) {
       this.loading = true;
       try {
+        // 必须在 action 内部获取，避免 SSR 模块级单例绑定首个请求的 pinia
+        const tagStore = useTagStore();
         const articleData = (await getArticleDetail(id)) as unknown as ArticleApiResponse;
         this.detail = {
           ...articleData,

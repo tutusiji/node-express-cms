@@ -1,9 +1,5 @@
 import { defineStore } from 'pinia';
 import { blogList } from '../http/api';
-import { useTagStore } from './tagStore';
-import { useMenuStore } from '../store/menuStore';
-const tagStore = useTagStore();
-const menuStore = useMenuStore();
 
 type TagListType = {
   _id: string;
@@ -59,6 +55,11 @@ export const useArticleStore = defineStore('articler', {
     ) {
       try {
         this.loading = true;
+        // 注意：必须在 action 内部获取，禁止模块级单例 ——
+        // SSR 下模块级 useStore() 会绑定首个请求的 pinia 实例，
+        // entry-server 渲染后置空 state，导致后续请求拿到死数据
+        const tagStore = useTagStore();
+        const menuStore = useMenuStore();
         const res = (await blogList({
           parentName: '博客文章', // TODO 站点根请求可配置
           categoryName,
