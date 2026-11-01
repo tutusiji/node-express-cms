@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
 import { blogList } from '../http/api';
+import { useTagStore } from './tagStore';
+import { useMenuStore } from '../store/menuStore';
 
 type TagListType = {
   _id: string;

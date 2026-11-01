@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { getArticleDetail } from '../http/api';
+import { useTagStore } from './tagStore';
 
 type TagListType = {
   _id: string;
